@@ -1,4 +1,4 @@
-﻿using FuelAcc.Application.UseCases.Documents.OrdersIn;
+﻿using FuelAcc.Application.Dto.Documents;
 using FuelAcc.WebApi.Api;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;

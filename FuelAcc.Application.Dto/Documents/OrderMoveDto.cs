@@ -1,6 +1,6 @@
 ﻿using FuelAcc.Domain.Enums;
 
-namespace FuelAcc.Application.UseCases.Documents.OrdersMove
+namespace FuelAcc.Application.Dto.Documents
 {
     public class OrderMoveDto : OrderDto
     {

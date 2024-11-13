@@ -1,4 +1,4 @@
-﻿namespace FuelAcc.Application.UseCases.Dictionaries.Partners
+﻿namespace FuelAcc.Application.Dto.Dictionaries
 {
     public class PartnerDto
     {

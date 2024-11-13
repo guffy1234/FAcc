@@ -1,4 +1,4 @@
-﻿namespace FuelAcc.Application.UseCases.Documents.OrdersOut
+﻿namespace FuelAcc.Application.Dto.Documents
 {
     public class OrderOutDto : OrderDto
     {

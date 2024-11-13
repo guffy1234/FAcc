@@ -1,4 +1,4 @@
-﻿namespace FuelAcc.Application.UseCases.Documents.OrdersIn
+﻿namespace FuelAcc.Application.Dto.Documents
 {
     public class OrderInDto : OrderDto
     {

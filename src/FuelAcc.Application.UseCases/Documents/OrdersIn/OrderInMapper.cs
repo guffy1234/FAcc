@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FuelAcc.Application.Dto.Documents;
 using FuelAcc.Domain.Entities.Documents;
 
 namespace FuelAcc.Application.UseCases.Documents.OrdersIn

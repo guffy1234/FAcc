@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using FuelAcc.Application.Dto.Documents;
 using FuelAcc.Application.UseCases.Commons.Commands;
 
 namespace FuelAcc.Application.UseCases.Documents.OrdersOut

@@ -1,6 +1,6 @@
-﻿namespace FuelAcc.Application.UseCases.Dictionaries.Branches
+﻿namespace FuelAcc.Application.Dto.Dictionaries
 {
-    public class BranchDto
+    public class ProductDto
     {
         public Guid Id { get; set; }
         public string Name { get; set; }

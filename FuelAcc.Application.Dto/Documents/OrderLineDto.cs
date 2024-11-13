@@ -1,4 +1,4 @@
-﻿namespace FuelAcc.Application.UseCases.Documents
+﻿namespace FuelAcc.Application.Dto.Documents
 {
     public class OrderLineDto
     {

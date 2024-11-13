@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using FuelAcc.Application.UseCases.Dictionaries.Partners;
+using FuelAcc.Application.Dto.Dictionaries;
 using FuelAcc.Domain.Entities.Dictionaries;
 
 namespace FuelAcc.Application.UseCases.Products

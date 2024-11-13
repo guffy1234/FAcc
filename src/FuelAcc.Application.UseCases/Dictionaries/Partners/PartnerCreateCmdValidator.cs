@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using FuelAcc.Application.Dto.Dictionaries;
 using FuelAcc.Application.UseCases.Commons.Commands;
 
 namespace FuelAcc.Application.UseCases.Dictionaries.Partners

@@ -1,4 +1,4 @@
-﻿using FuelAcc.Application.UseCases.Dictionaries.Branches;
+﻿using FuelAcc.Application.Dto.Dictionaries;
 using FuelAcc.WebApi.Api;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;

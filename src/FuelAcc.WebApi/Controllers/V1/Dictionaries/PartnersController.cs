@@ -1,4 +1,4 @@
-﻿using FuelAcc.Application.UseCases.Dictionaries.Partners;
+﻿using FuelAcc.Application.Dto.Dictionaries;
 using FuelAcc.WebApi.Api;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;

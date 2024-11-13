@@ -1,4 +1,4 @@
-﻿namespace FuelAcc.Application.UseCases.Dictionaries.Storages
+﻿namespace FuelAcc.Application.Dto.Dictionaries
 {
     public class StorageDto
     {

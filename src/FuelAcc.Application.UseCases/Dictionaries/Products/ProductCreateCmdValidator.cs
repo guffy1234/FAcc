@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
+using FuelAcc.Application.Dto.Dictionaries;
 using FuelAcc.Application.UseCases.Commons.Commands;
-using FuelAcc.Application.UseCases.Products;
 
 namespace FuelAcc.Application.UseCases.Dictionaries.Products
 {
