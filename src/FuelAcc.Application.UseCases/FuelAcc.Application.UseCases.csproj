@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-     <ProjectReference Include="..\..\FuelAcc.Application.Dto\FuelAcc.Application.Dto.csproj" />
+     <ProjectReference Include="..\FuelAcc.Application.Dto\FuelAcc.Application.Dto.csproj" />
      <ProjectReference Include="..\FuelAcc.Application.Interface\FuelAcc.Application.Interface.csproj" />
   </ItemGroup>
 

@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\FuelAcc.Application.Dto\FuelAcc.Application.Dto.csproj" />
+    <ProjectReference Include="..\FuelAcc.Application.Dto\FuelAcc.Application.Dto.csproj" />
     <ProjectReference Include="..\FuelAcc.Domain\FuelAcc.Domain.csproj" />
   </ItemGroup>
 

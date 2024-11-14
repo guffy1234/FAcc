@@ -30,7 +30,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Common", "_Common", "{59A4
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuelAcc.Application.Dto", "FuelAcc.Application.Dto\FuelAcc.Application.Dto.csproj", "{647C3F05-6445-49B4-9678-AA8DA429B4D9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuelAcc.Application.Dto", "src\FuelAcc.Application.Dto\FuelAcc.Application.Dto.csproj", "{647C3F05-6445-49B4-9678-AA8DA429B4D9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
