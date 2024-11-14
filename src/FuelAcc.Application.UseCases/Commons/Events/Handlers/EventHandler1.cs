@@ -1,12 +1,13 @@
-﻿using FuelAcc.Application.Interface.Exceptions;
+﻿using FuelAcc.Application.Interface.Events;
 using FuelAcc.Application.Interface.Persistence;
+using FuelAcc.Application.Interface.Replication;
 using MediatR;
 
 namespace FuelAcc.Application.UseCases.Commons.Events.Handlers
 {
     public abstract class EventHandler<TEvent> : EventHandler, IRequestHandler<TEvent, Unit> where TEvent : Event
     {
-        protected EventHandler(IUnitOfWork unitOfWork, IEventStoreRepository eventStore) : base(unitOfWork, eventStore)
+        protected EventHandler(IUnitOfWork unitOfWork, IEventService eventService) : base(unitOfWork, eventService)
         {
         }
 

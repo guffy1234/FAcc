@@ -1,0 +1,1 @@
+add-migration Mig0004 -Project FuelAcc.Persistence -Context AppDbContext

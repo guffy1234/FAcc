@@ -1,6 +1,6 @@
 ﻿using FuelAcc.Application.Interface.Accounting;
-using FuelAcc.Application.Interface.Exceptions;
 using FuelAcc.Application.Interface.Persistence;
+using FuelAcc.Application.Interface.Replication;
 using FuelAcc.Domain.Commons;
 using FuelAcc.Domain.Entities;
 using FuelAcc.Domain.Entities.Dictionaries;
@@ -38,7 +38,11 @@ namespace FuelAcc.Persistence
             services.AddScoped<ITransactionsRepository, TransactionsRepository>();
             services.AddScoped<IReportsRepository, ReportsRepository>();
 
+            services.AddScoped<IReplicationRepository, ReplicationRepository>();
+
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            services.AddScoped<IDatabaseSeeder, DatabaseSeeder>();
 
             return services;
         }

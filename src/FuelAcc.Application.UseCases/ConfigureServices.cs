@@ -2,6 +2,8 @@
 using FuelAcc.Application.Dto.Dictionaries;
 using FuelAcc.Application.Dto.Documents;
 using FuelAcc.Application.Interface.Accounting;
+using FuelAcc.Application.Interface.Events;
+using FuelAcc.Application.Interface.Replication;
 using FuelAcc.Application.UseCases.Accounting;
 using FuelAcc.Application.UseCases.Authorization;
 using FuelAcc.Application.UseCases.Commons.Behaviours;
@@ -14,6 +16,8 @@ using FuelAcc.Application.UseCases.Commons.Queries.Handlers;
 using FuelAcc.Application.UseCases.Documents.OrdersIn;
 using FuelAcc.Application.UseCases.Documents.OrdersMove;
 using FuelAcc.Application.UseCases.Documents.OrdersOut;
+using FuelAcc.Application.UseCases.Events;
+using FuelAcc.Application.UseCases.Replication;
 using FuelAcc.Application.UseCases.Reports.Rets;
 using FuelAcc.Application.UseCases.Reports.Transactions;
 using FuelAcc.Domain.Commons;
@@ -33,30 +37,38 @@ namespace FuelAcc.Application.UseCases
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
+            // mediator interceptors
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
             services.AddSingleton(typeof(IPipelineBehavior<,>), typeof(LoggingBehaviour<,>));
             services.AddSingleton(typeof(IPipelineBehavior<,>), typeof(PerformanceBehaviour<,>));
 
+            // dictionaries
             services.AddDictionary<Branch, BranchDto>();
             services.AddDictionary<Partner, PartnerDto>();
             services.AddDictionary<Storage, StorageDto>();
             services.AddDictionary<Product, ProductDto>();
 
+            // documents
             services.AddDocument<OrderIn, OrderInDto>();
             services.AddDocument<OrderOut, OrderOutDto>();
             services.AddDocument<OrderMove, OrderMoveDto>();
-
-            services.AddScoped<ITransactionsService, TransactionsService>();
-
-            services.AddTransient<IDocumentTransactionsProcessor<OrderMove>, OrderMoveTransactionsProcessor>();
-            services.AddTransient<IDocumentTransactionsProcessor<OrderIn>, OrderInTransactionsProcessor>();
-            services.AddTransient<IDocumentTransactionsProcessor<OrderOut>, OrderOutTransactionsProcessor>();
-
             // reports
             services.AddTransient(typeof(IRequestHandler<ReportTransactionsQuery, IAsyncEnumerable<ReportTransactionView>>),
                typeof(ReportTransactionsHandler));
             services.AddTransient(typeof(IRequestHandler<ReportRestsQuery, IAsyncEnumerable<ReportRestView>>),
               typeof(ReportRestsHandler));
+
+            // services
+            services.AddScoped<ITransactionsService, TransactionsService>();
+            services.AddScoped<IReplicationService, ReplicationService>();
+            services.AddScoped<IReplicationHelper, ReplicationHelper>();
+            services.AddScoped<IEventConverter, EventConverter>();
+            services.AddScoped<IEventService, EventService>();
+
+            services.AddTransient<IDocumentTransactionsProcessor<OrderMove>, OrderMoveTransactionsProcessor>();
+            services.AddTransient<IDocumentTransactionsProcessor<OrderIn>, OrderInTransactionsProcessor>();
+            services.AddTransient<IDocumentTransactionsProcessor<OrderOut>, OrderOutTransactionsProcessor>();
+
         }
 
         public static void AddDictionary<ENTITY, DTO>(this IServiceCollection services)

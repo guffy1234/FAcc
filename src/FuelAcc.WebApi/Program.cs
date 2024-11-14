@@ -16,6 +16,7 @@ using FuelAcc.WebApi.Api;
 using FuelAcc.WebApi.Filters;
 using FuelAcc.Application.Interface;
 using FuelAcc.WebApi.Services;
+using FuelAcc.Application.Interface.Login;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -139,6 +140,7 @@ builder.Services.AddAuthorization();
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddTransient<IAuthorizationChecker, AuthorizationChecker>();
+builder.Services.AddTransient<ILoginService, LoginService>();
 
 builder.Services.AddIdentityCore<ApplicationUser>(o =>
 {
@@ -152,10 +154,9 @@ var app = builder.Build();
     var dbContext = serviceScope.ServiceProvider.GetRequiredService<AppDbContext>();
     await dbContext.Database.MigrateAsync();
 
-    var userManager = serviceScope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-    var roleManager = serviceScope.ServiceProvider.GetRequiredService<RoleManager<ApplicationRole>>();
-    await IdentitySeeder.SeedAsync(userManager, roleManager);
-    await SystemSeeder.SeedAsync(dbContext);
+
+    var seeded = serviceScope.ServiceProvider.GetRequiredService<IDatabaseSeeder>();
+    await seeded.SeedAsync();
 }
 
 // Configure the HTTP request pipeline.

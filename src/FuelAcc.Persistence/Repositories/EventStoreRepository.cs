@@ -1,4 +1,4 @@
-﻿using FuelAcc.Application.Interface.Exceptions;
+﻿using FuelAcc.Application.Interface.Replication;
 using FuelAcc.Domain.Commons;
 using FuelAcc.Domain.Entities.Dictionaries;
 using FuelAcc.Domain.Entities.Other;
@@ -18,34 +18,35 @@ namespace FuelAcc.Persistence.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task InsertEventAsync<ENTITY>(DomainEvent<ENTITY> domainEvent, CancellationToken cancellationToken)
-            where ENTITY : class, IRootEntity
+        public IAsyncEnumerable<PersistEvent> GetEventsAsync(Guid originBranchId, DateTime? from, DateTime to)
         {
-            await ReadOrCreateCurrentBranch(domainEvent, cancellationToken);
+            var query = _dbContext.Events
+                .Where(p => p.BranchId == originBranchId).AsQueryable();
 
-            var persistEvent = new PersistEvent()
+            if (from.HasValue)
             {
-                Date = domainEvent.Date,
-                UserId = domainEvent.UserId,
-                EntityId = domainEvent.EntityId,
-                EventAction = domainEvent.EventAction,
-                EventArea = domainEvent.EventArea,
-                BranchId = _currentBranchId,
-                ObjectClass = typeof(ENTITY).Name,
-            };
+                query = query.Where(p => p.Date > from.Value).AsQueryable();
+            }
 
-            // for delete events we haven't entity body
-            if (domainEvent.Entity is not null)
+            var result = query.Where(p => p.Date <= to)
+                .OrderBy(p => p.Date)
+                .AsAsyncEnumerable();
+
+            return result;
+        }
+
+        public async Task InsertEventAsync(PersistEvent persistEvent, CancellationToken cancellationToken)
+        {
+            if (persistEvent.BranchId == Guid.Empty)
             {
-                var jsonString = JsonSerializer.Serialize(domainEvent.Entity);
-                persistEvent.ObjectJson = jsonString;
+                await ReadCurrentBranchAsync(cancellationToken);
+                persistEvent.BranchId = _currentBranchId;
             }
 
             await _dbContext.AddAsync(persistEvent, cancellationToken);
         }
 
-        private async Task ReadOrCreateCurrentBranch<ENTITY>(DomainEvent<ENTITY> domainEvent, CancellationToken cancellationToken)
-            where ENTITY : class, IRootEntity
+        private async Task ReadCurrentBranchAsync(CancellationToken cancellationToken)
         {
             if (_currentBranchId == Guid.Empty)
             {
@@ -56,21 +57,7 @@ namespace FuelAcc.Persistence.Repositories
                 }
                 else
                 {
-                    var entity = domainEvent.Entity;
-                    if (domainEvent.EventAction == Domain.Enums.EventAction.Insert && entity != null && entity is Branch branch)
-                    {
-                        settings = new Settings
-                        {
-                            BranchId = branch.Id,
-                        };
-                        await _dbContext.AddAsync(settings, cancellationToken);
-
-                        _currentBranchId = settings.BranchId;
-                    }
-                    else
-                    {
-                        throw new InvalidOperationException("You can't save any entity until you create first Branch and save it to Settings");
-                    }
+                    throw new InvalidOperationException("There is no main Branch in Settings");
                 }
             }
         }

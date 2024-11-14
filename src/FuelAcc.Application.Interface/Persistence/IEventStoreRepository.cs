@@ -1,10 +1,10 @@
 using FuelAcc.Domain.Commons;
 using FuelAcc.Domain.Entities.Other;
 
-namespace FuelAcc.Application.Interface.Exceptions;
+namespace FuelAcc.Application.Interface.Replication;
 
 public interface IEventStoreRepository
 {
-    Task InsertEventAsync<ENTITY>(DomainEvent<ENTITY> domainEvent, CancellationToken cancellationToken)
-        where ENTITY : class, IRootEntity;
+    Task InsertEventAsync(PersistEvent persistEvent, CancellationToken cancellationToken);
+    IAsyncEnumerable<PersistEvent> GetEventsAsync(Guid originBranchId, DateTime? from, DateTime to);
 }

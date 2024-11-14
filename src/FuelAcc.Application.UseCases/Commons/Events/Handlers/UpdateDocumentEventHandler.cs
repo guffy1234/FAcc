@@ -1,7 +1,8 @@
 ﻿using AutoMapper;
 using FuelAcc.Application.Interface.Accounting;
-using FuelAcc.Application.Interface.Exceptions;
+using FuelAcc.Application.Interface.Events;
 using FuelAcc.Application.Interface.Persistence;
+using FuelAcc.Application.Interface.Replication;
 using FuelAcc.Domain.Commons;
 
 namespace FuelAcc.Application.UseCases.Commons.Events.Handlers
@@ -12,11 +13,11 @@ namespace FuelAcc.Application.UseCases.Commons.Events.Handlers
         private readonly IDocumentTransactionsProcessor<ENTITY> _transactionsProcessor;
 
         public UpdateDocumentEventHandler(IUnitOfWork unitOfWork,
-            IEventStoreRepository eventStore,
+            IEventService eventService,
             IEntityWriteRepository<ENTITY> repository,
             IDocumentTransactionsProcessor<ENTITY> transactionsProcessor,
             IMapper mapper) :
-            base(unitOfWork, eventStore, repository, mapper)
+            base(unitOfWork, eventService, repository, mapper)
         {
             _transactionsProcessor = transactionsProcessor ?? throw new ArgumentNullException(nameof(transactionsProcessor));
         }

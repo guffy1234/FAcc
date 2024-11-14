@@ -29,7 +29,7 @@ namespace FuelAcc.Application.UseCases.Commons.Commands.Handlers
 
             var domainEvent = new DomainEvent<ENTITY>
             {
-                Date = DateTime.Now,
+                Date = DateTime.UtcNow,
                 UserId = _authorizationChecker.UserId(),
                 EntityId = command.Id,
                 EventAction = Domain.Enums.EventAction.Delete,

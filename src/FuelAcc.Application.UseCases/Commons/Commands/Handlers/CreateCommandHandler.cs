@@ -32,7 +32,7 @@ namespace FuelAcc.Application.UseCases.Commons.Commands.Handlers
             var entity = _mapper.Map<ENTITY>(command.Dto);
             var domainEvent = new DomainEvent<ENTITY>
             {
-                Date = DateTime.Now,
+                Date = DateTime.UtcNow,
                 UserId = _authorizationChecker.UserId(),
                 Entity = entity,
                 EntityId = entity.Id,

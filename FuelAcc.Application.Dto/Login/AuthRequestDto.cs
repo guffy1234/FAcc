@@ -1,4 +1,4 @@
-﻿namespace FuelAcc.WebApi.Controllers.V1.Login
+﻿namespace FuelAcc.Application.Dto.Login
 {
     public class AuthRequestDto
     {

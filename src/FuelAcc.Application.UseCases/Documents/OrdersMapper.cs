@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using FuelAcc.Application.Dto.Documents;
-using FuelAcc.Domain.Entities.Documents;
+using FuelAcc.Application.Dto.Replication;
+using FuelAcc.Domain.Entities.Other;
 
 namespace FuelAcc.Application.UseCases.Documents
 {
@@ -8,7 +8,8 @@ namespace FuelAcc.Application.UseCases.Documents
     {
         public OrdersMapper()
         {
-            CreateMap<OrderLine, OrderLineDto>().ReverseMap();
+            CreateMap<PersistEvent, EventDto>().ReverseMap();
+            CreateMap<ReplictionPacket, ReplictionPacketDto>().ReverseMap();
         }
     }
 }

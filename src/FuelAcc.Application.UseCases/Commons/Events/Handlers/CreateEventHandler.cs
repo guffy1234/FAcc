@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
-using FuelAcc.Application.Interface.Exceptions;
+using FuelAcc.Application.Interface.Events;
 using FuelAcc.Application.Interface.Persistence;
+using FuelAcc.Application.Interface.Replication;
 using FuelAcc.Domain.Commons;
 using FuelAcc.Domain.Entities;
+using FuelAcc.Domain.Entities.Dictionaries;
 
 namespace FuelAcc.Application.UseCases.Commons.Events.Handlers
 {
@@ -12,10 +14,13 @@ namespace FuelAcc.Application.UseCases.Commons.Events.Handlers
         protected readonly IMapper _mapper;
         protected readonly IEntityWriteRepository<ENTITY> _repository;
 
-        public CreateEventHandler(IUnitOfWork unitOfWork, IEventStoreRepository eventStore, IEntityWriteRepository<ENTITY> repository, IMapper mapper) :
-            base(unitOfWork, eventStore)
+        public CreateEventHandler(IUnitOfWork unitOfWork,
+            IEventService eventService, 
+            IEntityWriteRepository<ENTITY> repository, 
+            IMapper mapper) :
+            base(unitOfWork, eventService)
         {
-            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));           
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
 
@@ -36,7 +41,7 @@ namespace FuelAcc.Application.UseCases.Commons.Events.Handlers
                 info.Created = domainEvent.Date;
             }
 
-            if (NeedTransaction)
+            if (NeedTransaction && !@event.IsInRepliactionContext)
             {
                 await _unitOfWork.BeginTransactionAsync(cancellationToken);
             }
@@ -47,9 +52,12 @@ namespace FuelAcc.Application.UseCases.Commons.Events.Handlers
 
             await AdditionalProcessing(entity, cancellationToken);
 
-            await _eventStore.InsertEventAsync(domainEvent, cancellationToken);
+            await _eventService.PublishEventAsync(domainEvent, cancellationToken);
 
-            await _unitOfWork.SaveAsync(cancellationToken);
+            if (!@event.IsInRepliactionContext)
+            {
+                await _unitOfWork.SaveAsync(cancellationToken);
+            }
         }
     }
 }
