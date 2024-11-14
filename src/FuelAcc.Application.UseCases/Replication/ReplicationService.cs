@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
 using FuelAcc.Application.Dto.Replication;
+using FuelAcc.Application.Interface;
 using FuelAcc.Application.Interface.Events;
 using FuelAcc.Application.Interface.Exceptions;
 using FuelAcc.Application.Interface.Persistence;
 using FuelAcc.Application.Interface.Replication;
 using FuelAcc.Domain.Entities.Other;
 using MediatR;
+using System.Threading;
 
 namespace FuelAcc.Application.UseCases.Replication
 {
@@ -14,6 +16,7 @@ namespace FuelAcc.Application.UseCases.Replication
         private readonly IReplicationRepository _replicationRepository;
         private readonly IEventStoreRepository _eventStoreRepository;
         private readonly IEventConverter _eventConverter;
+        private readonly IExecutionContext _executionContext;
         private readonly IMediator _mediator;
         private readonly IReplicationHelper _replicationHelper;
         private readonly IUnitOfWork _unitOfWork;
@@ -23,6 +26,7 @@ namespace FuelAcc.Application.UseCases.Replication
             IReplicationRepository replicationRepository,
             IEventStoreRepository eventStoreRepository,
             IEventConverter eventConverter,
+            IExecutionContext executionContext,
             IMediator mediator, 
             IReplicationHelper replicationHelper,
             IUnitOfWork unitOfWork, 
@@ -31,6 +35,7 @@ namespace FuelAcc.Application.UseCases.Replication
             _replicationRepository = replicationRepository;
             _eventStoreRepository = eventStoreRepository;
             _eventConverter = eventConverter;
+            _executionContext = executionContext;
             _mediator = mediator;
             _replicationHelper = replicationHelper;
             _unitOfWork = unitOfWork;
@@ -48,6 +53,8 @@ namespace FuelAcc.Application.UseCases.Replication
 
         public async Task ApplyInboundPacketAsync(ReplictionPacketDto packetDto, CancellationToken cancellationToken)
         {
+            _executionContext.IsReplicationApplying = true;
+
             await _unitOfWork.BeginTransactionAsync(cancellationToken);
 
             var exist = await _replicationRepository.GetAsync(packetDto.Id, cancellationToken);

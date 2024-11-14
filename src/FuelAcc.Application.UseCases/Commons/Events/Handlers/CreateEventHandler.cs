@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
+using FuelAcc.Application.Interface;
 using FuelAcc.Application.Interface.Events;
 using FuelAcc.Application.Interface.Persistence;
 using FuelAcc.Application.Interface.Replication;
 using FuelAcc.Domain.Commons;
 using FuelAcc.Domain.Entities;
 using FuelAcc.Domain.Entities.Dictionaries;
+using System.Threading;
 
 namespace FuelAcc.Application.UseCases.Commons.Events.Handlers
 {
@@ -12,15 +14,18 @@ namespace FuelAcc.Application.UseCases.Commons.Events.Handlers
         where ENTITY : class, IRootEntity
     {
         protected readonly IMapper _mapper;
+        private readonly IExecutionContext _executionContext;
         protected readonly IEntityWriteRepository<ENTITY> _repository;
 
         public CreateEventHandler(IUnitOfWork unitOfWork,
-            IEventService eventService, 
+            IEventService eventService,
+            IExecutionContext executionContext,
             IEntityWriteRepository<ENTITY> repository, 
             IMapper mapper) :
             base(unitOfWork, eventService)
         {
-            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));           
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _executionContext = executionContext ?? throw new ArgumentNullException(nameof(executionContext));
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
 
@@ -41,7 +46,7 @@ namespace FuelAcc.Application.UseCases.Commons.Events.Handlers
                 info.Created = domainEvent.Date;
             }
 
-            if (NeedTransaction && !@event.IsInRepliactionContext)
+            if (NeedTransaction && !_executionContext.IsReplicationApplying)
             {
                 await _unitOfWork.BeginTransactionAsync(cancellationToken);
             }
@@ -54,7 +59,7 @@ namespace FuelAcc.Application.UseCases.Commons.Events.Handlers
 
             await _eventService.PublishEventAsync(domainEvent, cancellationToken);
 
-            if (!@event.IsInRepliactionContext)
+            if (!_executionContext.IsReplicationApplying)
             {
                 await _unitOfWork.SaveAsync(cancellationToken);
             }

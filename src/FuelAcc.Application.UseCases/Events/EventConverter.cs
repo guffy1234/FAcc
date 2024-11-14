@@ -39,7 +39,7 @@ namespace FuelAcc.Application.UseCases.Events
             };
 
             var constructedEventType = genericEventType.MakeGenericType(entityType);
-            var created = Activator.CreateInstance(constructedEventType, new object[] { domainEvent, true });
+            var created = Activator.CreateInstance(constructedEventType, new object[] { domainEvent });
 
             return created;
 

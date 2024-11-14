@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using FuelAcc.Application.Dto.Dictionaries;
 using FuelAcc.Application.Dto.Documents;
+using FuelAcc.Application.Interface;
 using FuelAcc.Application.Interface.Accounting;
 using FuelAcc.Application.Interface.Events;
 using FuelAcc.Application.Interface.Replication;
@@ -64,6 +65,8 @@ namespace FuelAcc.Application.UseCases
             services.AddScoped<IReplicationHelper, ReplicationHelper>();
             services.AddScoped<IEventConverter, EventConverter>();
             services.AddScoped<IEventService, EventService>();
+
+            services.AddScoped<IExecutionContext, ExecutionContext>();
 
             services.AddTransient<IDocumentTransactionsProcessor<OrderMove>, OrderMoveTransactionsProcessor>();
             services.AddTransient<IDocumentTransactionsProcessor<OrderIn>, OrderInTransactionsProcessor>();
