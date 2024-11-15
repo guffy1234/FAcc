@@ -1,4 +1,4 @@
-﻿namespace FuelAcc.Application.UseCases.Reports.Transactions
+﻿namespace FuelAcc.Application.UseCases.Reports
 {
     public sealed class ReportTransactionsDto
     {

@@ -2,14 +2,16 @@ using FuelAcc.Domain.Entities.Dictionaries;
 using FuelAcc.Domain.Entities.Documents;
 using FuelAcc.Domain.Entities.Other;
 using FuelAcc.Domain.Entities.Registry;
+using FuelAcc.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Microsoft.EntityFrameworkCore.ValueGeneration;
 
 namespace FuelAcc.Persistence.Contexts;
 
 public class AppDbContext : AppIdentityDbContext
 {
-    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+    public AppDbContext(DbContextOptions options) : base(options)
     {
     }
 
@@ -35,81 +37,142 @@ public class AppDbContext : AppIdentityDbContext
     {
         base.OnModelCreating(modelBuilder);
 
-        modelBuilder.Entity<OrderIn>()
-            .ToTable("OrdersIn");
-        modelBuilder.Entity<OrderOut>()
-            .ToTable("OrdersOut");
-        modelBuilder.Entity<OrderMove>()
-            .ToTable("OrdersMove");
+        modelBuilder.Entity<Product>(e =>
+        {
+            e.Property(p => p.Id)
+                .HasValueGenerator<SequentialGuidValueGenerator>();
+            e.Property(p => p.Name)
+                .HasMaxLength(256);
+            e.HasMany(e => e.Rests)
+                .WithOne(e => e.Product)
+                .HasForeignKey(e => e.ProductId)
+                .HasPrincipalKey(e => e.Id)
+                .OnDelete(DeleteBehavior.Restrict);
+            e.HasMany(e => e.Transactions)
+                .WithOne(e => e.Product)
+                .HasForeignKey(e => e.ProductId)
+                .HasPrincipalKey(e => e.Id)
+                .OnDelete(DeleteBehavior.Restrict);
+            e.HasMany(e => e.OrderLines)
+                .WithOne(e => e.Product)
+                .HasForeignKey(e => e.ProductId)
+                .HasPrincipalKey(e => e.Id)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
 
-        modelBuilder.Entity<Product>()
-            .Property(p => p.Id)
-            .HasValueGenerator<SequentialGuidValueGenerator>();
-        modelBuilder.Entity<Partner>()
-            .Property(p => p.Id)
-            .HasValueGenerator<SequentialGuidValueGenerator>();
-        modelBuilder.Entity<Branch>()
-            .Property(p => p.Id)
-            .HasValueGenerator<SequentialGuidValueGenerator>();
-        modelBuilder.Entity<Storage>()
-            .Property(p => p.Id)
-            .HasValueGenerator<SequentialGuidValueGenerator>();
+        modelBuilder.Entity<Partner>(e =>
+        {
+            e.Property(p => p.Id)
+                .HasValueGenerator<SequentialGuidValueGenerator>();
+            e.Property(p => p.Name)
+                .HasMaxLength(256);
+        });
 
-        modelBuilder.Entity<OrderBase>()
-            .Property(p => p.Id)
-            .HasValueGenerator<SequentialGuidValueGenerator>();
-        modelBuilder.Entity<OrderLine>()
-            .Property(p => p.Id)
-            .HasValueGenerator<SequentialGuidValueGenerator>();
+        modelBuilder.Entity<Branch>(e =>
+        {
+            e.Property(p => p.Id)
+                .HasValueGenerator<SequentialGuidValueGenerator>();
+            e.Property(p => p.Name)
+                .HasMaxLength(256);
+            e.HasMany(e => e.Storages)
+                .WithOne(e => e.Branch)
+                .HasForeignKey(e => e.BranchId)
+                .HasPrincipalKey(e => e.Id)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
 
-        modelBuilder.Entity<Transaction>()
-            .Property(p => p.Id)
-            .HasValueGenerator<SequentialGuidValueGenerator>();
-        modelBuilder.Entity<Rest>()
-            .Property(p => p.Id)
-            .HasValueGenerator<SequentialGuidValueGenerator>();
+        modelBuilder.Entity<Storage>(e =>
+        {
+            e.Property(p => p.Id)
+                .HasValueGenerator<SequentialGuidValueGenerator>();
+            e.Property(p => p.Name)
+                .HasMaxLength(256);
+            e.HasMany(e => e.Rests)
+                .WithOne(e => e.Storage)
+                .HasForeignKey(e => e.StorageId)
+                .HasPrincipalKey(e => e.Id)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
 
-        modelBuilder.Entity<PersistEvent>()
-            .Property(p => p.Id)
-            .HasValueGenerator<SequentialGuidValueGenerator>();
+        modelBuilder.Entity<OrderBase>(e =>
+        {
+            e.Property(p => p.Id)
+                .HasValueGenerator<SequentialGuidValueGenerator>();
+            e.Property(p => p.Title)
+               .HasMaxLength(512);
+            e.Property(p => p.Description)
+               .HasMaxLength(2048);
+            e.Property(p => p.Total)
+                .HasPrecision(14, 2);
+        });
+
+        modelBuilder.Entity<OrderIn>(e =>
+        {
+            e.ToTable("OrdersIn");
+        });
+        modelBuilder.Entity<OrderOut>(e =>
+        {
+            e.ToTable("OrdersOut");
+        });
+        modelBuilder.Entity<OrderMove>(e =>
+        {
+            e.ToTable("OrdersMove");
+        });
+
+        modelBuilder.Entity<OrderLine>(e =>
+        {
+            e.Property(p => p.Id)
+                .HasValueGenerator<SequentialGuidValueGenerator>();
+            e.Property(p => p.Quantity)
+                .HasPrecision(14, 3);
+            e.Property(p => p.Price)
+                .HasPrecision(14, 2);
+            e.Property(p => p.Sum)
+                .HasPrecision(14, 2);
+        });
+
+        modelBuilder.Entity<Transaction>(e =>
+        {
+            e.Property(p => p.Id)
+                .HasValueGenerator<SequentialGuidValueGenerator>();
+            e.Property(p => p.Quantity)
+                .HasPrecision(14, 3);
+        });
+
+        modelBuilder.Entity<Rest>(e =>
+        {
+            e.Property(p => p.Id)
+                .HasValueGenerator<SequentialGuidValueGenerator>();
+            e.Property(p => p.Quantity)
+               .HasPrecision(14, 3);
+            e.HasMany(e => e.InTransactions)
+                .WithOne(e => e.Source)
+                .HasForeignKey(e => e.SourceId)
+                .HasPrincipalKey(e => e.Id)
+                .OnDelete(DeleteBehavior.Restrict);
+            e.HasMany(e => e.OutTransactions)
+                .WithOne(e => e.Destination)
+                .HasForeignKey(e => e.DestinationId)
+                .HasPrincipalKey(e => e.Id)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<PersistEvent>(e =>
+        {
+            e.Property(p => p.Id)
+                .HasValueGenerator<SequentialGuidValueGenerator>();
+            e.Property(p => p.ObjectClass)
+                .HasMaxLength(1024);
+            e.Property(p => p.EventAction)
+                .HasConversion(new EnumToStringConverter<EventAction>())
+                .HasMaxLength(128);
+            e.Property(p => p.EventArea)
+                .HasConversion(new EnumToStringConverter<ApplicationArea>())
+                .HasMaxLength(128);
+        });
+
         modelBuilder.Entity<ReplictionPacket>()
             .Property(p => p.Id)
             .HasValueGenerator<SequentialGuidValueGenerator>();
-
-        modelBuilder.Entity<Branch>()
-            .HasMany(e => e.Storages)
-            .WithOne(e => e.Branch)
-            .HasForeignKey(e => e.BranchId)
-            .HasPrincipalKey(e => e.Id);
-
-        modelBuilder.Entity<Storage>()
-            .HasMany(e => e.Rests)
-            .WithOne(e => e.Storage)
-            .HasForeignKey(e => e.StorageId)
-            .HasPrincipalKey(e => e.Id);
-
-        modelBuilder.Entity<Product>()
-            .HasMany(e => e.Rests)
-            .WithOne(e => e.Product)
-            .HasForeignKey(e => e.ProductId)
-            .HasPrincipalKey(e => e.Id);
-
-        modelBuilder.Entity<Product>()
-            .HasMany(e => e.Transactions)
-            .WithOne(e => e.Product)
-            .HasForeignKey(e => e.ProductId)
-            .HasPrincipalKey(e => e.Id);
-
-        modelBuilder.Entity<Rest>()
-            .HasMany(e => e.InTransactions)
-            .WithOne(e => e.Source)
-            .HasForeignKey(e => e.SourceId)
-            .HasPrincipalKey(e => e.Id);
-
-        modelBuilder.Entity<Rest>()
-            .HasMany(e => e.OutTransactions)
-            .WithOne(e => e.Destination)
-            .HasForeignKey(e => e.DestinationId)
-            .HasPrincipalKey(e => e.Id);
     }
 }

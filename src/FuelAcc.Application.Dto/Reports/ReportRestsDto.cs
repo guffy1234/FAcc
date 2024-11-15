@@ -1,6 +1,6 @@
 ﻿using FuelAcc.Domain;
 
-namespace FuelAcc.Application.UseCases.Reports.Rets
+namespace FuelAcc.Application.UseCases.Reports
 {
     public sealed class ReportRestsDto
     {

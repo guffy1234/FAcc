@@ -1,5 +1,4 @@
-﻿
-namespace FuelAcc.Persistence.Repositories
+﻿namespace FuelAcc.Persistence.Repositories
 {
     public interface IDatabaseSeeder
     {

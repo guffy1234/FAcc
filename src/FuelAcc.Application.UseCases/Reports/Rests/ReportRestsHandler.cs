@@ -4,7 +4,7 @@ using FuelAcc.Application.Interface.Persistence;
 using FuelAcc.Application.UseCases.Authorization;
 using MediatR;
 
-namespace FuelAcc.Application.UseCases.Reports.Rets
+namespace FuelAcc.Application.UseCases.Reports.Rests
 {
     public class ReportRestsHandler : IRequestHandler<ReportRestsQuery, IAsyncEnumerable<ReportRestView>>
     {

@@ -1,6 +1,7 @@
 using FuelAcc.Application.UseCases;
 using FuelAcc.Domain.Identity;
 using FuelAcc.Persistence;
+using FuelAcc.Persistence.DbSelector;
 using FuelAcc.Persistence.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Asp.Versioning;
@@ -118,6 +119,7 @@ builder.Services.AddCors(options =>
 });
 
 //Add methods Extensions
+builder.Services.AddInjectionDatabase(builder.Configuration);
 builder.Services.AddInjectionPersistence(builder.Configuration);
 builder.Services.AddInjectionApplication();
 

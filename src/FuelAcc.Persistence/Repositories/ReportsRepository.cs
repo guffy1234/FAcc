@@ -3,7 +3,6 @@ using FuelAcc.Domain.Entities.Registry;
 using FuelAcc.Persistence.Contexts;
 using Microsoft.EntityFrameworkCore;
 
-
 namespace FuelAcc.Persistence.Repositories
 {
     internal class ReportsRepository : IReportsRepository
@@ -15,12 +14,12 @@ namespace FuelAcc.Persistence.Repositories
             _dbContext = dbContext;
         }
 
-        public IAsyncEnumerable<Transaction> GetTransactions(DateTime? from, DateTime? to, 
+        public IAsyncEnumerable<Transaction> GetTransactions(DateTime? from, DateTime? to,
             IEnumerable<Guid>? orderId, IEnumerable<Guid>? sourceId, IEnumerable<Guid>? destinationId, IEnumerable<Guid>? productId)
         {
             var queue = _dbContext.Set<Transaction>().AsQueryable();
 
-            if(from.HasValue)
+            if (from.HasValue)
             {
                 queue = queue.Where(q => q.Date >= from.Value);
             }
@@ -29,9 +28,9 @@ namespace FuelAcc.Persistence.Repositories
                 queue = queue.Where(q => q.Date <= to.Value);
             }
 
-            if (orderId !=null && orderId.Any())
+            if (orderId != null && orderId.Any())
             {
-                if(orderId.Count() == 1)
+                if (orderId.Count() == 1)
                     queue = queue.Where(q => q.OrderId == orderId.First());
                 else
                     queue = queue.Where(q => orderId.Contains(q.OrderId));

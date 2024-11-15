@@ -1,4 +1,5 @@
-﻿using FuelAcc.Domain.Entities.Registry;
+﻿using FuelAcc.Domain.Entities.Documents;
+using FuelAcc.Domain.Entities.Registry;
 using System.Text.Json.Serialization;
 
 namespace FuelAcc.Domain.Entities.Dictionaries
@@ -10,5 +11,8 @@ namespace FuelAcc.Domain.Entities.Dictionaries
 
         [JsonIgnore]
         public ICollection<Transaction>? Transactions { get; set; }
+
+        [JsonIgnore]
+        public ICollection<OrderLine>? OrderLines{ get; set; }
     }
 }

@@ -1,10 +1,7 @@
 ﻿using FuelAcc.Application.Interface.Replication;
-using FuelAcc.Domain.Commons;
-using FuelAcc.Domain.Entities.Dictionaries;
 using FuelAcc.Domain.Entities.Other;
 using FuelAcc.Persistence.Contexts;
 using Microsoft.EntityFrameworkCore;
-using System.Text.Json;
 
 namespace FuelAcc.Persistence.Repositories
 {

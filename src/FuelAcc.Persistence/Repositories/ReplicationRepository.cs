@@ -1,12 +1,7 @@
-﻿
-
-using FuelAcc.Application.Interface.Persistence;
-using FuelAcc.Domain.Commons;
-using FuelAcc.Domain.Entities.Dictionaries;
+﻿using FuelAcc.Application.Interface.Persistence;
 using FuelAcc.Domain.Entities.Other;
 using FuelAcc.Persistence.Contexts;
 using Microsoft.EntityFrameworkCore;
-using System.Threading;
 
 namespace FuelAcc.Persistence.Repositories
 {
@@ -19,6 +14,7 @@ namespace FuelAcc.Persistence.Repositories
         {
             _dbContext = dbContext;
         }
+
         private async Task ReadCurrentBranch(CancellationToken cancellationToken)
         {
             if (_currentBranchId == Guid.Empty)
@@ -50,10 +46,10 @@ namespace FuelAcc.Persistence.Repositories
         public async Task<ReplictionPacket?> GetLastAsync(Guid branchId, bool outbound, CancellationToken cancellationToken)
         {
             var result = await _dbContext.ReplictionPackets
-                .Where(p => p.BranchId==branchId && p.Outbound==outbound)
+                .Where(p => p.BranchId == branchId && p.Outbound == outbound)
                 .OrderByDescending(p => p.Date)
                 .FirstOrDefaultAsync(cancellationToken);
-            
+
             return result;
         }
 

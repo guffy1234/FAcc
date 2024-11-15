@@ -5,9 +5,7 @@ using FuelAcc.Domain.Commons;
 using FuelAcc.Domain.Entities;
 using FuelAcc.Domain.Entities.Dictionaries;
 using FuelAcc.Domain.Entities.Documents;
-using FuelAcc.Persistence.Contexts;
 using FuelAcc.Persistence.Repositories;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -17,14 +15,7 @@ namespace FuelAcc.Persistence
     {
         public static IServiceCollection AddInjectionPersistence(this IServiceCollection services, IConfiguration configuration)
         {
-            //services.AddDbContext<AppDbContext>(options =>
-            //{
-            //    options.UseSqlite(configuration.GetConnectionString("DefaultConnection"));
-            //});
-            services.AddDbContext<AppDbContext>(options =>
-            {
-                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
-            });
+            // be noted that AddDbContext implemented in DbSelector assembly
 
             services.RegisterEntityRepositories<Partner>();
             services.RegisterEntityRepositories<Product>();

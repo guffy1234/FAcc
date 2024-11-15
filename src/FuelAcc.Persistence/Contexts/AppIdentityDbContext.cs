@@ -1,5 +1,4 @@
 ﻿using FuelAcc.Domain.Identity;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ValueGeneration;
@@ -67,7 +66,7 @@ public class AppIdentityDbContext
 
         modelBuilder.Entity<ApplicationUser>(b =>
         {
-            b.ToTable(IdentityTablesPrefix+"Users");
+            b.ToTable(IdentityTablesPrefix + "Users");
             b.HasKey(p => p.Id);
             b.Property(p => p.Id)
                 .HasValueGenerator<SequentialGuidValueGenerator>();

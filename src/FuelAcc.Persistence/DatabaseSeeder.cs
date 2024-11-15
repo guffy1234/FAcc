@@ -10,7 +10,7 @@ using System.Security.Claims;
 
 namespace FuelAcc.Persistence.Repositories
 {
-    public class DatabaseSeeder: IDatabaseSeeder
+    public class DatabaseSeeder : IDatabaseSeeder
     {
         private const string AdminRoleName = "admin";
         private const string AdminUserName = "admin";
@@ -23,8 +23,8 @@ namespace FuelAcc.Persistence.Repositories
         private readonly AppDbContext _context;
         private readonly IEventConverter _eventConverter;
 
-        public DatabaseSeeder(UserManager<ApplicationUser> userManager, 
-            RoleManager<ApplicationRole> roleManager, 
+        public DatabaseSeeder(UserManager<ApplicationUser> userManager,
+            RoleManager<ApplicationRole> roleManager,
             AppDbContext context,
             IEventConverter eventConverter)
         {

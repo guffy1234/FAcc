@@ -1,7 +1,5 @@
-﻿using FuelAcc.Application.UseCases.Commons.Queries;
-using FuelAcc.Application.UseCases.Dictionaries.Partners;
-using FuelAcc.Application.UseCases.Documents.OrdersIn;
-using FuelAcc.Application.UseCases.Reports.Rets;
+﻿using FuelAcc.Application.UseCases.Reports;
+using FuelAcc.Application.UseCases.Reports.Rests;
 using FuelAcc.Application.UseCases.Reports.Transactions;
 using FuelAcc.WebApi.Api;
 using MediatR;

@@ -1,8 +1,7 @@
 ﻿using AutoMapper;
-using FuelAcc.Application.UseCases.Reports.Rets;
 using FuelAcc.Domain.Entities.Registry;
 
-namespace FuelAcc.Application.UseCases.Reports.Transactions
+namespace FuelAcc.Application.UseCases.Reports.Rests
 {
     public class ReportRestsMapper : Profile
     {
