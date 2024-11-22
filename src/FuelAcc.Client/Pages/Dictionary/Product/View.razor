@@ -1,0 +1,46 @@
+@page "/dictionary/product/view/{id}"
+@using FuelAcc.Client.Shared.Api
+@attribute [Authorize]
+@inject IProductService DtoService
+@inject NavigationManager navManager
+@inject FuelAcc.Client.Shared.PageHistoryState PageHistoryState
+
+<h1>View Product</h1>
+<br/>
+
+<table class="table col-md-6">
+    <tbody>
+        <tr>
+            <th scope="row">Id</th>
+            <td>@recrod.Id</td>
+        </tr>
+        <tr>
+            <th scope="row">Name</th>
+            <td>@recrod.Name</td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="form-group">
+    @if (PageHistoryState.CanGoBack()){
+        <NavLink href="@PageHistoryState.GetGoBackPage()" class="btn btn-link">Back</NavLink>
+    }
+    else{
+        <NavLink href="/dictionary/product/1" class="btn btn-link">Back</NavLink>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public string Id { get; set; }
+
+    ProductDto recrod = new ProductDto
+    {
+        Name = "",
+    };
+    
+    protected async override Task OnParametersSetAsync()
+    {
+       recrod = await DtoService.Get(Guid.Parse(Id));
+    }
+}

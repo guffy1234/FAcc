@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FuelAcc.Persistence.Sqlite.Migrations
 {
     [DbContext(typeof(AppDbContextSqlite))]
-    [Migration("20241115175822_Mig0001")]
+    [Migration("20241122193509_Mig0001")]
     partial class Mig0001
     {
         /// <inheritdoc />
@@ -285,7 +285,6 @@ namespace FuelAcc.Persistence.Sqlite.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ObjectJson")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<Guid>("UserId")

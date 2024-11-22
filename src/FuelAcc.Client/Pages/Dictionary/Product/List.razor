@@ -1,0 +1,131 @@
+@page "/dictionary/product/{Page}"
+@using FuelAcc.Application.Paging
+@using FuelAcc.Client.Shared.Api
+@attribute [Authorize]
+@inject Services.IProductService DtoService
+@inject Services.IAuthenticationContext LoginService
+@inject Microsoft.AspNetCore.Components.NavigationManager UriHelper
+@inject FuelAcc.Client.Shared.PageHistoryState PageHistoryState
+
+<h1>Products</h1>
+<br/>
+
+<div class="row mb-3">
+    <div class="col-md-7">
+        @if(LoggedIn)
+        {
+            <NavLink href="/dictionary/product/create" class="btn btn-sm btn-success mb-2">Add Product</NavLink>
+        }
+    </div>
+    <div class="input-group col-md-5 text-md-right">
+        <input name="SearchInput" type="text" class="form-control" placeholder="Name" @bind="this.SearchTerm" @onkeyup="SearchBoxKeyPress" />
+        <div class="input-group-btn">
+            <button name="SearchButton" class="btn btn-default" @onclick="SearchClick">
+                <i class="oi oi-magnifying-glass" title="search" aria-hidden="true"></i>
+            </button>
+        </div>
+        <div class="input-group-btn">
+            <button name="SearchClear" class="btn btn-default" @onclick="ClearSearch">
+                <i class="oi oi-x" title="clear" aria-hidden="true"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+@if (records == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th style="width:25%">Name</th>
+                <th style="width:5%"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var record in records.Results)
+            {
+                <tr>
+                    <td>@record.Name</td>
+                    <td style="white-space: nowrap">
+                        <NavLink href="@($"/dictionary/product/view/{record.Id}")" class="oi oi-eye text-primary mr-3 nounderline"></NavLink>
+                        @if (LoggedIn)
+                        {
+                            <NavLink href="@($"/dictionary/product/update/{record.Id}")" class="oi oi-pencil text-warning mr-2 nounderline"></NavLink>
+
+                            <button @onclick="@(() => DeleteRecord(record))" class=" btn btn-link oi oi-trash text-danger mr-1 nounderline">
+                                <span></span>
+                            </button>
+                        }
+                    </td>
+                </tr> 
+            }
+        </tbody>
+    </table>
+    <Pager Result=@records PageChanged=PagerPageChanged />
+}
+
+@code {
+    [Parameter]
+    public string Page { get; set;} = "1";
+    [Parameter]
+    public string SearchTerm { get; set; } = string.Empty;
+    protected PagedResult<ProductDto> records;
+
+    public bool LoggedIn => LoginService.IsAuthenticated;
+    
+    protected override void OnInitialized()
+    {
+        PageHistoryState.AddPageToHistory(UriHelper.Uri);
+        base.OnInitialized();
+    }
+    
+    protected override async Task OnParametersSetAsync()
+    {
+        records = await DtoService.GetPaged(null, int.Parse(Page));
+        PageHistoryState.AddPageToHistory(UriHelper.Uri);
+    }
+
+    protected async Task SearchBoxKeyPress(KeyboardEventArgs ev)
+    {
+        if (ev.Key == "Enter")
+        {
+            await SearchClick();
+        }
+    }
+
+    protected async Task SearchClick()
+    {
+        if (string.IsNullOrEmpty(SearchTerm))
+        {
+            records = await DtoService.GetPaged(null, int.Parse(Page));
+            return;
+        }
+        records = await DtoService.GetPaged(SearchTerm, int.Parse(Page));
+        StateHasChanged();
+    }
+
+    protected async Task ClearSearch()
+    {
+        SearchTerm = string.Empty;
+        records = await DtoService.GetPaged(SearchTerm, int.Parse(Page));
+        PageHistoryState.AddPageToHistory(UriHelper.Uri);
+        StateHasChanged();
+    }
+
+    protected void PagerPageChanged(int page)
+    {
+        UriHelper.NavigateTo("/dictionary/product/" + page);
+        PageHistoryState.AddPageToHistory(UriHelper.Uri);
+    }
+
+    private async void DeleteRecord(ProductDto item)
+    {
+        await DtoService.Delete(item.Id);
+        records = await DtoService.GetPaged(null, int.Parse(Page));
+        StateHasChanged();
+    }
+}

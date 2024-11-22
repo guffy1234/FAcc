@@ -2,6 +2,7 @@
 using FuelAcc.Application.Dto;
 using FuelAcc.Application.Interface;
 using FuelAcc.Application.Interface.Persistence;
+using FuelAcc.Application.Paging;
 using FuelAcc.Application.UseCases.Commons.Filtering;
 using FuelAcc.Domain.Commons;
 using FuelAcc.Domain.Entities.Other;

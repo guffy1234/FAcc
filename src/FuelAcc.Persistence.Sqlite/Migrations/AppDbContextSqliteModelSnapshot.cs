@@ -282,7 +282,6 @@ namespace FuelAcc.Persistence.Sqlite.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ObjectJson")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<Guid>("UserId")

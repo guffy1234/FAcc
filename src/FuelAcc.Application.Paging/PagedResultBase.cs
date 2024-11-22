@@ -1,4 +1,4 @@
-namespace FuelAcc.Application.Dto
+namespace FuelAcc.Application.Paging
 {
     public abstract class PagedResultBase
     {

@@ -242,7 +242,7 @@ namespace FuelAcc.Persistence.Sqlite.Migrations
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     ObjectClass = table.Column<string>(type: "TEXT", maxLength: 1024, nullable: false),
-                    ObjectJson = table.Column<string>(type: "TEXT", nullable: false),
+                    ObjectJson = table.Column<string>(type: "TEXT", nullable: true),
                     Date = table.Column<DateTime>(type: "TEXT", nullable: false),
                     UserId = table.Column<Guid>(type: "TEXT", nullable: false),
                     BranchId = table.Column<Guid>(type: "TEXT", nullable: false),

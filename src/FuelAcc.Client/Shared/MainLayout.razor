@@ -1,0 +1,42 @@
+@inherits LayoutComponentBase
+@inject IAuthenticationContext LoginService
+
+<nav class="navbar navbar-expand navbar-dark bg-dark">
+    <a class="navbar-brand" href="/">Fuel Accounting</a>
+    <div class="navbar-nav">
+        <NavLink href="/" Match="NavLinkMatch.All" class="nav-item nav-link">Home</NavLink>
+        <NavLink href="/dictionary/product/1" class="nav-item nav-link">Products</NavLink>
+        <NavLink href="/swagger/index.html" class="nav-item nav-link" target="_blank">API</NavLink>
+    </div>
+    <div class="navbar-nav ml-auto">
+        @if (LoggedIn)
+        {
+            <NavLink href="/login/logout" class="nav-item nav-link">Logout</NavLink>
+        }
+        else
+        {
+            <NavLink href="/login/login" class="nav-item nav-link">Login</NavLink>
+        }
+    </div>
+</nav>
+
+<div class="app-container">
+    <div class="p-4">
+        <div class="container">
+            <Alert />
+            @Body
+        </div>
+    </div>
+    <footer class="footer">
+        <div class="container text-center">
+            <span class="text-muted">&copy; X 2024</span>
+        </div>
+    </footer>
+</div>
+
+@code {
+    public bool LoggedIn
+    {
+        get { return LoginService.Token != null; }
+    }
+}

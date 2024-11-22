@@ -1,0 +1,52 @@
+@page "/dictionary/product/update/{id}"
+@using FuelAcc.Client.Shared.Api
+@attribute [Authorize]
+@inject IAlertService AlertService
+@inject IProductService DtoService
+@inject NavigationManager navManager
+@inject FuelAcc.Client.Shared.PageHistoryState PageHistoryState
+
+<h1>Edit Product</h1>
+<br/>
+
+<Form ButtonText="Update" record="@record" loading="@loading"
+            OnValidSubmit="@UpdateRecord" />
+
+@code {
+    bool loading = false;
+    
+    [Parameter]
+    public string Id { get; set; }
+
+    ProductDto record = new ProductDto
+    {
+        Name = "",
+    };
+    
+    protected async override Task OnParametersSetAsync()
+    {
+        record = await DtoService.Get(Guid.Parse(Id));
+    }
+
+    async Task UpdateRecord()
+    {
+        loading = true;
+        try
+        {
+            await DtoService.Update(record);
+            AlertService.Success("Product updated successfully", keepAfterRouteChange: true);
+            if (PageHistoryState.CanGoBack()){
+                navManager.NavigateTo(PageHistoryState.GetGoBackPage());
+            }
+            else{
+                navManager.NavigateTo("/dictionary/product/1");
+            } 
+        }
+        catch (Exception ex)
+        {
+            AlertService.Error(ex.Message);
+            loading = false;
+            StateHasChanged();
+        }
+    }
+}

@@ -1,0 +1,276 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Column_Date" xml:space="preserve">
+    <value>Дата</value>
+  </data>
+  <data name="Column_Error" xml:space="preserve">
+    <value>Ошибка</value>
+  </data>
+  <data name="Column_Parameters" xml:space="preserve">
+    <value>Параметры</value>
+  </data>
+  <data name="Column_Profile" xml:space="preserve">
+    <value>Профайл</value>
+  </data>
+  <data name="Column_Succeeded" xml:space="preserve">
+    <value>Успех</value>
+  </data>
+  <data name="Column_Type" xml:space="preserve">
+    <value>Тип</value>
+  </data>
+  <data name="Loading" xml:space="preserve">
+    <value>Загрузка...</value>
+  </data>
+  <data name="Page_Events_Intro" xml:space="preserve">
+    <value>Последние 10 событий. Обновляются в реальном времени.</value>
+  </data>
+  <data name="Page_Events_Title" xml:space="preserve">
+    <value>События</value>
+  </data>
+  <data name="Page_Home_Nav" xml:space="preserve">
+    <value>Главная</value>
+  </data>
+  <data name="Page_Report_Intro" xml:space="preserve">
+    <value>Тут Вы можете обработать один URL заполнив форму</value>
+  </data>
+  <data name="Page_Report_Title" xml:space="preserve">
+    <value>Обработать URL</value>
+  </data>
+  <data name="Page_ReportRaw_Title" xml:space="preserve">
+    <value>Обработать текст</value>
+  </data>
+  <data name="Settings_Email_Title" xml:space="preserve">
+    <value>Настройки Email</value>
+  </data>
+  <data name="Table_Posted" xml:space="preserve">
+    <value>Отправленные цели</value>
+  </data>
+  <data name="Page_ReportRaw_Intro" xml:space="preserve">
+    <value>Тут Вы можете обработать много целей просто вставив текст (например из Telegram поста) и сервер автоматически распознает все поддерживаемые типы URL-целей</value>
+  </data>
+  <data name="Field_PhoneNumber" xml:space="preserve">
+    <value>Номер телефона</value>
+  </data>
+  <data name="Field_Text" xml:space="preserve">
+    <value>Текст</value>
+  </data>
+  <data name="Field_Code" xml:space="preserve">
+    <value>Код</value>
+  </data>
+  <data name="Settings_Telega_Form_Code_Hint" xml:space="preserve">
+    <value>У Вас есть 15 минут чтобы ввести код</value>
+  </data>
+  <data name="Settings_Telega_Form_Code_Name" xml:space="preserve">
+    <value>Отправить код на телефон</value>
+  </data>
+  <data name="Settings_Telega_Form_Sign_Name" xml:space="preserve">
+    <value>Зайти с кодом</value>
+  </data>
+  <data name="Settings_Telega_Title" xml:space="preserve">
+    <value>Настройки Telegram</value>
+  </data>
+  <data name="Page_ReportRaw_Nav" xml:space="preserve">
+    <value>Обработать текст</value>
+  </data>
+  <data name="Page_Report_Nav" xml:space="preserve">
+    <value>Обработать</value>
+  </data>
+  <data name="Button_Backup" xml:space="preserve">
+    <value>Экспортировать</value>
+  </data>
+  <data name="Button_Clear" xml:space="preserve">
+    <value>Очистить</value>
+  </data>
+  <data name="Button_Launch_Browser" xml:space="preserve">
+    <value>Запустить браузер</value>
+  </data>
+  <data name="Button_Restore" xml:space="preserve">
+    <value>Импортировать</value>
+  </data>
+  <data name="Settings_Browser_Title" xml:space="preserve">
+    <value>Настройки браузера</value>
+  </data>
+  <data name="Settings_Browser_Form_Profiles_Name" xml:space="preserve">
+    <value>Управление профайлами</value>
+  </data>
+  <data name="Settings_Browser_Form_Profiles_Intro" xml:space="preserve">
+    <value>Вам нужно запустить браузер хотя бы раз чтобы войти в аккаунты социальных сетей (YouTube, Facebook, Twitter, Instagram, TikTok). После входа в социальные сети закройте браузер</value>
+  </data>
+  <data name="Page_Events_Nav" xml:space="preserve">
+    <value>События</value>
+  </data>
+  <data name="Confirm_Backup_Profile" xml:space="preserve">
+    <value>Вы уверены что хотите экспортировать данные профайла?</value>
+  </data>
+  <data name="Confirm_Clear_Profile" xml:space="preserve">
+    <value>Вы уверены что хотите УДАЛИТЬ данные профайла?</value>
+  </data>
+  <data name="Confirm_Restore_Profile" xml:space="preserve">
+    <value>Вы уверены что хотите импортировать данные профайла? Предыдущие данные будут потеряны!</value>
+  </data>
+  <data name="Button_Post" xml:space="preserve">
+    <value>Отправить</value>
+  </data>
+  <data name="Button_Reload" xml:space="preserve">
+    <value>Перезагрузить</value>
+  </data>
+  <data name="Button_Save" xml:space="preserve">
+    <value>Сохранить</value>
+  </data>
+  <data name="Confirm_Backup" xml:space="preserve">
+    <value>Вы уверены что хотите экспортировать файл?</value>
+  </data>
+  <data name="Confirm_Delete" xml:space="preserve">
+    <value>Вы уверены что хотите УДАЛИТЬ?</value>
+  </data>
+  <data name="Confirm_Save" xml:space="preserve">
+    <value>Вы уверены что хотите сохранить?</value>
+  </data>
+  <data name="Edit_Script_Browser" xml:space="preserve">
+    <value>Редактировать скрипт для браузера</value>
+  </data>
+  <data name="Edit_Script_Generic" xml:space="preserve">
+    <value>Редактировать скрипт</value>
+  </data>
+  <data name="Edit_Script_Telegram" xml:space="preserve">
+    <value>Редактировать скрипт для Telegram</value>
+  </data>
+  <data name="Field_Name" xml:space="preserve">
+    <value>Имя</value>
+  </data>
+  <data name="Settings_Title" xml:space="preserve">
+    <value>Настройки</value>
+  </data>
+  <data name="Settings_Regex_Title" xml:space="preserve">
+    <value>Настройки Regex</value>
+  </data>
+  <data name="Settings_Replacements_Title" xml:space="preserve">
+    <value>Настройки замен</value>
+  </data>
+  <data name="Settings_Scripts_Browser" xml:space="preserve">
+    <value>Скрипты для браузера</value>
+  </data>
+  <data name="Settings_Scripts_Generic" xml:space="preserve">
+    <value>Скрипты общего назначения</value>
+  </data>
+  <data name="Settings_Scripts_Telegram" xml:space="preserve">
+    <value>Скрипты для Telegram</value>
+  </data>
+</root>

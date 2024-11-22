@@ -6,6 +6,7 @@ using FuelAcc.Application.Interface;
 using FuelAcc.Application.Interface.Accounting;
 using FuelAcc.Application.Interface.Events;
 using FuelAcc.Application.Interface.Replication;
+using FuelAcc.Application.Paging;
 using FuelAcc.Application.UseCases.Accounting;
 using FuelAcc.Application.UseCases.Authorization;
 using FuelAcc.Application.UseCases.Commons.Behaviours;
