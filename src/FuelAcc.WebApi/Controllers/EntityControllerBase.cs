@@ -1,4 +1,6 @@
-﻿using FuelAcc.Application.UseCases.Commons.Commands;
+﻿using FuelAcc.Application.Dto;
+using FuelAcc.Application.UseCases.Commons.Commands;
+using FuelAcc.Application.UseCases.Commons.Filtering;
 using FuelAcc.Application.UseCases.Commons.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -19,6 +21,14 @@ namespace FuelAcc.WebApi.Controllers
         protected async Task<IAsyncEnumerable<DTO>> InternalGetAllAsync(CancellationToken cancellationToken)
         {
             var response = await _mediator.Send(new GetAllQuery<DTO>(), cancellationToken);
+            return response;
+        }
+
+        protected async Task<PagedResult<DTO>> InternalGetPagedAsync(int? page, int? pageSize, CancellationToken cancellationToken)
+        {
+            var pi = page.HasValue ? page.Value : 1;
+            var ps = pageSize.HasValue ? pageSize.Value : 5;
+            var response = await _mediator.Send(new GetPaged<DTO>(pi, ps), cancellationToken);
             return response;
         }
 

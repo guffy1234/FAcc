@@ -6,6 +6,8 @@ namespace FuelAcc.Application.Interface.Persistence
     {
         Task<T> GetAsync(Guid id, CancellationToken cancellationToken);
 
-        IAsyncEnumerable<T> GetAllAsync();
+        IAsyncEnumerable<T> GetAllAsync(bool asNoTracked = true);
+
+        Task<(int Total, IList<T> Items)> GetExtendedAsync(Func<IQueryable<T>, IQueryable<T>> filter, int page, int pageSize, bool asNoTracked, CancellationToken cancellationToken);
     }
 }

@@ -1,6 +1,8 @@
-﻿using FuelAcc.Application.Dto.Dictionaries;
+﻿using FuelAcc.Application.Dto;
+using FuelAcc.Application.Dto.Dictionaries;
 using FuelAcc.WebApi.Api;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FuelAcc.WebApi.Controllers.V1.Dictionaries
@@ -20,6 +22,13 @@ namespace FuelAcc.WebApi.Controllers.V1.Dictionaries
         [ProducesErrorResponseType(typeof(ProblemDetails))]
         public async Task<IAsyncEnumerable<ProductDto>> GetAllAsync(CancellationToken cancellationToken) =>
             await InternalGetAllAsync(cancellationToken);
+
+        [HttpGet("paged")]
+        [ProducesResponseType(typeof(PagedResult<ProductDto>), StatusCodes.Status200OK)]
+        [ProducesErrorResponseType(typeof(ProblemDetails))]
+        [Authorize]
+        public async Task<PagedResult<ProductDto>> GetPagedAsync([FromQuery] int? page, int? pageSize, CancellationToken cancellationToken) =>
+            await InternalGetPagedAsync(page, pageSize, cancellationToken);
 
         [HttpGet("{id:guid}")]
         [ProducesResponseType(typeof(ProductDto), StatusCodes.Status200OK)]

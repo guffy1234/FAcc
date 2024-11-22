@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using FuelAcc.Application.Dto;
 using FuelAcc.Application.Dto.Dictionaries;
 using FuelAcc.Application.Dto.Documents;
 using FuelAcc.Application.Interface;
@@ -84,6 +85,9 @@ namespace FuelAcc.Application.UseCases
                 typeof(GetAllHandler<ENTITY, DTO, DictionaryAuthorizationPoint<ENTITY>>));
             services.AddTransient(typeof(IRequestHandler<GetByIdQuery<DTO>, DTO>), 
                 typeof(GetByIdHandler<ENTITY, DTO, DictionaryAuthorizationPoint<ENTITY>>));
+            services.AddTransient(typeof(IRequestHandler<GetPaged<DTO>, PagedResult<DTO>>),
+                typeof(GetPagedHandler<ENTITY, DTO, DictionaryAuthorizationPoint<ENTITY>>));
+
             // Commands
             services.AddTransient(typeof(IRequestHandler<CreateCommand<DTO>, Unit>), 
                 typeof(CreateCommandHandler<ENTITY, DTO, DictionaryAuthorizationPoint<ENTITY>>));
@@ -106,6 +110,9 @@ namespace FuelAcc.Application.UseCases
                 typeof(GetAllHandler<ENTITY, DTO, DocumentAuthorizationPoint<ENTITY>>));
             services.AddTransient(typeof(IRequestHandler<GetByIdQuery<DTO>, DTO>), 
                 typeof(GetByIdHandler<ENTITY, DTO, DocumentAuthorizationPoint<ENTITY>>));
+            services.AddTransient(typeof(IRequestHandler<GetPaged<DTO>, PagedResult<DTO>>),
+                typeof(GetPagedHandler<ENTITY, DTO, DocumentAuthorizationPoint<ENTITY>>));
+
             // Commands
             services.AddTransient(typeof(IRequestHandler<CreateCommand<DTO>, Unit>), 
                 typeof(CreateCommandHandler<ENTITY, DTO, DocumentAuthorizationPoint<ENTITY>>));

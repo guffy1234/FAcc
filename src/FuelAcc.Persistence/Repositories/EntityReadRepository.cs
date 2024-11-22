@@ -3,6 +3,7 @@ using FuelAcc.Application.Interface.Persistence;
 using FuelAcc.Domain.Commons;
 using FuelAcc.Domain.Entities;
 using FuelAcc.Persistence.Contexts;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace FuelAcc.Persistence.Repositories
@@ -16,9 +17,46 @@ namespace FuelAcc.Persistence.Repositories
             _dbContext = dbContext;
         }
 
-        public IAsyncEnumerable<T> GetAllAsync()
+        public async Task<(int Total, IList<T> Items)> GetExtendedAsync(Func<IQueryable<T>, IQueryable<T>> filter, int page, int pageSize, bool asNoTracked, CancellationToken cancellationToken)
         {
-            var items = _dbContext.Set<T>().Where(e => !e.IsDeleted).AsAsyncEnumerable();
+            var query = _dbContext.Set<T>().Where(e => !e.IsDeleted).AsQueryable();
+            if (asNoTracked)
+            {
+                query = query.AsNoTracking();
+            }
+            if(filter != null)
+            {
+                query = filter(query);
+            }
+
+            if (pageSize > 0)
+            {
+                var count = await query.CountAsync(cancellationToken);
+                var skip = (page - 1) * pageSize;
+
+                query = query.Skip(skip).Take(pageSize);
+
+                var items = await query.ToListAsync(cancellationToken);
+
+                return (count, items);
+            } else
+            {
+                var items = await query.ToListAsync(cancellationToken);
+
+                return (items.Count(), items);
+            }
+
+
+        }
+
+        public IAsyncEnumerable<T> GetAllAsync(bool asNoTracked = true)
+        {
+            var query = _dbContext.Set<T>().Where(e => !e.IsDeleted);
+            if (asNoTracked)
+            {
+                query = query.AsNoTracking();
+            }
+            var items = query.AsAsyncEnumerable();
             return items;
         }
 
