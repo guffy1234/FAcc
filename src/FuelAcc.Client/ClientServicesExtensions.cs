@@ -1,4 +1,5 @@
 ﻿using FuelAcc.Client.Services;
+using FuelAcc.Client.Services.Crud;
 using FuelAcc.Client.Shared;
 using FuelAcc.Client.Shared.Api;
 using Microsoft.AspNetCore.Components;
@@ -14,7 +15,15 @@ namespace FuelAcc.Client
             services.AddScoped(sp => new HttpClient { BaseAddress = baseAddress });
 
             services.AddApiClient<ILoginApiClient, LoginApiClient>(baseAddress);
+
             services.AddProtectedApiClient<IProductsApiClient, ProductsApiClient>(baseAddress);
+            services.AddProtectedApiClient<IBranchesApiClient, BranchesApiClient>(baseAddress);
+            services.AddProtectedApiClient<IStoragesApiClient, StoragesApiClient>(baseAddress);
+            services.AddProtectedApiClient<IPartnersApiClient, PartnersApiClient>(baseAddress);
+
+            services.AddProtectedApiClient<IOrdersInApiClient, OrdersInApiClient>(baseAddress);
+            services.AddProtectedApiClient<IOrdersOutApiClient, OrdersOutApiClient>(baseAddress);
+            services.AddProtectedApiClient<IOrdersMoveApiClient, OrdersMoveApiClient>(baseAddress);
 
             // Register a preconfigure SignalR hub connection.
             // Note the connection isnt yet started, this will be done as part of the App.razor component
@@ -53,13 +62,13 @@ namespace FuelAcc.Client
             // await host.RunAsync();
 
 
-            services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IAlertService, AlertService>();
             services.AddScoped<ILoginService, LoginService>();
             services.AddSingleton<IAuthenticationContext, AuthenticationContext>();
             services.AddScoped<ILocalStorageService, LocalStorageService>();
             services.AddSingleton<PageHistoryState>();
 
+            services.AddScoped<IDictionaryService<ProductDto>, ProductService>();
 
             services.AddLocalization();
 

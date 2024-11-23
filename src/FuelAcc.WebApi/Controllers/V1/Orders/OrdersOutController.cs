@@ -1,5 +1,6 @@
 ﻿using FuelAcc.Application.Dto;
 using FuelAcc.Application.Dto.Documents;
+using FuelAcc.Application.Dto.Querying;
 using FuelAcc.Application.Paging;
 using FuelAcc.WebApi.Api;
 using MediatR;
@@ -12,7 +13,7 @@ namespace FuelAcc.WebApi.Controllers.V1.Orders
     [Route("api/v{version:apiVersion}/orders/[controller]")]
     [Produces("application/json")]
     [ApiController]
-    public class OrdersOutController : EntityControllerBase<OrderOutDto>
+    public class OrdersOutController : EntityControllerBase<OrderOutDto, OrderOutQueryDto>
     {
         public OrdersOutController(IMediator mediator) : base(mediator)
         {
@@ -24,28 +25,28 @@ namespace FuelAcc.WebApi.Controllers.V1.Orders
         public async Task<IAsyncEnumerable<OrderOutDto>> GetAllAsync(CancellationToken cancellationToken) =>
             await InternalGetAllAsync(cancellationToken);
 
-        [HttpGet("paged")]
+        [HttpPost("query")]
         [ProducesResponseType(typeof(PagedResult<OrderOutDto>), StatusCodes.Status200OK)]
         [ProducesErrorResponseType(typeof(ProblemDetails))]
         [Authorize]
-        public async Task<PagedResult<OrderOutDto>> GetPagedAsync([FromQuery] int? page, int? pageSize, CancellationToken cancellationToken) =>
-            await InternalGetPagedAsync(page, pageSize, cancellationToken);
+        public async Task<PagedResult<OrderOutDto>> GetPagedAsync([FromBody] OrderOutQueryDto dto, CancellationToken cancellationToken) =>
+            await InternalGetPagedAsync(dto, cancellationToken);
 
-        [HttpGet("{id:guid}")]
+        [HttpGet("read/{id:guid}")]
         [ProducesResponseType(typeof(OrderOutDto), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
         [ProducesErrorResponseType(typeof(ProblemDetails))]
         public async Task<IActionResult> GetAsync(Guid id, CancellationToken cancellationToken) =>
             await InternalGetAsync(id, cancellationToken);
 
-        [HttpPost]
+        [HttpPost("insert")]
         [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
         [ProducesErrorResponseType(typeof(ProblemDetails))]
         public async Task<ActionResult> InsertAsync([FromBody] OrderOutDto dto, CancellationToken cancellationToken) =>
             await InternalInsertAsync(dto, cancellationToken);
 
-        [HttpPut]
+        [HttpPut("update")]
         [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
@@ -53,7 +54,7 @@ namespace FuelAcc.WebApi.Controllers.V1.Orders
         public async Task<ActionResult> UpdateAsync([FromBody] OrderOutDto dto, CancellationToken cancellationToken) =>
             await InternalUpdateAsync(dto, cancellationToken);
 
-        [HttpDelete("{id:guid}")]
+        [HttpDelete("delete/{id:guid}")]
         [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
         [ProducesErrorResponseType(typeof(ProblemDetails))]

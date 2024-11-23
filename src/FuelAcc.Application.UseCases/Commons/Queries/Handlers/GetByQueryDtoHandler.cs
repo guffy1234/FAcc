@@ -1,32 +1,37 @@
 ﻿using AutoMapper;
 using FuelAcc.Application.Dto;
+using FuelAcc.Application.Dto.Querying;
 using FuelAcc.Application.Interface;
 using FuelAcc.Application.Interface.Persistence;
 using FuelAcc.Application.Paging;
 using FuelAcc.Application.UseCases.Commons.Filtering;
+using FuelAcc.Application.UseCases.Commons.Filtering.Handlers;
 using FuelAcc.Domain.Commons;
 using FuelAcc.Domain.Entities.Other;
 using MediatR;
 
 namespace FuelAcc.Application.UseCases.Commons.Queries.Handlers
 {
-    public class GetPagedHandler<ENTITY, DTO, APOINT> : IRequestHandler<GetPaged<DTO>, PagedResult<DTO>>
+    public class GetByQueryDtoHandler<ENTITY, DTO, QUERY_DTO, APOINT> : IRequestHandler<GetByQueryDto<DTO, QUERY_DTO>, PagedResult<DTO>>
         where DTO : class
+        where QUERY_DTO : PagedQueryDto
         where ENTITY : class, IRootEntity
         where APOINT : class, IAuthorizationPoint, new()
     {
         private readonly IMapper _mapper;
+        private readonly IMediator _mediator;
         private readonly IEntityReadRepository<ENTITY> _repository;
         private readonly IAuthorizationChecker _authorizationChecker;
 
-        public GetPagedHandler(IMapper mapper, IEntityReadRepository<ENTITY> repository, IAuthorizationChecker authorizationChecker)
+        public GetByQueryDtoHandler(IMapper mapper, IMediator mediator, IEntityReadRepository<ENTITY> repository, IAuthorizationChecker authorizationChecker)
         {
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
             _authorizationChecker = authorizationChecker ?? throw new ArgumentNullException(nameof(authorizationChecker));
         }
 
-        public async Task<PagedResult<DTO>> Handle(GetPaged<DTO> request, CancellationToken cancellationToken)
+        public async Task<PagedResult<DTO>> Handle(GetByQueryDto<DTO, QUERY_DTO> request, CancellationToken cancellationToken)
         {
             var apoint = new APOINT()
             {
@@ -34,40 +39,25 @@ namespace FuelAcc.Application.UseCases.Commons.Queries.Handlers
             };
             _authorizationChecker.Authorize(apoint);
 
-            var filter = request.Filter as IEntityFilter<ENTITY>;
+            var queryBuilderBase = await _mediator.Send(new QueryBuilderCommand<QUERY_DTO>(request.dto));
 
-            if (filter == null)
-            {
-                var entityType = typeof(ENTITY);
+            var filter = queryBuilderBase as IEntityQueryBuilder<ENTITY>;
 
-                if (entityType.IsAssignableTo(typeof(IDictionaryEntity)))
-                {
-                    var genericType = typeof(DefaultDictionaryFilter<>);
-                    var appliedType = genericType.MakeGenericType(entityType);
-                    var instance = Activator.CreateInstance(appliedType!);
-
-                    filter = instance as IEntityFilter<ENTITY>;
-                } else if (entityType.IsAssignableTo(typeof(IDocumentEntity)))
-                {
-                    var genericType = typeof(DefaultDocumentFilter<>);
-                    var appliedType = genericType.MakeGenericType(entityType);
-                    var instance = Activator.CreateInstance(appliedType!);
-
-                    filter = instance as IEntityFilter<ENTITY>;
-                }
-            }
+            var pageIdx = filter?.Page ?? 1;
+            var pageSize = filter?.PageSize ?? 0;
 
             var fetched = await _repository.GetExtendedAsync(query => { 
                 if(filter != null)
                 {
-                    query = filter.BuildFilterAndSort(query);
+                    query = filter.Filter(query);
+                    query = filter.Sort(query);
                 }
                 return query;
-            }, request.Page, request.PageSize, true, cancellationToken);
+            }, pageIdx, pageSize, true, cancellationToken);
 
             var result = new PagedResult<DTO>();
-            result.CurrentPage = request.Page;
-            result.PageSize = request.PageSize;
+            result.CurrentPage = pageIdx;
+            result.PageSize = pageSize;
 
             result.RowCount = fetched.Total;
 

@@ -1,4 +1,5 @@
 ﻿using FuelAcc.Application.Dto;
+using FuelAcc.Application.Dto.Querying;
 using FuelAcc.Application.Paging;
 using FuelAcc.Application.UseCases.Commons.Commands;
 using FuelAcc.Application.UseCases.Commons.Filtering;
@@ -10,7 +11,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace FuelAcc.WebApi.Controllers
 {
     [Authorize]
-    public class EntityControllerBase<DTO> : ControllerBase
+    public class EntityControllerBase<DTO, QUERY_DTO> : ControllerBase
+         where QUERY_DTO : PagedQueryDto
     {
         protected readonly IMediator _mediator;
 
@@ -25,11 +27,9 @@ namespace FuelAcc.WebApi.Controllers
             return response;
         }
 
-        protected async Task<PagedResult<DTO>> InternalGetPagedAsync(int? page, int? pageSize, CancellationToken cancellationToken)
+        protected async Task<PagedResult<DTO>> InternalGetPagedAsync([FromBody] QUERY_DTO dto, CancellationToken cancellationToken)
         {
-            var pi = page.HasValue ? page.Value : 1;
-            var ps = pageSize.HasValue ? pageSize.Value : 5;
-            var response = await _mediator.Send(new GetPaged<DTO>(pi, ps), cancellationToken);
+            var response = await _mediator.Send(new GetByQueryDto<DTO, QUERY_DTO>(dto), cancellationToken);
             return response;
         }
 

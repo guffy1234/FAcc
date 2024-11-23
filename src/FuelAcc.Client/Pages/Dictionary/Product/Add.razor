@@ -1,8 +1,9 @@
 @page "/dictionary/product/create"
+@using FuelAcc.Client.Services.Crud
 @using FuelAcc.Client.Shared.Api
 @attribute [Authorize]
 @inject IAlertService AlertService
-@inject IProductService DtoService
+@inject IDictionaryService<ProductDto> DtoService
 @inject NavigationManager navManager
 @inject FuelAcc.Client.Shared.PageHistoryState PageHistoryState
 

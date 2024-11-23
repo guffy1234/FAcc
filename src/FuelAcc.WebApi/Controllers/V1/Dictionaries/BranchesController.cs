@@ -1,5 +1,6 @@
 ﻿using FuelAcc.Application.Dto;
 using FuelAcc.Application.Dto.Dictionaries;
+using FuelAcc.Application.Dto.Querying;
 using FuelAcc.Application.Paging;
 using FuelAcc.WebApi.Api;
 using MediatR;
@@ -15,7 +16,7 @@ namespace FuelAcc.WebApi.Controllers.V1.Dictionaries
     [Route("api/v{version:apiVersion}/dictionaries/[controller]")]
     [Produces("application/json")]
     [ApiController]
-    public class BranchesController : EntityControllerBase<BranchDto>
+    public class BranchesController : EntityControllerBase<BranchDto, BranchQueryDto>
     {
         public BranchesController(IMediator mediator) : base(mediator)
         {
@@ -33,28 +34,28 @@ namespace FuelAcc.WebApi.Controllers.V1.Dictionaries
         public async Task<IAsyncEnumerable<BranchDto>> GetAllAsync(CancellationToken cancellationToken) =>
             await InternalGetAllAsync(cancellationToken);
 
-        [HttpGet("paged")]
+        [HttpPost("query")]
         [ProducesResponseType(typeof(PagedResult<BranchDto>), StatusCodes.Status200OK)]
         [ProducesErrorResponseType(typeof(ProblemDetails))]
         [Authorize]
-        public async Task<PagedResult<BranchDto>> GetPagedAsync([FromQuery] int? page, int? pageSize, CancellationToken cancellationToken) =>
-           await InternalGetPagedAsync(page, pageSize, cancellationToken);
+        public async Task<PagedResult<BranchDto>> GetPagedAsync([FromBody] BranchQueryDto dto, CancellationToken cancellationToken) =>
+           await InternalGetPagedAsync(dto, cancellationToken);
 
-        [HttpGet("{id:guid}")]
+        [HttpGet("read/{id:guid}")]
         [ProducesResponseType(typeof(BranchDto), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
         [ProducesErrorResponseType(typeof(ProblemDetails))]
         public async Task<IActionResult> GetAsync(Guid id, CancellationToken cancellationToken) =>
             await InternalGetAsync(id, cancellationToken);
 
-        [HttpPost]
+        [HttpPost("insert")]
         [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
         [ProducesErrorResponseType(typeof(ProblemDetails))]
         public async Task<ActionResult> InsertAsync([FromBody] BranchDto dto, CancellationToken cancellationToken) =>
             await InternalInsertAsync(dto, cancellationToken);
 
-        [HttpPut]
+        [HttpPut("update")]
         [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
@@ -62,7 +63,7 @@ namespace FuelAcc.WebApi.Controllers.V1.Dictionaries
         public async Task<ActionResult> UpdateAsync([FromBody] BranchDto dto, CancellationToken cancellationToken) =>
             await InternalUpdateAsync(dto, cancellationToken);
 
-        [HttpDelete("{id:guid}")]
+        [HttpDelete("delete/{id:guid}")]
         [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
         [ProducesErrorResponseType(typeof(ProblemDetails))]

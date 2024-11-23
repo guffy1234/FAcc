@@ -1,9 +1,10 @@
 @page "/dictionary/product/{Page}"
 @using FuelAcc.Application.Paging
+@using FuelAcc.Client.Services.Crud
 @using FuelAcc.Client.Shared.Api
 @attribute [Authorize]
-@inject Services.IProductService DtoService
-@inject Services.IAuthenticationContext LoginService
+@inject IDictionaryService<ProductDto> DtoService
+@inject IAuthenticationContext LoginService
 @inject Microsoft.AspNetCore.Components.NavigationManager UriHelper
 @inject FuelAcc.Client.Shared.PageHistoryState PageHistoryState
 
@@ -73,6 +74,7 @@ else
     public string Page { get; set;} = "1";
     [Parameter]
     public string SearchTerm { get; set; } = string.Empty;
+
     protected PagedResult<ProductDto> records;
 
     public bool LoggedIn => LoginService.IsAuthenticated;
