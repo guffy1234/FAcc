@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components.Forms;
 
-namespace SnBatchProcessor.Client
+namespace FuelAcc.Client
 {
     // This class lets us modify the CSS class that will be added to the input elements
     // when the properties they are bound to are invalid

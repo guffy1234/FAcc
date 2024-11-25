@@ -98,7 +98,7 @@ public class AppDbContext : AppIdentityDbContext
         {
             e.Property(p => p.Id)
                 .HasValueGenerator<SequentialGuidValueGenerator>();
-            e.Property(p => p.Title)
+            e.Property(p => p.Number)
                .HasMaxLength(512);
             e.Property(p => p.Description)
                .HasMaxLength(2048);

@@ -1,10 +1,10 @@
-﻿using FuelAcc.Application.Paging;
+﻿using FuelAcc.Application.DtoCommon.Paging;
 
 namespace FuelAcc.Client.Services.Crud
 {
     public interface IDocumentService<DTO>
     {
-        Task<PagedResult<DTO>> GetPaged(string name, int page);
+        Task<PagedResult<DTO>> GetPaged(int page);
 
         Task<DTO> Get(Guid id);
 

@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using FuelAcc.Application.Dto;
 using FuelAcc.Application.Dto.Querying;
+using FuelAcc.Application.DtoCommon.Paging;
 using FuelAcc.Application.Interface;
 using FuelAcc.Application.Interface.Persistence;
-using FuelAcc.Application.Paging;
 using FuelAcc.Application.UseCases.Commons.Filtering;
 using FuelAcc.Application.UseCases.Commons.Filtering.Handlers;
 using FuelAcc.Domain.Commons;

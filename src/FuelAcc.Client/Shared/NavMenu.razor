@@ -1,0 +1,106 @@
+﻿@using FuelAcc.Localization
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<FuelAccStrings> Loc
+@inject IAuthenticationContext AuthCtx
+
+<div class="top-row ps-3 navbar navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="">Fuel Accounting</a>
+        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+</div>
+
+<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+    <nav class="flex-column">
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                <span class="oi oi-home" aria-hidden="true"></span> @Loc["Page_Home_Nav"]
+            </NavLink>
+        </div>
+       @*  @if (AuthCtx.IsAuthenticated)
+        { *@
+            <br />
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="dictionary/product/1">
+                    <span class="oi oi-list" aria-hidden="true"></span> Products
+                </NavLink>
+            </div>
+            <div class="nav-item px-3">
+            <NavLink class="nav-link" href="dictionary/partner/1">
+                    <span class="oi oi-list" aria-hidden="true"></span> Partners
+                </NavLink>
+            </div>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="dictionary/storage/1">
+                    <span class="oi oi-list" aria-hidden="true"></span> Storages
+                </NavLink>
+            </div>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="dictionary/branch/1">
+                    <span class="oi oi-list" aria-hidden="true"></span> Branches
+                </NavLink>
+            </div>
+            <br />
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="documents/product/1">
+                    <span class="oi oi-document" aria-hidden="true"></span> In Orders
+                </NavLink>
+            </div>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="documents/product/1">
+                    <span class="oi oi-document" aria-hidden="true"></span> Out Orders
+                </NavLink>
+            </div>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="documents/product/1">
+                    <span class="oi oi-document" aria-hidden="true"></span> Move Orders
+                </NavLink>
+            </div>
+            <br />
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="documents/product/1">
+                    <span class="oi oi-print" aria-hidden="true"></span> Transactions
+                </NavLink>
+            </div>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="documents/product/1">
+                    <span class="oi oi-print" aria-hidden="true"></span> Rests
+                </NavLink>
+            </div>
+            <br />
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="login/logout">
+                    <span class="oi oi-document" aria-hidden="true"></span> Logout
+                </NavLink>
+            </div>
+       @*  }
+        else
+        { *@
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="login/login">
+                    <span class="oi oi-document" aria-hidden="true"></span> Login
+                </NavLink>
+            </div>
+       @*  } *@
+        <br />
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="/swagger/index.html" target="_blank">
+                <span class="oi oi-info" aria-hidden="true"></span> Api
+            </NavLink>
+        </div>
+    </nav>
+
+</div>
+
+@code {
+    private bool collapseNavMenu = false;
+
+    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+}

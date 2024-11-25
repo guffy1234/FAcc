@@ -1,4 +1,4 @@
-using FuelAcc.Application.Paging;
+using FuelAcc.Application.DtoCommon.Paging;
 
 namespace FuelAcc.Client.Services.Crud
 {

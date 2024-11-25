@@ -1,0 +1,43 @@
+@using FuelAcc.Client.Shared.Api
+@inject FuelAcc.Client.Shared.PageHistoryState PageHistoryState
+
+<EditForm Model="@record" OnValidSubmit="@OnValidSubmit">
+    @* <FluentValidator TValidator="PersonValidator" /> *@
+    <div class="form-group">
+        <label>Name :</label>
+        <div>
+            <InputText @bind-Value="@record.Name" class="form-control col-sm-3" />
+            <ValidationMessage For="@(() => record.Name)" />
+        </div>
+    </div>
+
+    <hr/>
+
+    <div class="form-group">
+        <button disabled="@loading" class="btn btn-primary">
+            @if (loading) 
+            {
+                <span class="spinner-border spinner-border-sm mr-1"></span>
+            }
+            @ButtonText
+        </button>
+        @if (PageHistoryState.CanGoBack()){
+            <NavLink href="@PageHistoryState.GetGoBackPage()" class="btn btn-link">Cancel</NavLink>
+        }
+        else{
+            <NavLink href="/dictionary/branch/1" class="btn btn-link">Back</NavLink>
+        }
+    </div>
+
+</EditForm>
+
+@code {
+    [Parameter]
+    public BranchDto record { get; set; }
+    [Parameter]
+    public string ButtonText { get; set; } = "Save";
+    [Parameter]
+    public bool loading {get; set;} = false;
+    [Parameter]
+    public EventCallback OnValidSubmit { get; set; }
+}

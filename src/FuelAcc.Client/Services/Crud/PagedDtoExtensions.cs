@@ -1,4 +1,4 @@
-﻿using FuelAcc.Application.Paging;
+﻿using FuelAcc.Application.DtoCommon.Paging;
 using FuelAcc.Client.Shared.Api;
 
 namespace FuelAcc.Client.Services.Crud
@@ -6,6 +6,16 @@ namespace FuelAcc.Client.Services.Crud
     // helper need to convert exact paged DTO produced by NSWAG to generic. 
     public static class PagedDtoExtensions
     {
+        
+        public static PagedResult<DTO> ToGeneric<DTO>(this IPagedResult<DTO> res) => new PagedResult<DTO>()
+        {
+            CurrentPage = res.CurrentPage,
+            PageSize = res.PageSize,
+            PageCount = res.PageCount,
+            RowCount = res.RowCount,
+            Results = res.Results
+        };
+
         public static PagedResult<ProductDto> ToGeneric(this ProductDtoPagedResult res) => new PagedResult<ProductDto>()
         {
             CurrentPage = res.CurrentPage,

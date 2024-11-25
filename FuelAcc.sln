@@ -44,7 +44,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuelAcc.Client", "src\FuelA
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuelAcc.Localization", "src\FuelAcc.Localization\FuelAcc.Localization.csproj", "{B1B46A97-BAAC-4EC6-9AC9-D497917EB852}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuelAcc.Application.Paging", "src\FuelAcc.Application.Paging\FuelAcc.Application.Paging.csproj", "{A33C06E1-967A-4590-8CF1-1CFB63CA1F1E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuelAcc.Application.DtoCommon", "src\FuelAcc.Application.Paging\FuelAcc.Application.DtoCommon.csproj", "{A33C06E1-967A-4590-8CF1-1CFB63CA1F1E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

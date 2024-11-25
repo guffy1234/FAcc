@@ -1,0 +1,19 @@
+@page "/dictionary/storage/update/{id:guid}"
+@attribute [Authorize]
+@inherits UpdateDictionary<StorageDto>
+@using FuelAcc.Client.Shared.Api
+@using FuelAcc.Client.Shared.Pages
+
+<h1>Edit Storage</h1>
+<br/>
+<Form ButtonText="Update" record="@Record" loading="@Loading" OnValidSubmit="@UpdateRecord" />
+
+@code {
+    protected override void OnInitialized()
+    {
+        NavigationPrefix = "/dictionary/storage";
+        SucceededAlertText = "Storage updated successfully";
+        Record = new StorageDto();
+        base.OnInitialized();
+    }
+}

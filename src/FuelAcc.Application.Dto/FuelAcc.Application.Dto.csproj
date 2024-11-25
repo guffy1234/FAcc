@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\FuelAcc.Application.Paging\FuelAcc.Application.DtoCommon.csproj" />
     <ProjectReference Include="..\FuelAcc.Domain\FuelAcc.Domain.csproj" />
   </ItemGroup>
 

@@ -1,8 +1,8 @@
 @page "/dictionary/product/view/{id}"
-@using FuelAcc.Client.Services.Crud
-@using FuelAcc.Client.Shared.Api
 @attribute [Authorize]
-@inject IDictionaryService<ProductDto> DtoService
+@inherits ViewDictionary<ProductDto>
+@using FuelAcc.Client.Shared.Api
+@using FuelAcc.Client.Shared.Pages
 @inject NavigationManager navManager
 @inject FuelAcc.Client.Shared.PageHistoryState PageHistoryState
 
@@ -13,11 +13,11 @@
     <tbody>
         <tr>
             <th scope="row">Id</th>
-            <td>@recrod.Id</td>
+            <td>@Record.Id</td>
         </tr>
         <tr>
             <th scope="row">Name</th>
-            <td>@recrod.Name</td>
+            <td>@Record.Name</td>
         </tr>
     </tbody>
 </table>
@@ -32,16 +32,9 @@
 </div>
 
 @code {
-    [Parameter]
-    public string Id { get; set; }
-
-    ProductDto recrod = new ProductDto
+    protected override void OnInitialized()
     {
-        Name = "",
-    };
-    
-    protected async override Task OnParametersSetAsync()
-    {
-       recrod = await DtoService.Get(Guid.Parse(Id));
+        Record = new ProductDto();
+        base.OnInitialized();
     }
 }

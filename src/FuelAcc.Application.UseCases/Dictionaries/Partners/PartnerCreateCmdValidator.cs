@@ -9,8 +9,8 @@ namespace FuelAcc.Application.UseCases.Dictionaries.Partners
         public PartnerCreateCmdValidator()
         {
             RuleFor(x => x.Dto.Name).NotEmpty().NotNull();
-            RuleFor(x => x.Dto.Phone).NotEmpty().NotNull();
-            RuleFor(x => x.Dto.Region).NotEmpty().NotNull();
+            //RuleFor(x => x.Dto.Phone).NotEmpty().NotNull();
+            //RuleFor(x => x.Dto.Region).NotEmpty().NotNull();
         }
     }
 }

@@ -6,7 +6,7 @@ namespace FuelAcc.Domain.Entities.Documents
     {
         public Guid Id { get; set; }
         public DateTime Date { get; set; } = DateTime.UtcNow;
-        public string Title { get; set; }
+        public string Number { get; set; }
         public string Description { get; set; }
         public decimal Total { get; set; }
         public List<OrderLine> Lines { get; set; }

@@ -5,8 +5,8 @@ using FuelAcc.WebApi.Api;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using FuelAcc.Application.Paging;
 using FuelAcc.Application.Dto.Querying;
+using FuelAcc.Application.DtoCommon.Paging;
 
 namespace FuelAcc.WebApi.Controllers.V1.Orders
 {

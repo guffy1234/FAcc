@@ -1,22 +1,17 @@
-@page "/dictionary/product/{Page}"
-@using FuelAcc.Application.Paging
-@using FuelAcc.Client.Services.Crud
-@using FuelAcc.Client.Shared.Api
+@page "/dictionary/product/{Page:int}"
+
 @attribute [Authorize]
-@inject IDictionaryService<ProductDto> DtoService
-@inject IAuthenticationContext LoginService
-@inject Microsoft.AspNetCore.Components.NavigationManager UriHelper
-@inject FuelAcc.Client.Shared.PageHistoryState PageHistoryState
+@inherits ListDictionary<ProductDto>
+
+@using FuelAcc.Client.Shared.Api
+@using FuelAcc.Client.Shared.Pages
 
 <h1>Products</h1>
 <br/>
 
 <div class="row mb-3">
     <div class="col-md-7">
-        @if(LoggedIn)
-        {
-            <NavLink href="/dictionary/product/create" class="btn btn-sm btn-success mb-2">Add Product</NavLink>
-        }
+        <NavLink href="@($"{NavigationPrefix}/create")" class="btn btn-sm btn-success mb-2">Add Product</NavLink>
     </div>
     <div class="input-group col-md-5 text-md-right">
         <input name="SearchInput" type="text" class="form-control" placeholder="Name" @bind="this.SearchTerm" @onkeyup="SearchBoxKeyPress" />
@@ -33,7 +28,7 @@
     </div>
 </div>
 
-@if (records == null)
+@if (Records == null)
 {
     <p><em>Loading...</em></p>
 }
@@ -47,87 +42,29 @@ else
             </tr>
         </thead>
         <tbody>
-            @foreach (var record in records.Results)
+            @foreach (var record in Records.Results)
             {
                 <tr>
                     <td>@record.Name</td>
                     <td style="white-space: nowrap">
-                        <NavLink href="@($"/dictionary/product/view/{record.Id}")" class="oi oi-eye text-primary mr-3 nounderline"></NavLink>
-                        @if (LoggedIn)
-                        {
-                            <NavLink href="@($"/dictionary/product/update/{record.Id}")" class="oi oi-pencil text-warning mr-2 nounderline"></NavLink>
+                        <NavLink href="@($"{NavigationPrefix}/view/{record.Id}")" class="oi oi-eye text-primary mr-3 nounderline"></NavLink>
+                        <NavLink href="@($"{NavigationPrefix}/update/{record.Id}")" class="oi oi-pencil text-warning mr-2 nounderline"></NavLink>
 
-                            <button @onclick="@(() => DeleteRecord(record))" class=" btn btn-link oi oi-trash text-danger mr-1 nounderline">
-                                <span></span>
-                            </button>
-                        }
+                        <button @onclick="@(() => DeleteRecord(record.Id))" class=" btn btn-link oi oi-trash text-danger mr-1 nounderline">
+                            <span></span>
+                        </button>
                     </td>
                 </tr> 
             }
         </tbody>
     </table>
-    <Pager Result=@records PageChanged=PagerPageChanged />
+    <Pager Result=@Records PageChanged=PagerPageChanged />
 }
 
 @code {
-    [Parameter]
-    public string Page { get; set;} = "1";
-    [Parameter]
-    public string SearchTerm { get; set; } = string.Empty;
-
-    protected PagedResult<ProductDto> records;
-
-    public bool LoggedIn => LoginService.IsAuthenticated;
-    
     protected override void OnInitialized()
     {
-        PageHistoryState.AddPageToHistory(UriHelper.Uri);
+        NavigationPrefix = "/dictionary/product";
         base.OnInitialized();
-    }
-    
-    protected override async Task OnParametersSetAsync()
-    {
-        records = await DtoService.GetPaged(null, int.Parse(Page));
-        PageHistoryState.AddPageToHistory(UriHelper.Uri);
-    }
-
-    protected async Task SearchBoxKeyPress(KeyboardEventArgs ev)
-    {
-        if (ev.Key == "Enter")
-        {
-            await SearchClick();
-        }
-    }
-
-    protected async Task SearchClick()
-    {
-        if (string.IsNullOrEmpty(SearchTerm))
-        {
-            records = await DtoService.GetPaged(null, int.Parse(Page));
-            return;
-        }
-        records = await DtoService.GetPaged(SearchTerm, int.Parse(Page));
-        StateHasChanged();
-    }
-
-    protected async Task ClearSearch()
-    {
-        SearchTerm = string.Empty;
-        records = await DtoService.GetPaged(SearchTerm, int.Parse(Page));
-        PageHistoryState.AddPageToHistory(UriHelper.Uri);
-        StateHasChanged();
-    }
-
-    protected void PagerPageChanged(int page)
-    {
-        UriHelper.NavigateTo("/dictionary/product/" + page);
-        PageHistoryState.AddPageToHistory(UriHelper.Uri);
-    }
-
-    private async void DeleteRecord(ProductDto item)
-    {
-        await DtoService.Delete(item.Id);
-        records = await DtoService.GetPaged(null, int.Parse(Page));
-        StateHasChanged();
     }
 }

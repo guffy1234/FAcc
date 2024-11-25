@@ -1,0 +1,19 @@
+@page "/dictionary/storage/create"
+@attribute [Authorize]
+@inherits AddDictionary<StorageDto>
+@using FuelAcc.Client.Shared.Api
+@using FuelAcc.Client.Shared.Pages
+
+<h1>Create Storage</h1>
+<br/>
+<Form ButtonText="Create" record="@Record" loading="@Loading" OnValidSubmit="@CreateRecord" />
+
+@code {
+    protected override void OnInitialized()
+    {
+        NavigationPrefix = "/dictionary/storage";
+        SucceededAlertText = "Storage added successfully";
+        Record = new StorageDto();
+        base.OnInitialized();
+    }
+}

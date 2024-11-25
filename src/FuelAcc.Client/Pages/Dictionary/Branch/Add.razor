@@ -1,0 +1,19 @@
+@page "/dictionary/branch/create"
+@attribute [Authorize]
+@inherits AddDictionary<BranchDto>
+@using FuelAcc.Client.Shared.Api
+@using FuelAcc.Client.Shared.Pages
+
+<h1>Create Branch</h1>
+<br/>
+<Form ButtonText="Create" record="@Record" loading="@Loading" OnValidSubmit="@CreateRecord" />
+
+@code {
+    protected override void OnInitialized()
+    {
+        NavigationPrefix = "/dictionary/branch";
+        SucceededAlertText = "Branch added successfully";
+        Record = new BranchDto();
+        base.OnInitialized();
+    }
+}

@@ -1,7 +1,7 @@
 ﻿using FuelAcc.Application.Dto;
 using FuelAcc.Application.Dto.Dictionaries;
 using FuelAcc.Application.Dto.Querying;
-using FuelAcc.Application.Paging;
+using FuelAcc.Application.DtoCommon.Paging;
 using FuelAcc.WebApi.Api;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;

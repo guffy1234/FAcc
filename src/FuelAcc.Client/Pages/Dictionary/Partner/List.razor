@@ -1,0 +1,70 @@
+@page "/dictionary/partner/{Page:int}"
+
+@attribute [Authorize]
+@inherits ListDictionary<PartnerDto>
+
+@using FuelAcc.Client.Shared.Api
+@using FuelAcc.Client.Shared.Pages
+
+<h1>Partners</h1>
+<br/>
+
+<div class="row mb-3">
+    <div class="col-md-7">
+        <NavLink href="@($"{NavigationPrefix}/create")" class="btn btn-sm btn-success mb-2">Add Partner</NavLink>
+    </div>
+    <div class="input-group col-md-5 text-md-right">
+        <input name="SearchInput" type="text" class="form-control" placeholder="Name" @bind="this.SearchTerm" @onkeyup="SearchBoxKeyPress" />
+        <div class="input-group-btn">
+            <button name="SearchButton" class="btn btn-default" @onclick="SearchClick">
+                <i class="oi oi-magnifying-glass" title="search" aria-hidden="true"></i>
+            </button>
+        </div>
+        <div class="input-group-btn">
+            <button name="SearchClear" class="btn btn-default" @onclick="ClearSearch">
+                <i class="oi oi-x" title="clear" aria-hidden="true"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+@if (Records == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th style="width:25%">Name</th>
+                <th style="width:5%"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var record in Records.Results)
+            {
+                <tr>
+                    <td>@record.Name</td>
+                    <td style="white-space: nowrap">
+                        <NavLink href="@($"{NavigationPrefix}/view/{record.Id}")" class="oi oi-eye text-primary mr-3 nounderline"></NavLink>
+                        <NavLink href="@($"{NavigationPrefix}/update/{record.Id}")" class="oi oi-pencil text-warning mr-2 nounderline"></NavLink>
+
+                        <button @onclick="@(() => DeleteRecord(record.Id))" class=" btn btn-link oi oi-trash text-danger mr-1 nounderline">
+                            <span></span>
+                        </button>
+                    </td>
+                </tr> 
+            }
+        </tbody>
+    </table>
+    <Pager Result=@Records PageChanged=PagerPageChanged />
+}
+
+@code {
+    protected override void OnInitialized()
+    {
+        NavigationPrefix = "/dictionary/partner";
+        base.OnInitialized();
+    }
+}

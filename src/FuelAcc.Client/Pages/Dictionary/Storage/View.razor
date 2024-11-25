@@ -1,0 +1,44 @@
+@page "/dictionary/storage/view/{id}"
+@attribute [Authorize]
+@inherits ViewDictionary<StorageDto>
+@using FuelAcc.Client.Shared.Api
+@using FuelAcc.Client.Shared.Pages
+@inject NavigationManager navManager
+@inject FuelAcc.Client.Shared.PageHistoryState PageHistoryState
+
+<h1>View Storage</h1>
+<br/>
+
+<table class="table col-md-6">
+    <tbody>
+        <tr>
+            <th scope="row">Id</th>
+            <td>@Record.Id</td>
+        </tr>
+        <tr>
+            <th scope="row">Name</th>
+            <td>@Record.Name</td>
+        </tr>
+        <tr>
+            <th scope="row">Branch</th>
+            <td>@Record.BranchId</td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="form-group">
+    @if (PageHistoryState.CanGoBack()){
+        <NavLink href="@PageHistoryState.GetGoBackPage()" class="btn btn-link">Back</NavLink>
+    }
+    else{
+        <NavLink href="/dictionary/storage/1" class="btn btn-link">Back</NavLink>
+    }
+</div>
+
+@code {
+    protected override void OnInitialized()
+    {
+        Record = new StorageDto();
+        base.OnInitialized();
+    }
+}

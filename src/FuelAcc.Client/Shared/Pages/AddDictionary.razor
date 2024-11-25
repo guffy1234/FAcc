@@ -1,0 +1,42 @@
+@typeparam TItem
+
+@inherits ComponentBase
+
+@using FuelAcc.Client.Services.Crud
+@using FuelAcc.Client.Shared.Api
+@inject IAlertService AlertService
+@inject IDictionaryService<TItem> DtoService
+@inject NavigationManager navManager
+@inject FuelAcc.Client.Shared.PageHistoryState PageHistoryState
+
+@code {
+    public string SucceededAlertText { get; set; }
+    public string NavigationPrefix { get; set; }
+
+    protected bool Loading = false;
+    
+    protected TItem Record;
+
+    protected async Task CreateRecord()
+    {
+        Loading = true;
+        try
+        {
+            await DtoService.Add(Record);
+
+            AlertService.Success(SucceededAlertText, keepAfterRouteChange: true);
+            if (PageHistoryState.CanGoBack()){
+                navManager.NavigateTo(PageHistoryState.GetGoBackPage());
+            }
+            else{
+                navManager.NavigateTo($"{NavigationPrefix}/1");
+            } 
+        }
+        catch (Exception ex)
+        {
+            AlertService.Error(ex.Message);
+            Loading = false;
+            StateHasChanged();
+        }
+    }
+}

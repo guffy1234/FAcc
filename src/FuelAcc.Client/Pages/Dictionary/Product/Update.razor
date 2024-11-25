@@ -1,53 +1,19 @@
-@page "/dictionary/product/update/{id}"
-@using FuelAcc.Client.Services.Crud
-@using FuelAcc.Client.Shared.Api
+@page "/dictionary/product/update/{id:guid}"
 @attribute [Authorize]
-@inject IAlertService AlertService
-@inject IDictionaryService<ProductDto> DtoService
-@inject NavigationManager navManager
-@inject FuelAcc.Client.Shared.PageHistoryState PageHistoryState
+@inherits UpdateDictionary<ProductDto>
+@using FuelAcc.Client.Shared.Api
+@using FuelAcc.Client.Shared.Pages
 
 <h1>Edit Product</h1>
 <br/>
-
-<Form ButtonText="Update" record="@record" loading="@loading"
-            OnValidSubmit="@UpdateRecord" />
+<Form ButtonText="Update" record="@Record" loading="@Loading" OnValidSubmit="@UpdateRecord" />
 
 @code {
-    bool loading = false;
-    
-    [Parameter]
-    public string Id { get; set; }
-
-    ProductDto record = new ProductDto
+    protected override void OnInitialized()
     {
-        Name = "",
-    };
-    
-    protected async override Task OnParametersSetAsync()
-    {
-        record = await DtoService.Get(Guid.Parse(Id));
-    }
-
-    async Task UpdateRecord()
-    {
-        loading = true;
-        try
-        {
-            await DtoService.Update(record);
-            AlertService.Success("Product updated successfully", keepAfterRouteChange: true);
-            if (PageHistoryState.CanGoBack()){
-                navManager.NavigateTo(PageHistoryState.GetGoBackPage());
-            }
-            else{
-                navManager.NavigateTo("/dictionary/product/1");
-            } 
-        }
-        catch (Exception ex)
-        {
-            AlertService.Error(ex.Message);
-            loading = false;
-            StateHasChanged();
-        }
+        NavigationPrefix = "/dictionary/product";
+        SucceededAlertText = "Product updated successfully";
+        Record = new ProductDto();
+        base.OnInitialized();
     }
 }

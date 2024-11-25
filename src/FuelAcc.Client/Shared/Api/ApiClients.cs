@@ -6526,7 +6526,7 @@ namespace FuelAcc.Client.Shared.Api
         public System.Guid Id { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("date")]
-        public System.DateTimeOffset Date { get; set; }
+        public System.DateTime Date { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("userId")]
         public System.Guid UserId { get; set; }
@@ -6555,14 +6555,20 @@ namespace FuelAcc.Client.Shared.Api
     public partial class OrderInDto
     {
 
-        [System.Text.Json.Serialization.JsonPropertyName("description")]
-        public string Description { get; set; }
-
         [System.Text.Json.Serialization.JsonPropertyName("id")]
         public System.Guid Id { get; set; }
 
+        [System.Text.Json.Serialization.JsonPropertyName("date")]
+        public System.DateTime Date { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("number")]
+        public string Number { get; set; }
+
         [System.Text.Json.Serialization.JsonPropertyName("lines")]
         public System.Collections.Generic.ICollection<OrderLineDto> Lines { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("description")]
+        public string Description { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("title")]
         public string Title { get; set; }
@@ -6616,10 +6622,10 @@ namespace FuelAcc.Client.Shared.Api
         public int? PageSize { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("from")]
-        public System.DateTimeOffset? From { get; set; }
+        public System.DateTime? From { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("to")]
-        public System.DateTimeOffset? To { get; set; }
+        public System.DateTime? To { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("number")]
         public string Number { get; set; }
@@ -6651,14 +6657,20 @@ namespace FuelAcc.Client.Shared.Api
     public partial class OrderMoveDto
     {
 
-        [System.Text.Json.Serialization.JsonPropertyName("description")]
-        public string Description { get; set; }
-
         [System.Text.Json.Serialization.JsonPropertyName("id")]
         public System.Guid Id { get; set; }
 
+        [System.Text.Json.Serialization.JsonPropertyName("date")]
+        public System.DateTime Date { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("number")]
+        public string Number { get; set; }
+
         [System.Text.Json.Serialization.JsonPropertyName("lines")]
         public System.Collections.Generic.ICollection<OrderLineDto> Lines { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("description")]
+        public string Description { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("title")]
         public string Title { get; set; }
@@ -6715,10 +6727,10 @@ namespace FuelAcc.Client.Shared.Api
         public int? PageSize { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("from")]
-        public System.DateTimeOffset? From { get; set; }
+        public System.DateTime? From { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("to")]
-        public System.DateTimeOffset? To { get; set; }
+        public System.DateTime? To { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("number")]
         public string Number { get; set; }
@@ -6741,14 +6753,20 @@ namespace FuelAcc.Client.Shared.Api
     public partial class OrderOutDto
     {
 
-        [System.Text.Json.Serialization.JsonPropertyName("description")]
-        public string Description { get; set; }
-
         [System.Text.Json.Serialization.JsonPropertyName("id")]
         public System.Guid Id { get; set; }
 
+        [System.Text.Json.Serialization.JsonPropertyName("date")]
+        public System.DateTime Date { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("number")]
+        public string Number { get; set; }
+
         [System.Text.Json.Serialization.JsonPropertyName("lines")]
         public System.Collections.Generic.ICollection<OrderLineDto> Lines { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("description")]
+        public string Description { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("title")]
         public string Title { get; set; }
@@ -6802,10 +6820,10 @@ namespace FuelAcc.Client.Shared.Api
         public int? PageSize { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("from")]
-        public System.DateTimeOffset? From { get; set; }
+        public System.DateTime? From { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("to")]
-        public System.DateTimeOffset? To { get; set; }
+        public System.DateTime? To { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("number")]
         public string Number { get; set; }
@@ -6985,7 +7003,7 @@ namespace FuelAcc.Client.Shared.Api
         public System.Guid Id { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("date")]
-        public System.DateTimeOffset Date { get; set; }
+        public System.DateTime Date { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("previousId")]
         public System.Guid? PreviousId { get; set; }
@@ -6997,10 +7015,10 @@ namespace FuelAcc.Client.Shared.Api
         public System.Guid SourceBranchId { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("fromDate")]
-        public System.DateTimeOffset FromDate { get; set; }
+        public System.DateTime FromDate { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("toDate")]
-        public System.DateTimeOffset ToDate { get; set; }
+        public System.DateTime ToDate { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("events")]
         public System.Collections.Generic.ICollection<EventDto> Events { get; set; }
@@ -7045,7 +7063,7 @@ namespace FuelAcc.Client.Shared.Api
         public System.Guid Id { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("date")]
-        public System.DateTimeOffset Date { get; set; }
+        public System.DateTime Date { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("orderId")]
         public System.Guid OrderId { get; set; }
@@ -7069,10 +7087,10 @@ namespace FuelAcc.Client.Shared.Api
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("from")]
-        public System.DateTimeOffset? From { get; set; }
+        public System.DateTime? From { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("to")]
-        public System.DateTimeOffset? To { get; set; }
+        public System.DateTime? To { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("orderId")]
         public System.Collections.Generic.ICollection<System.Guid> OrderId { get; set; }

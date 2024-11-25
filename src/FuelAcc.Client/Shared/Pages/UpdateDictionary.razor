@@ -1,0 +1,50 @@
+@typeparam TItem
+
+@inherits ComponentBase
+
+@using FuelAcc.Client.Services.Crud
+@using FuelAcc.Client.Shared.Api
+
+@inject IAlertService AlertService
+@inject IDictionaryService<TItem> DtoService
+@inject NavigationManager navManager
+@inject FuelAcc.Client.Shared.PageHistoryState PageHistoryState
+
+@code {
+    protected string SucceededAlertText { get; set; }
+    protected string NavigationPrefix { get; set; }
+
+    protected bool Loading = false;
+    
+    [Parameter]
+    public Guid Id { get; set; }
+
+    protected TItem Record;
+    
+    protected async override Task OnParametersSetAsync()
+    {
+        Record = await DtoService.Get(Id);
+    }
+
+    protected async Task UpdateRecord()
+    {
+        Loading = true;
+        try
+        {
+            await DtoService.Update(Record);
+            AlertService.Success(SucceededAlertText, keepAfterRouteChange: true);
+            if (PageHistoryState.CanGoBack()){
+                navManager.NavigateTo(PageHistoryState.GetGoBackPage());
+            }
+            else{
+                navManager.NavigateTo($"{NavigationPrefix}/1");
+            } 
+        }
+        catch (Exception ex)
+        {
+            AlertService.Error(ex.Message);
+            Loading = false;
+            StateHasChanged();
+        }
+    }
+}

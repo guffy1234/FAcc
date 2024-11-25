@@ -1,0 +1,19 @@
+@page "/dictionary/partner/create"
+@attribute [Authorize]
+@inherits AddDictionary<PartnerDto>
+@using FuelAcc.Client.Shared.Api
+@using FuelAcc.Client.Shared.Pages
+
+<h1>Create Partner</h1>
+<br/>
+<Form ButtonText="Create" record="@Record" loading="@Loading" OnValidSubmit="@CreateRecord" />
+
+@code {
+    protected override void OnInitialized()
+    {
+        NavigationPrefix = "/dictionary/partner";
+        SucceededAlertText = "Product added successfully";
+        Record = new PartnerDto();
+        base.OnInitialized();
+    }
+}

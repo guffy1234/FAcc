@@ -1,6 +1,6 @@
-namespace FuelAcc.Application.Paging
+namespace FuelAcc.Application.DtoCommon.Paging
 {
-    public abstract class PagedResultBase
+    public abstract class PagedResultBase : IPagedResultBase
     {
         public int CurrentPage { get; set; }
         public int PageCount { get; set; }

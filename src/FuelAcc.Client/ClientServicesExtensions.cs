@@ -3,6 +3,7 @@ using FuelAcc.Client.Services.Crud;
 using FuelAcc.Client.Shared;
 using FuelAcc.Client.Shared.Api;
 using Microsoft.AspNetCore.Components;
+using System.ComponentModel.Design;
 using System.Net.Http.Headers;
 //using Microsoft.AspNetCore.SignalR.Client;
 
@@ -68,7 +69,29 @@ namespace FuelAcc.Client
             services.AddScoped<ILocalStorageService, LocalStorageService>();
             services.AddSingleton<PageHistoryState>();
 
-            services.AddScoped<IDictionaryService<ProductDto>, ProductService>();
+            services.AddScoped<IDtoApiClient<ProductDto, ProductDtoPagedResult, ProductQueryDto>>(p =>
+                p.GetRequiredService<IProductsApiClient>());
+            services.AddScoped<IDtoApiClient<PartnerDto, PartnerDtoPagedResult, PartnerQueryDto>>(p =>
+                p.GetRequiredService<IPartnersApiClient>());
+            services.AddScoped<IDtoApiClient<BranchDto, BranchDtoPagedResult, BranchQueryDto>>(p =>
+                p.GetRequiredService<IBranchesApiClient>());
+            services.AddScoped<IDtoApiClient<StorageDto, StorageDtoPagedResult, StorageQueryDto>>(p =>
+                p.GetRequiredService<IStoragesApiClient>());
+            services.AddScoped<IDtoApiClient<OrderInDto, OrderInDtoPagedResult, OrderInQueryDto>>(p =>
+                p.GetRequiredService<IOrdersInApiClient>());
+            services.AddScoped<IDtoApiClient<OrderOutDto, OrderOutDtoPagedResult, OrderOutQueryDto>>(p =>
+                p.GetRequiredService<IOrdersOutApiClient>());
+            services.AddScoped<IDtoApiClient<OrderMoveDto, OrderMoveDtoPagedResult, OrderMoveQueryDto>>(p =>
+                p.GetRequiredService<IOrdersMoveApiClient>());
+
+            services.AddScoped<IDictionaryService<ProductDto>, DictionaryService<ProductDto, ProductDtoPagedResult, ProductQueryDto>>();
+            services.AddScoped<IDictionaryService<PartnerDto>, DictionaryService<PartnerDto, PartnerDtoPagedResult, PartnerQueryDto>>();
+            services.AddScoped<IDictionaryService<BranchDto>, DictionaryService<BranchDto, BranchDtoPagedResult, BranchQueryDto>>();
+            services.AddScoped<IDictionaryService<StorageDto>, DictionaryService<StorageDto, StorageDtoPagedResult, StorageQueryDto>>();
+
+            services.AddScoped<IDocumentService<OrderInDto>, DocumentService<OrderInDto, OrderInDtoPagedResult, OrderInQueryDto>>();
+            services.AddScoped<IDocumentService<OrderOutDto>, DocumentService<OrderOutDto, OrderOutDtoPagedResult, OrderOutQueryDto>>();
+            services.AddScoped<IDocumentService<OrderMoveDto>, DocumentService<OrderMoveDto, OrderMoveDtoPagedResult, OrderMoveQueryDto>>();
 
             services.AddLocalization();
 

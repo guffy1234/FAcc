@@ -1,0 +1,19 @@
+@page "/dictionary/partner/update/{id:guid}"
+@attribute [Authorize]
+@inherits UpdateDictionary<PartnerDto>
+@using FuelAcc.Client.Shared.Api
+@using FuelAcc.Client.Shared.Pages
+
+<h1>Edit Partner</h1>
+<br/>
+<Form ButtonText="Update" record="@Record" loading="@Loading" OnValidSubmit="@UpdateRecord" />
+
+@code {
+    protected override void OnInitialized()
+    {
+        NavigationPrefix = "/dictionary/partner";
+        SucceededAlertText = "Product updated successfully";
+        Record = new PartnerDto();
+        base.OnInitialized();
+    }
+}

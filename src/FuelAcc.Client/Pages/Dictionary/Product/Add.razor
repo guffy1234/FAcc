@@ -1,44 +1,19 @@
 @page "/dictionary/product/create"
-@using FuelAcc.Client.Services.Crud
-@using FuelAcc.Client.Shared.Api
 @attribute [Authorize]
-@inject IAlertService AlertService
-@inject IDictionaryService<ProductDto> DtoService
-@inject NavigationManager navManager
-@inject FuelAcc.Client.Shared.PageHistoryState PageHistoryState
+@inherits AddDictionary<ProductDto>
+@using FuelAcc.Client.Shared.Api
+@using FuelAcc.Client.Shared.Pages
 
 <h1>Create Product</h1>
 <br/>
-
-<Form ButtonText="Create" record="@record" loading="@loading"
-            OnValidSubmit="@CreateRecord" />
+<Form ButtonText="Create" record="@Record" loading="@Loading" OnValidSubmit="@CreateRecord" />
 
 @code {
-    bool loading = false;
-    
-    ProductDto record = new ProductDto
+    protected override void OnInitialized()
     {
-        Name = "",
-    };
-    async Task CreateRecord()
-    {
-        loading = true;
-        try
-        {
-            await DtoService.Add(record);
-            AlertService.Success("Product added successfully", keepAfterRouteChange: true);
-            if (PageHistoryState.CanGoBack()){
-                navManager.NavigateTo(PageHistoryState.GetGoBackPage());
-            }
-            else{
-                navManager.NavigateTo("/dictionary/product/1");
-            } 
-        }
-        catch (Exception ex)
-        {
-            AlertService.Error(ex.Message);
-            loading = false;
-            StateHasChanged();
-        }
+        NavigationPrefix = "/dictionary/product";
+        SucceededAlertText = "Product added successfully";
+        Record = new ProductDto();
+        base.OnInitialized();
     }
 }
