@@ -1,4 +1,4 @@
-﻿using FuelAcc.Client.Shared.Api;
+﻿using FuelAcc.ApiClient;
 
 namespace FuelAcc.Client.Services
 {

@@ -1,7 +1,7 @@
-﻿using FuelAcc.Client.Services;
+﻿using FuelAcc.ApiClient;
+using FuelAcc.Client.Services;
 using FuelAcc.Client.Services.Crud;
 using FuelAcc.Client.Shared;
-using FuelAcc.Client.Shared.Api;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using System.ComponentModel.Design;

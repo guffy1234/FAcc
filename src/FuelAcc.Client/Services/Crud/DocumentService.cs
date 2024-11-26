@@ -1,6 +1,6 @@
 ﻿using FuelAcc.Application.DtoCommon.Documents;
 using FuelAcc.Application.DtoCommon.Paging;
-using FuelAcc.Client.Shared.Api;
+using FuelAcc.ApiClient;
 
 namespace FuelAcc.Client.Services.Crud
 {

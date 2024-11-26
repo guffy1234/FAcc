@@ -1,7 +1,7 @@
 @page "/dictionary/partner/view/{id:guid}"
 @attribute [Authorize]
 @inherits ViewDictionary<PartnerDto>
-@using FuelAcc.Client.Shared.Api
+@using FuelAcc.ApiClient
 @using FuelAcc.Client.Shared.Pages
 @inject NavigationManager navManager
 @inject FuelAcc.Client.Shared.PageHistoryState PageHistoryState

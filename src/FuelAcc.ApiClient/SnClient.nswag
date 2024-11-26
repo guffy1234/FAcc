@@ -60,7 +60,7 @@
       "wrapResponseMethods": [],
       "generateResponseClasses": true,
       "responseClass": "SwaggerResponse",
-      "namespace": "FuelAcc.Client.Shared.Api",
+      "namespace": "FuelAcc.ApiClient",
       "requiredPropertiesMustBeDefined": true,
       "dateType": "System.DateTime",
       "jsonConverters": null,

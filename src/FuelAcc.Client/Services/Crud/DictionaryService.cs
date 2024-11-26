@@ -1,6 +1,6 @@
 ﻿using FuelAcc.Application.DtoCommon.Dictionaries;
 using FuelAcc.Application.DtoCommon.Paging;
-using FuelAcc.Client.Shared.Api;
+using FuelAcc.ApiClient;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.JSInterop;
 

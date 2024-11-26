@@ -23,6 +23,7 @@
 	  <None Include="wwwroot\site.js" />
 	</ItemGroup>
 	<ItemGroup>
+		<ProjectReference Include="..\FuelAcc.ApiClient\FuelAcc.ApiClient.csproj" />
 		<ProjectReference Include="..\FuelAcc.Application.Paging\FuelAcc.Application.DtoCommon.csproj" />
 		<ProjectReference Include="..\FuelAcc.Localization\FuelAcc.Localization.csproj" />
 	</ItemGroup>
