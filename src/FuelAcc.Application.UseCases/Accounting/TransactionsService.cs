@@ -69,7 +69,7 @@ namespace FuelAcc.Application.UseCases.Accounting
                 else
                 {
                     await AdjustRestsOnDeleteAsync(ot, cancellationToken);
-                    toDelete.Add(nt);
+                    toDelete.Add(ot);
                 }
             }
             foreach (var nt in newTransactions)

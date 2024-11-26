@@ -1,0 +1,19 @@
+@page "/document/orderout/update/{id:guid}"
+@attribute [Authorize]
+@inherits UpdateDocument<OrderOutDto>
+@using FuelAcc.ApiClient
+@using FuelAcc.Client.Shared.Pages
+
+<h1>Edit In Order</h1>
+<br/>
+<Form ButtonText="Update" record="@Record" loading="@Loading" OnValidSubmit="@UpdateRecord" />
+
+@code {
+    protected override void OnInitialized()
+    {
+        NavigationPrefix = "/document/orderout";
+        SucceededAlertText = "Out Order updated successfully";
+        Record = new OrderOutDto();
+        base.OnInitialized();
+    }
+}

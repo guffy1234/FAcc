@@ -1,6 +1,6 @@
-@page "/document/orderin/view/{id:guid}"
+@page "/document/orderout/view/{id:guid}"
 @attribute [Authorize]
-@inherits ViewDocument<OrderInDto>
+@inherits ViewDocument<OrderOutDto>
 @using FuelAcc.ApiClient
 @using FuelAcc.Client.Shared.Pages
 @using FuelAcc.Client.Services.Crud
@@ -10,7 +10,7 @@
 @inject IDictionaryService<ProductDto> ProductsService
 @inject IDictionaryService<StorageDto> StoragesService
 
-<h1>View In Order</h1>
+<h1>View Out Order</h1>
 <br/>
 
 <table class="table col-md-6">
@@ -37,7 +37,7 @@
         </tr>
         <tr>
             <th scope="row">Storage</th>
-            <td>@ToStorageName</td>
+            <td>@FromStorageName</td>
         </tr>
     </tbody>
 </table>
@@ -80,18 +80,18 @@
         <NavLink href="@PageHistoryState.GetGoBackPage()" class="btn btn-link">Back</NavLink>
     }
     else{
-        <NavLink href="/dictionary/orderin/1" class="btn btn-link">Back</NavLink>
+        <NavLink href="/dictionary/orderout/1" class="btn btn-link">Back</NavLink>
     }
 </div>
 
 @code {
     private string PartnerName = string.Empty;
-    private string ToStorageName = string.Empty;
+    private string FromStorageName = string.Empty;
     private Dictionary<Guid, string> Products;  
 
     protected override void OnInitialized()
     {
-        Record = new OrderInDto();
+        Record = new OrderOutDto();
         base.OnInitialized();
     }
 
@@ -99,7 +99,7 @@
     {
         await base.OnParametersSetAsync();
         PartnerName = await PartnersService.LookupName(Record.PartnerId);
-        ToStorageName = await StoragesService.LookupName(Record.ToStorageId);
+        FromStorageName = await StoragesService.LookupName(Record.FromStorageId);
         Products = new Dictionary<Guid, string>();
         if(Record.Lines != null)
         {
