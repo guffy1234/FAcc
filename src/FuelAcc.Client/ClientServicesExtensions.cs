@@ -3,6 +3,7 @@ using FuelAcc.Client.Services.Crud;
 using FuelAcc.Client.Shared;
 using FuelAcc.Client.Shared.Api;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 using System.ComponentModel.Design;
 using System.Net.Http.Headers;
 //using Microsoft.AspNetCore.SignalR.Client;
@@ -64,11 +65,15 @@ namespace FuelAcc.Client
             // builder.Services.AddSingleton<HubConnection>(hubConnection);
             // await host.RunAsync();
 
+            services.AddAuthorizationCore();
+            services.AddScoped<IdentityAuthenticationStateProvider>();
+            services.AddScoped<AuthenticationStateProvider>(s => s.GetRequiredService<IdentityAuthenticationStateProvider>());
+
 
             services.AddScoped<IAlertService, AlertService>();
-            services.AddScoped<ILoginService, LoginService>();
+            services.AddScoped<IAuthorizeApi, AuthorizeApi>();
             services.AddSingleton<IAuthenticationContext, AuthenticationContext>();
-            services.AddScoped<ILocalStorageService, LocalStorageService>();
+            services.AddSingleton<ILocalStorageService, LocalStorageService>();
             services.AddSingleton<PageHistoryState>();
 
             services.AddScoped<IDtoApiClient<ProductDto, ProductDtoPagedResult, ProductQueryDto>>(p =>

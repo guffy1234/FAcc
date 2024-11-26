@@ -2,10 +2,9 @@
 
 namespace FuelAcc.Client.Services
 {
-    public interface ILoginService
+    public interface IAuthorizeApi
     {
-        Task Initialize();
-        Task Login(Login model);
+        Task<string> Login(LoginParameters model);
         Task Logout();
     }
 }

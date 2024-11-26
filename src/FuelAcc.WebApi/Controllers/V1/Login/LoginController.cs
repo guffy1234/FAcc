@@ -4,6 +4,7 @@ using FuelAcc.Application.UseCases.Dictionaries.Branches;
 using FuelAcc.WebApi.Api;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FuelAcc.WebApi.Controllers.V1.Login
@@ -44,6 +45,16 @@ namespace FuelAcc.WebApi.Controllers.V1.Login
             if (token == null)
                 return BadRequest();
             return Ok(token);
+        }
+
+        [Authorize]
+        [HttpPost("logout")]
+        [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
+        [ProducesErrorResponseType(typeof(ProblemDetails))]
+        public async Task<IActionResult> Logout()
+        {
+            await _loginService.Logout();
+            return NoContent();
         }
     }
 }

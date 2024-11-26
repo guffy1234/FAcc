@@ -15,6 +15,8 @@ using FuelAcc.WebApi.Filters;
 using FuelAcc.Application.Interface;
 using FuelAcc.WebApi.Services;
 using FuelAcc.Application.Interface.Login;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -146,7 +148,9 @@ builder.Services.AddTransient<ILoginService, LoginService>();
 builder.Services.AddIdentityCore<ApplicationUser>(o =>
 {
     o.Stores.MaxLengthForKeys = 128;
-}).AddRoles<ApplicationRole>().AddEntityFrameworkStores<AppDbContext>();
+}).AddRoles<ApplicationRole>().AddSignInManager()
+.AddEntityFrameworkStores<AppDbContext>()
+.AddDefaultTokenProviders();
 
 var app = builder.Build();
 
