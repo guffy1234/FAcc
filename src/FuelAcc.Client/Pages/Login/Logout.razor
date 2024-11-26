@@ -1,9 +1,11 @@
 @page "/login/logout"
 @inject IdentityAuthenticationStateProvider authStateProvider
+@inject NavigationManager navManager
 
 @code {
     protected override async void OnInitialized()
     {
         await authStateProvider.Logout();
+        navManager.NavigateTo("/login/login");
     }
 }
