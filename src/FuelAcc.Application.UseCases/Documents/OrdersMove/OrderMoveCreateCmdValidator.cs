@@ -8,7 +8,7 @@ namespace FuelAcc.Application.UseCases.Documents.OrdersMove
     {
         public OrderMoveCreateCmdValidator()
         {
-            RuleFor(x => x.Dto.Title).NotEmpty().NotNull();
+            RuleFor(x => x.Dto.Number).NotEmpty().NotNull();
             RuleFor(x => x.Dto.ToStorageId).NotEmpty();
             RuleFor(x => x.Dto.FromStorageId).NotEmpty();
             RuleFor(x => x.Dto.Lines).NotEmpty().NotNull();

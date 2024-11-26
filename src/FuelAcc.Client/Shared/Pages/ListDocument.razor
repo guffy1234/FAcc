@@ -1,0 +1,77 @@
+@typeparam TItem
+
+@inherits ComponentBase
+
+@using FuelAcc.Application.DtoCommon
+@using FuelAcc.Application.DtoCommon.Paging
+@using FuelAcc.Client.Services.Crud
+@using FuelAcc.Client.Shared.Api
+
+@inject IDocumentService<TItem> DtoService
+@inject IAuthenticationContext LoginService
+@inject Microsoft.AspNetCore.Components.NavigationManager UriHelper
+@inject FuelAcc.Client.Shared.PageHistoryState PageHistoryState
+
+
+@code {
+
+    [Parameter]
+    public int Page { get; set;} = 1;
+    [Parameter]
+    public string SearchTerm { get; set; } = string.Empty;
+
+    protected string NavigationPrefix;
+    protected PagedResult<TItem> Records;
+    
+    protected override void OnInitialized()
+    {
+        PageHistoryState.AddPageToHistory(UriHelper.Uri);
+        base.OnInitialized();
+    }
+    
+    protected override async Task OnParametersSetAsync()
+    {
+        Records = await DtoService.GetPaged(Page);
+        PageHistoryState.AddPageToHistory(UriHelper.Uri);
+    }
+
+    protected async Task SearchBoxKeyPress(KeyboardEventArgs ev)
+    {
+        if (ev.Key == "Enter")
+        {
+            await SearchClick();
+        }
+    }
+
+    protected async Task SearchClick()
+    {
+        if (string.IsNullOrEmpty(SearchTerm))
+        {
+            Records = await DtoService.GetPaged(Page);
+            return;
+        }
+        Records = await DtoService.GetPaged(Page);
+        StateHasChanged();
+    }
+
+    protected async Task ClearSearch()
+    {
+        SearchTerm = string.Empty;
+        Records = await DtoService.GetPaged(Page);
+        PageHistoryState.AddPageToHistory(UriHelper.Uri);
+        StateHasChanged();
+    }
+
+    protected void PagerPageChanged(int page)
+    {
+        UriHelper.NavigateTo($"{NavigationPrefix}/{page}");
+        PageHistoryState.AddPageToHistory(UriHelper.Uri);
+    }
+
+    protected async void DeleteRecord(Guid id)
+    {
+        await DtoService.Delete(id);
+        Records = await DtoService.GetPaged(Page);
+        StateHasChanged();
+    }
+}

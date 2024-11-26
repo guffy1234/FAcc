@@ -207,7 +207,7 @@ namespace FuelAcc.Persistence.SqlServer.Migrations
                     b.Property<Guid?>("ModifierUserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Title")
+                    b.Property<string>("Number")
                         .IsRequired()
                         .HasMaxLength(512)
                         .HasColumnType("nvarchar(512)");
@@ -287,7 +287,6 @@ namespace FuelAcc.Persistence.SqlServer.Migrations
                         .HasColumnType("nvarchar(1024)");
 
                     b.Property<string>("ObjectJson")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("UserId")

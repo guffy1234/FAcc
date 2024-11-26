@@ -6570,9 +6570,6 @@ namespace FuelAcc.Client.Shared.Api
         [System.Text.Json.Serialization.JsonPropertyName("description")]
         public string Description { get; set; }
 
-        [System.Text.Json.Serialization.JsonPropertyName("title")]
-        public string Title { get; set; }
-
         [System.Text.Json.Serialization.JsonPropertyName("total")]
         public double Total { get; set; }
 
@@ -6672,9 +6669,6 @@ namespace FuelAcc.Client.Shared.Api
         [System.Text.Json.Serialization.JsonPropertyName("description")]
         public string Description { get; set; }
 
-        [System.Text.Json.Serialization.JsonPropertyName("title")]
-        public string Title { get; set; }
-
         [System.Text.Json.Serialization.JsonPropertyName("total")]
         public double Total { get; set; }
 
@@ -6767,9 +6761,6 @@ namespace FuelAcc.Client.Shared.Api
 
         [System.Text.Json.Serialization.JsonPropertyName("description")]
         public string Description { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("title")]
-        public string Title { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("total")]
         public double Total { get; set; }

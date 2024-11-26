@@ -2,6 +2,7 @@
 using FuelAcc.Application.Interface.Persistence;
 using FuelAcc.Domain.Commons;
 using FuelAcc.Domain.Entities;
+using FuelAcc.Domain.Entities.Documents;
 using FuelAcc.Persistence.Contexts;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -60,9 +61,13 @@ namespace FuelAcc.Persistence.Repositories
             return items;
         }
 
-        public async Task<T> GetAsync(Guid id, CancellationToken cancellationToken)
+        public async Task<T> GetAsync(Guid id, bool includeChildren, CancellationToken cancellationToken)
         {
-            var fetched = await _dbContext.Set<T>().FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+            var query = includeChildren && typeof(T).IsAssignableTo(typeof(OrderBase)) ?
+                _dbContext.Set<T>().Include(nameof(OrderBase.Lines)).AsQueryable() :
+                _dbContext.Set<T>().AsQueryable();
+
+            var fetched = await query.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
             if (fetched == null || fetched.IsDeleted)
             {
                 throw new NotFoundException();

@@ -1,0 +1,20 @@
+@typeparam TItem
+
+@inherits ComponentBase
+
+@using FuelAcc.Client.Services.Crud
+@using FuelAcc.Client.Shared.Api
+
+@inject IDocumentService<TItem> DtoService
+
+@code {
+    [Parameter]
+    public Guid Id { get; set; }
+
+    protected TItem Record;
+    
+    protected async override Task OnParametersSetAsync()
+    {
+        Record = await DtoService.Get(Id);
+    }
+}

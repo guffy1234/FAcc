@@ -30,7 +30,7 @@ namespace FuelAcc.Application.UseCases.Commons.Queries.Handlers
             };
             _authorizationChecker.Authorize(apoint);
 
-            var entity = await _repository.GetAsync(request.Id, cancellationToken);
+            var entity = await _repository.GetAsync(request.Id, true, cancellationToken);
             var dto = _mapper.Map<DTO>(entity);
             return dto;
         }

@@ -73,7 +73,7 @@ namespace FuelAcc.Persistence.SqlServer.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Title = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: false),
+                    Number = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(2048)", maxLength: 2048, nullable: false),
                     Total = table.Column<decimal>(type: "decimal(14,2)", precision: 14, scale: 2, nullable: false),
                     CreatorUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -242,7 +242,7 @@ namespace FuelAcc.Persistence.SqlServer.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ObjectClass = table.Column<string>(type: "nvarchar(1024)", maxLength: 1024, nullable: false),
-                    ObjectJson = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ObjectJson = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     BranchId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),

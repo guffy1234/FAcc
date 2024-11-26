@@ -207,7 +207,7 @@ namespace FuelAcc.Persistence.PostgreSql.Migrations
                     b.Property<Guid?>("ModifierUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<string>("Title")
+                    b.Property<string>("Number")
                         .IsRequired()
                         .HasMaxLength(512)
                         .HasColumnType("character varying(512)");
@@ -287,7 +287,6 @@ namespace FuelAcc.Persistence.PostgreSql.Migrations
                         .HasColumnType("character varying(1024)");
 
                     b.Property<string>("ObjectJson")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<Guid>("UserId")

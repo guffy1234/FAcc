@@ -1,0 +1,23 @@
+@page "/document/orderin/create"
+@attribute [Authorize]
+@inherits AddDocument<OrderInDto>
+@using FuelAcc.Client.Shared.Api
+@using FuelAcc.Client.Shared.Pages
+
+<h1>Create In Order</h1>
+<br/>
+<Form ButtonText="Create" record="@Record" loading="@Loading" OnValidSubmit="@CreateRecord" />
+
+@code {
+    protected override void OnInitialized()
+    {
+        NavigationPrefix = "/document/orderin";
+        SucceededAlertText = "In Order added successfully";
+        Record = new OrderInDto();
+        Record.Date = DateTime.UtcNow;
+        Record.Number = $"IN.{Record.Date.ToString("yyyyMMddHHmmss")}";
+        Record.Description = string.Empty;
+
+        base.OnInitialized();
+    }
+}

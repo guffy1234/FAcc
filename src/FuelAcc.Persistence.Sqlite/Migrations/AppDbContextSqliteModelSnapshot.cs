@@ -202,7 +202,7 @@ namespace FuelAcc.Persistence.Sqlite.Migrations
                     b.Property<Guid?>("ModifierUserId")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Title")
+                    b.Property<string>("Number")
                         .IsRequired()
                         .HasMaxLength(512)
                         .HasColumnType("TEXT");

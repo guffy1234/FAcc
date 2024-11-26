@@ -9,7 +9,6 @@ namespace FuelAcc.Application.Dto.Documents
         public string Number { get; set; }
         public List<OrderLineDto> Lines { get; set; }
         public string Description { get; set; }
-        public string Title { get; set; }
         public decimal Total { get; set; }
     }
 }
