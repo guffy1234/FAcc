@@ -13,6 +13,8 @@ namespace FuelAcc.Client
     {
         public static IServiceCollection ConfigureClientServices(this IServiceCollection services, Uri baseAddress)
         {
+            services.AddMemoryCache();
+
             services.AddScoped(sp => new HttpClient { BaseAddress = baseAddress });
 
             services.AddApiClient<ILoginApiClient, LoginApiClient>(baseAddress);

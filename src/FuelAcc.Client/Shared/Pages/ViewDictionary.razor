@@ -9,12 +9,12 @@
 
 @code {
     [Parameter]
-    public string Id { get; set; }
+    public Guid Id { get; set; }
 
     protected TItem Record;
     
     protected async override Task OnParametersSetAsync()
     {
-        Record = await DtoService.Get(Guid.Parse(Id));
+        Record = await DtoService.Get(Id);
     }
 }

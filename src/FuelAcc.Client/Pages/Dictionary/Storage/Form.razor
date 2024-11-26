@@ -1,5 +1,8 @@
 @using FuelAcc.Client.Shared.Api
+@using FuelAcc.Client.Services.Crud
 @inject FuelAcc.Client.Shared.PageHistoryState PageHistoryState
+@inject IDictionaryService<BranchDto> BranchesService
+
 
 <EditForm Model="@record" OnValidSubmit="@OnValidSubmit">
     @* <FluentValidator TValidator="PersonValidator" /> *@
@@ -10,13 +13,24 @@
             <ValidationMessage For="@(() => record.Name)" />
         </div>
     </div>
-   @*  <div class="form-group">
-        <label>Branch :</label>
+    <div class="form-group ">
         <div>
-            <InputText @bind-Value="@record.BranchId" class="form-control col-sm-3" />
-            <ValidationMessage For="@(() => record.BranchId)" />
+            <label>Branch :</label>
+            <div>
+                <InputSelect @bind-Value="@record.BranchId" class="form-control col-sm-3"> 
+                    <option value="@(Guid.Empty)">--Select--</option>
+
+                    @if (Branches != null) 
+                        foreach (var item in Branches)
+                        {
+                            <option value="@item.Key">@item.Value</option>
+                        }
+                </InputSelect>
+                <ValidationMessage For="@(() => record.BranchId)" />
+            </div>
         </div>
-    </div> *@
+    </div>
+
 
     <hr/>
 
@@ -47,4 +61,12 @@
     public bool loading {get; set;} = false;
     [Parameter]
     public EventCallback OnValidSubmit { get; set; }
+
+    private IReadOnlyCollection<KeyValuePair<Guid, string>> Branches;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        Branches = await BranchesService.LookupItems();
+        await base.OnParametersSetAsync();
+    }
 }

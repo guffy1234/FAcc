@@ -1,10 +1,12 @@
-@page "/dictionary/storage/view/{id}"
+@page "/dictionary/storage/view/{id:guid}"
 @attribute [Authorize]
 @inherits ViewDictionary<StorageDto>
 @using FuelAcc.Client.Shared.Api
 @using FuelAcc.Client.Shared.Pages
+@using FuelAcc.Client.Services.Crud
 @inject NavigationManager navManager
 @inject FuelAcc.Client.Shared.PageHistoryState PageHistoryState
+@inject IDictionaryService<BranchDto> BranchesService
 
 <h1>View Storage</h1>
 <br/>
@@ -21,7 +23,7 @@
         </tr>
         <tr>
             <th scope="row">Branch</th>
-            <td>@Record.BranchId</td>
+            <td>@BranchName</td>
         </tr>
     </tbody>
 </table>
@@ -36,9 +38,17 @@
 </div>
 
 @code {
+    private string BranchName = string.Empty;
+
     protected override void OnInitialized()
     {
         Record = new StorageDto();
         base.OnInitialized();
+    }
+
+    protected async override Task OnParametersSetAsync()
+    {
+        await base.OnParametersSetAsync();
+        BranchName = await BranchesService.LookupName(Record.BranchId);
     }
 }
