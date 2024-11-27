@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using FuelAcc.Domain.Entities.Registry;
+using FuelAcc.Domain.Entities.ReportingModels;
 
 namespace FuelAcc.Application.UseCases.Reports.Rests
 {
@@ -7,7 +8,7 @@ namespace FuelAcc.Application.UseCases.Reports.Rests
     {
         public ReportRestsMapper()
         {
-            CreateMap<Rest, ReportRestView>().ReverseMap();
+            CreateMap<RestReport, ReportRestView>().ReverseMap();
         }
     }
 }

@@ -7097,8 +7097,20 @@ namespace FuelAcc.ApiClient
         [System.Text.Json.Serialization.JsonPropertyName("storageId")]
         public System.Guid StorageId { get; set; }
 
+        [System.Text.Json.Serialization.JsonPropertyName("storageName")]
+        public string StorageName { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("branchId")]
+        public System.Guid BranchId { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("branchName")]
+        public string BranchName { get; set; }
+
         [System.Text.Json.Serialization.JsonPropertyName("productId")]
         public System.Guid ProductId { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("productName")]
+        public string ProductName { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("quantity")]
         public double Quantity { get; set; }
@@ -7108,6 +7120,9 @@ namespace FuelAcc.ApiClient
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class ReportRestsDto
     {
+
+        [System.Text.Json.Serialization.JsonPropertyName("nonEmptyOnly")]
+        public bool NonEmptyOnly { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("storageId")]
         public System.Collections.Generic.ICollection<System.Guid> StorageId { get; set; }
@@ -7130,14 +7145,32 @@ namespace FuelAcc.ApiClient
         [System.Text.Json.Serialization.JsonPropertyName("orderId")]
         public System.Guid OrderId { get; set; }
 
-        [System.Text.Json.Serialization.JsonPropertyName("sourceId")]
-        public System.Guid? SourceId { get; set; }
+        [System.Text.Json.Serialization.JsonPropertyName("orderNumber")]
+        public string OrderNumber { get; set; }
 
-        [System.Text.Json.Serialization.JsonPropertyName("destinationId")]
-        public System.Guid? DestinationId { get; set; }
+        [System.Text.Json.Serialization.JsonPropertyName("srcRestId")]
+        public System.Guid? SrcRestId { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("srcStorageId")]
+        public System.Guid? SrcStorageId { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("srcStorageName")]
+        public string SrcStorageName { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("dstRestId")]
+        public System.Guid? DstRestId { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("dstStorageId")]
+        public System.Guid? DstStorageId { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("dstStorageName")]
+        public string DstStorageName { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("productId")]
         public System.Guid ProductId { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("productName")]
+        public string ProductName { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("quantity")]
         public double Quantity { get; set; }

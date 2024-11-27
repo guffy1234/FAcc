@@ -1,6 +1,6 @@
-﻿namespace FuelAcc.Application.UseCases.Reports
+﻿namespace FuelAcc.Domain.Entities.ReportingModels
 {
-    public sealed class ReportTransactionView
+    public sealed class TransactionReport
     {
         public Guid Id { get; set; }
         public DateTime Date { get; set; }
@@ -21,5 +21,4 @@
 
         public decimal Quantity { get; set; }
     }
-
 }

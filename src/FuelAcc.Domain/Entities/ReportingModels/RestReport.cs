@@ -1,6 +1,6 @@
-﻿namespace FuelAcc.Application.UseCases.Reports
+﻿namespace FuelAcc.Domain.Entities.ReportingModels
 {
-    public sealed class ReportRestView
+    public sealed class RestReport
     {
         public Guid Id { get; set; }
 
@@ -15,4 +15,5 @@
 
         public decimal Quantity { get; set; }
     }
+
 }

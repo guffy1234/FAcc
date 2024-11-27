@@ -1,6 +1,7 @@
 ﻿using FuelAcc.ApiClient;
 using FuelAcc.Client.Services;
 using FuelAcc.Client.Services.Crud;
+using FuelAcc.Client.Services.Reports;
 using FuelAcc.Client.Shared;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -29,6 +30,8 @@ namespace FuelAcc.Client
             services.AddProtectedApiClient<IOrdersInApiClient, OrdersInApiClient>(baseAddress);
             services.AddProtectedApiClient<IOrdersOutApiClient, OrdersOutApiClient>(baseAddress);
             services.AddProtectedApiClient<IOrdersMoveApiClient, OrdersMoveApiClient>(baseAddress);
+
+            services.AddProtectedApiClient<IReportsApiClient, ReportsApiClient>(baseAddress);
 
             // Register a preconfigure SignalR hub connection.
             // Note the connection isnt yet started, this will be done as part of the App.razor component
@@ -100,6 +103,8 @@ namespace FuelAcc.Client
             services.AddScoped<IDocumentService<OrderInDto>, DocumentService<OrderInDto, OrderInDtoPagedResult, OrderInQueryDto>>();
             services.AddScoped<IDocumentService<OrderOutDto>, DocumentService<OrderOutDto, OrderOutDtoPagedResult, OrderOutQueryDto>>();
             services.AddScoped<IDocumentService<OrderMoveDto>, DocumentService<OrderMoveDto, OrderMoveDtoPagedResult, OrderMoveQueryDto>>();
+
+            services.AddScoped<IReportsService, ReportsService>();
 
             services.AddLocalization();
 

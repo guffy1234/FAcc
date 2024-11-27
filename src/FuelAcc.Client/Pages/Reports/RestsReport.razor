@@ -1,0 +1,55 @@
+@page "/reports/rests"
+
+
+@using FuelAcc.Application.DtoCommon
+@using FuelAcc.Application.DtoCommon.Paging
+@using FuelAcc.Client.Services.Reports
+@using FuelAcc.ApiClient
+
+@inject IReportsService RepService
+@inject Microsoft.AspNetCore.Components.NavigationManager UriHelper
+@inject FuelAcc.Client.Shared.PageHistoryState PageHistoryState
+
+<h1>Rests report</h1>
+<br />
+
+@if (Records == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th style="width:25%">Branch</th>
+                <th style="width:25%">Storage</th>
+                <th style="width:25%">Product</th>
+                <th style="width:25%">Quantity</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var record in Records)
+            {
+                <tr>
+                    <td>@(record.BranchName)</td>
+                    <td>@(record.StorageName)</td>
+                    <td>@(record.ProductName)</td>
+                    <td>@(record.Quantity)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    protected ICollection<ReportRestView> Records;
+    
+    protected override async Task OnParametersSetAsync()
+    {
+        Records = await RepService.GetRests(new ReportRestsDto(){
+            NonEmptyOnly = true
+        });
+        PageHistoryState.AddPageToHistory(UriHelper.Uri);
+    }
+}
