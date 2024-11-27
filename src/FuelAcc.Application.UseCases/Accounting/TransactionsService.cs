@@ -142,7 +142,7 @@ namespace FuelAcc.Application.UseCases.Accounting
 
         private async Task<List<Transaction>> CreateTransactionsFromLinesAsync(Guid documentId, DateTime date, Guid? src, Guid? dst, IEnumerable<OrderLine> lines, CancellationToken cancellationToken)
         {
-            if (!src.HasValue && !dst.HasValue)
+            if ((!src.HasValue || src.Value == Guid.Empty) && (!dst.HasValue || dst.Value == Guid.Empty))
             {
                 throw new ArgumentException($"{nameof(src)} or {nameof(dst)} must be passed not null!");
             }
@@ -196,7 +196,7 @@ namespace FuelAcc.Application.UseCases.Accounting
 
         private async Task<Rest?> GetOrCreateRestAsync(Guid? src, Guid productId, CancellationToken cancellationToken)
         {
-            if (src.HasValue)
+            if (src.HasValue && src.Value != Guid.Empty)
             {
                 var srcRest = _cache.Values.Where(e => e.StorageId == src.Value && e.ProductId == productId).FirstOrDefault();
 

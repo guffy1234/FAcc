@@ -1,0 +1,23 @@
+@page "/document/ordermove/create"
+@attribute [Authorize]
+@inherits AddDocument<OrderMoveDto>
+@using FuelAcc.ApiClient
+@using FuelAcc.Client.Shared.Pages
+
+<h1>Create Move Order</h1>
+<br/>
+<Form ButtonText="Create" record="@Record" loading="@Loading" OnValidSubmit="@CreateRecord" />
+
+@code {
+    protected override void OnInitialized()
+    {
+        NavigationPrefix = "/document/ordermove";
+        SucceededAlertText = "Move Order added successfully";
+        Record = new OrderMoveDto();
+        Record.Date = DateTime.UtcNow;
+        Record.Number = $"MV.{Record.Date.ToString("yyyyMMddHHmmss")}";
+        Record.Description = string.Empty;
+
+        base.OnInitialized();
+    }
+}

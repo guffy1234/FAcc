@@ -30,7 +30,7 @@ namespace FuelAcc.Application.UseCases.Reports.Rests
 
             var dto = request.dto;
 
-            var entities = _repository.GetRests(dto.StorageId, dto.ProductId);
+            var entities = _repository.GetRests(dto.NonEmptyOnly, dto.StorageId, dto.ProductId);
 
             async IAsyncEnumerable<ReportRestView> ConversionEnumerator()
             {

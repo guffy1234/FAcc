@@ -16,19 +16,24 @@ namespace FuelAcc.Persistence.Repositories
 
         public async Task<IEnumerable<Transaction>> GetAllAsync(Guid documentId, CancellationToken cancellationToken)
         {
-            var items = await _dbContext.Transactions.Where(e => e.OrderId == documentId).ToListAsync(cancellationToken);
+            var items = await _dbContext.Transactions
+                .Where(e => e.OrderId == documentId)
+                .AsNoTracking()
+                .ToListAsync(cancellationToken);
             return items;
         }
 
         public async Task<Rest> GetRestAsync(Guid storageId, Guid productId, CancellationToken cancellationToken)
         {
-            var rest = await _dbContext.Rests.FirstOrDefaultAsync(e => e.StorageId == storageId && e.ProductId == productId, cancellationToken);
+            var rest = await _dbContext.Rests
+                .FirstOrDefaultAsync(e => e.StorageId == storageId && e.ProductId == productId, cancellationToken);
             return rest;
         }
 
         public async Task<Rest> GetRestByIdAsync(Guid id, CancellationToken cancellationToken)
         {
-            var rest = await _dbContext.Rests.FirstOrDefaultAsync(e => e.Id == id, cancellationToken);
+            var rest = await _dbContext.Rests
+                .FirstOrDefaultAsync(e => e.Id == id, cancellationToken);
             return rest;
         }
 

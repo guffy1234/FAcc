@@ -61,10 +61,15 @@ namespace FuelAcc.Persistence.Repositories
             return items;
         }
 
-        public IAsyncEnumerable<Rest> GetRests(
+        public IAsyncEnumerable<Rest> GetRests(bool nonEmptyOnly,
             IEnumerable<Guid>? storageId, IEnumerable<Guid>? productId)
         {
             var queue = _dbContext.Set<Rest>().AsQueryable();
+
+            if (nonEmptyOnly)
+            {
+                queue = queue.Where(r => r.Quantity > 0);
+            }
 
             if (storageId != null && storageId.Any())
             {

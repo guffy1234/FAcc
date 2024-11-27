@@ -1,0 +1,120 @@
+@page "/document/ordermove/view/{id:guid}"
+@attribute [Authorize]
+@inherits ViewDocument<OrderMoveDto>
+@using FuelAcc.ApiClient
+@using FuelAcc.Client.Shared.Pages
+@using FuelAcc.Client.Services.Crud
+@inject NavigationManager navManager
+@inject FuelAcc.Client.Shared.PageHistoryState PageHistoryState
+@inject IDictionaryService<ProductDto> ProductsService
+@inject IDictionaryService<StorageDto> StoragesService
+
+<h1>View Out Order</h1>
+<br/>
+
+<table class="table col-md-6">
+    <tbody>
+        <tr>
+            <th scope="row">Id</th>
+            <td>@Record.Id</td>
+        </tr>
+        <tr>
+            <th scope="row">Date</th>
+            <td>@Record.Date.ToLocalTime()</td>
+        </tr>
+        <tr>
+            <th scope="row">Number</th>
+            <td>@Record.Number</td>
+        </tr>
+        <tr>
+            <th scope="row">Description</th>
+            <td>@Record.Description</td>
+        </tr>
+        <tr>
+            <th scope="row">From Storage</th>
+            <td>@FromStorageName</td>
+        </tr>
+        <tr>
+            <th scope="row">To Storage</th>
+            <td>@ToStorageName</td>
+        </tr>
+    </tbody>
+</table>
+
+<h3>Lines</h3>
+<div class="form-row">
+    <div class="form-group col-md-3">
+        <label>Product</label>
+    </div>
+    <div class="form-group col-md-3">
+        <label>Quantity</label>
+    </div>
+    <div class="form-group col-md-3">
+        <label>Price</label>
+    </div>
+    <div class="form-group col-md-2">
+        <label>Sum</label>
+    </div>
+</div>
+@if (Record.Lines != null) foreach (var line in Record.Lines)
+    {
+        <div class="form-row">
+            <div class="form-group col-md-3">
+                @Products[line.ProductId]
+            </div>
+            <div class="form-group col-md-3">
+                @line.Quantity
+            </div>
+            <div class="form-group col-md-3">
+                @line.Price
+            </div>
+            <div class="form-group col-md-2">
+                @(line.Quantity > 0 && line.Price.HasValue && line.Price.Value > 0 ? line.Quantity * line.Price : 0.0)
+            </div>
+        </div>
+    }
+
+<div class="form-group">
+    @if (PageHistoryState.CanGoBack()){
+        <NavLink href="@PageHistoryState.GetGoBackPage()" class="btn btn-link">Back</NavLink>
+    }
+    else{
+        <NavLink href="/dictionary/ordermove/1" class="btn btn-link">Back</NavLink>
+    }
+</div>
+
+@code {
+    private string ToStorageName = string.Empty;
+    private string FromStorageName = string.Empty;
+    private Dictionary<Guid, string> Products;  
+
+    protected override void OnInitialized()
+    {
+        Record = new OrderMoveDto();
+        base.OnInitialized();
+    }
+
+    protected async override Task OnParametersSetAsync()
+    {
+        await base.OnParametersSetAsync();
+        ToStorageName = Record.ToStorageId.HasValue ? 
+            await StoragesService.LookupName(Record.ToStorageId.Value) :
+            string.Empty;
+        FromStorageName = Record.FromStorageId.HasValue ? 
+            await StoragesService.LookupName(Record.FromStorageId.Value) :
+            string.Empty;
+        Products = new Dictionary<Guid, string>();
+        if(Record.Lines != null)
+        {
+            foreach(var line in Record.Lines)
+            {
+                if(Products.ContainsKey(line.ProductId))
+                {
+                    continue;
+                }
+                var name = await ProductsService.LookupName(line.ProductId);
+                Products[line.ProductId] = name;
+            }
+        }
+    }
+}

@@ -1,17 +1,17 @@
-@page "/document/orderout/{Page:int}"
+@page "/document/ordermove/{Page:int}"
 
 @attribute [Authorize]
-@inherits ListDocument<OrderOutDto>
+@inherits ListDocument<OrderMoveDto>
 
 @using FuelAcc.ApiClient
 @using FuelAcc.Client.Shared.Pages
 
-<h1>Out Orders</h1>
+<h1>Move Orders</h1>
 <br/>
 
 <div class="row mb-3">
     <div class="col-md-7">
-        <NavLink href="@($"{NavigationPrefix}/create")" class="btn btn-sm btn-success mb-2">Add Out Order</NavLink>
+        <NavLink href="@($"{NavigationPrefix}/create")" class="btn btn-sm btn-success mb-2">Add Move Order</NavLink>
     </div>
     <div class="input-group col-md-5 text-md-right">
         <input name="SearchInput" type="text" class="form-control" placeholder="Name" @bind="this.SearchTerm" @onkeyup="SearchBoxKeyPress" />
@@ -66,7 +66,7 @@ else
 @code {
     protected override void OnInitialized()
     {
-        NavigationPrefix = "/document/orderout";
+        NavigationPrefix = "/document/ordermove";
         base.OnInitialized();
     }
 }

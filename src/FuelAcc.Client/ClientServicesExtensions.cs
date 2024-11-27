@@ -10,6 +10,7 @@ using System.Net.Http.Headers;
 
 namespace FuelAcc.Client
 {
+
     public static class ClientServicesExtensions
     {
         public static IServiceCollection ConfigureClientServices(this IServiceCollection services, Uri baseAddress)
@@ -102,6 +103,8 @@ namespace FuelAcc.Client
 
             services.AddLocalization();
 
+            services.AddTransient<BearerTokenHandler>();
+
             //services.AddSingleton<StateContainer>();
 
             return services;
@@ -115,14 +118,9 @@ namespace FuelAcc.Client
         }
         private static void AddProtectedApiClient<TClient, TImplementation>(this IServiceCollection services, Uri baseAddress) where TClient : class where TImplementation : class, TClient
         {
-            services.AddHttpClient<TClient, TImplementation>((serviceProvider, client) => {
+            services.AddHttpClient<TClient, TImplementation>(client => {
                 client.BaseAddress = baseAddress;
-                var loginService = serviceProvider.GetRequiredService<IAuthenticationContext>();
-                if (loginService.IsAuthenticated)
-                {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", loginService.Token);
-                }
-            });
+            }).AddHttpMessageHandler<BearerTokenHandler>();
         }
 
 
