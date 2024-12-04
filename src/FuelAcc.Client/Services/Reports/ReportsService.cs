@@ -1,7 +1,6 @@
 ﻿using FuelAcc.Application.DtoCommon.Dictionaries;
 using FuelAcc.Application.DtoCommon.Paging;
 using FuelAcc.ApiClient;
-using Microsoft.Extensions.Caching.Memory;
 using Microsoft.JSInterop;
 
 namespace FuelAcc.Client.Services.Reports
@@ -9,12 +8,10 @@ namespace FuelAcc.Client.Services.Reports
     public class ReportsService : IReportsService
     {
         private readonly IReportsApiClient _restClient;
-        private readonly IMemoryCache _memoryCache;
 
-        public ReportsService(IReportsApiClient restClient, IMemoryCache memoryCache)
+        public ReportsService(IReportsApiClient restClient)
         {
             _restClient = restClient;
-            _memoryCache = memoryCache;
         }
 
         public async Task<ICollection<ReportTransactionView>> GetTransactions(ReportTransactionsDto dto)

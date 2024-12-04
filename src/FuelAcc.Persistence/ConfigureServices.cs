@@ -28,6 +28,7 @@ namespace FuelAcc.Persistence
             services.AddScoped<IEventStoreRepository, EventStoreRepository>();
             services.AddScoped<ITransactionsRepository, TransactionsRepository>();
             services.AddScoped<IReportsRepository, ReportsRepository>();
+            services.AddScoped<ISettingsRepository, SettingsRepository>();
 
             services.AddScoped<IReplicationRepository, ReplicationRepository>();
 

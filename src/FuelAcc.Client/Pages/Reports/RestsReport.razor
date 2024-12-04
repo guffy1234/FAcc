@@ -1,14 +1,21 @@
 @page "/reports/rests"
 
 
+@using CsvHelper
 @using FuelAcc.Application.DtoCommon
 @using FuelAcc.Application.DtoCommon.Paging
 @using FuelAcc.Client.Services.Reports
 @using FuelAcc.ApiClient
+@using System.Globalization
+@using iText.Kernel.Pdf
+@using iText.Layout;
+@using iText.Layout.Element;
+@using iText.Layout.Properties;
 
 @inject IReportsService RepService
 @inject Microsoft.AspNetCore.Components.NavigationManager UriHelper
 @inject FuelAcc.Client.Shared.PageHistoryState PageHistoryState
+@inject IFileSaveService FileSaveService
 
 <h1>Rests report</h1>
 <br />
@@ -19,6 +26,8 @@
 }
 else
 {
+    <button name="ExportCsv" class="btn btn-primary" @onclick="OnExportCsv">Export to CSV</button>
+    <button name="ExportPdf" class="btn btn-primary" @onclick="OnExportPdf">Export to PDF</button>
     <table class="table table-striped">
         <thead>
             <tr>
@@ -44,12 +53,65 @@ else
 
 @code {
     protected ICollection<ReportRestView> Records;
-    
+
     protected override async Task OnParametersSetAsync()
     {
         Records = await RepService.GetRests(new ReportRestsDto(){
             NonEmptyOnly = true
         });
         PageHistoryState.AddPageToHistory(UriHelper.Uri);
+    }
+
+    protected async Task OnExportCsv()
+    {
+        using var ms = new MemoryStream();
+        {
+            using var writer = new StreamWriter(ms);
+            using var csv = new CsvWriter(writer, CultureInfo.InvariantCulture);
+            var filtered = Records.Select(r => new { 
+                r.BranchName, 
+                r.StorageName, 
+                r.ProductName, 
+                r.Quantity });
+            csv.WriteRecords(filtered);
+        }
+        var filename = $"FuelAccRests_{DateTime.Now.ToString("yyyyMMdd_HHmmss")}.csv";
+
+        await FileSaveService.SaveToFile(filename, ms);
+    }
+
+    protected async Task OnExportPdf()
+    {
+        using var ms = new MemoryStream();
+        {
+            using var writer = new PdfWriter(ms);
+            using var pdfDoc = new PdfDocument(writer);
+
+            using var document = new Document(pdfDoc);
+
+            var title = $"Rests report {DateTime.Now}";
+            document.Add(new Paragraph(title));
+
+            Table table = new Table(UnitValue.CreatePercentArray(4)).UseAllAvailableWidth();
+
+            table.AddHeaderCell("Branch");
+            table.AddHeaderCell("Storage");
+            table.AddHeaderCell("Product");
+            table.AddHeaderCell("Quantity");
+
+            foreach (var r in Records)
+            {
+                table.AddCell(r.BranchName);
+                table.AddCell(r.StorageName);
+                table.AddCell(r.ProductName);
+                table.AddCell(r.Quantity.ToString());
+            }
+
+            document.Add(table);
+        }
+
+        var filename = $"FuelAccRests_{DateTime.Now.ToString("yyyyMMdd_HHmmss")}.pdf";
+
+        await FileSaveService.SaveToFile(filename, ms);
     }
 }

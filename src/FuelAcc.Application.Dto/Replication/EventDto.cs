@@ -1,4 +1,5 @@
-﻿using FuelAcc.Domain.Enums;
+﻿using FuelAcc.Domain.Entities.Dictionaries;
+using FuelAcc.Domain.Enums;
 
 namespace FuelAcc.Application.Dto.Replication
 {

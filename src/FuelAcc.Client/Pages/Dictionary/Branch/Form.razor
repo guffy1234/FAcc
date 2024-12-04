@@ -3,6 +3,28 @@
 
 <EditForm Model="@record" OnValidSubmit="@OnValidSubmit">
     @* <FluentValidator TValidator="PersonValidator" /> *@
+    @if (IsCreate)
+    {
+        <div>
+            Attention! Branch is specific entity used for replication.
+            When you create a new branch you must take ID of the Main branch of an another installation and enter it here.
+            Basically it's better to delegate to Admin this operation.
+        </div>
+    }
+    <div class="form-group">
+        <label>Id :</label>
+        <div>
+            @if (!IsCreate)
+            {
+                @record.Id.ToString();
+            }
+            else
+            {
+                <InputText @bind-Value="@IdStr" class="form-control col-sm-3" />
+                <ValidationMessage For="@(() => record.Name)" />
+            }
+        </div>
+    </div>
     <div class="form-group">
         <label>Name :</label>
         <div>
@@ -32,8 +54,19 @@
 </EditForm>
 
 @code {
+    private string IdStr { 
+        get => record.Id.ToString(); 
+        set {
+            if (IsCreate && Guid.TryParse(value, out var g))
+            {
+                record.Id = g;
+            }
+        } 
+    }
     [Parameter]
     public BranchDto record { get; set; }
+    [Parameter]
+    public bool IsCreate { get; set; }
     [Parameter]
     public string ButtonText { get; set; } = "Save";
     [Parameter]

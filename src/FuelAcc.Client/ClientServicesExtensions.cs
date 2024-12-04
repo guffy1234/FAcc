@@ -32,6 +32,8 @@ namespace FuelAcc.Client
             services.AddProtectedApiClient<IOrdersMoveApiClient, OrdersMoveApiClient>(baseAddress);
 
             services.AddProtectedApiClient<IReportsApiClient, ReportsApiClient>(baseAddress);
+            services.AddProtectedApiClient<IReplicationApiClient, ReplicationApiClient>(baseAddress);
+            services.AddProtectedApiClient<ISettingsApiClient, SettingsApiClient>(baseAddress);
 
             // Register a preconfigure SignalR hub connection.
             // Note the connection isnt yet started, this will be done as part of the App.razor component
@@ -105,6 +107,9 @@ namespace FuelAcc.Client
             services.AddScoped<IDocumentService<OrderMoveDto>, DocumentService<OrderMoveDto, OrderMoveDtoPagedResult, OrderMoveQueryDto>>();
 
             services.AddScoped<IReportsService, ReportsService>();
+            services.AddScoped<ISettingsService, SettingsService>();
+
+            services.AddTransient<IFileSaveService, FileSaveService>();
 
             services.AddLocalization();
 

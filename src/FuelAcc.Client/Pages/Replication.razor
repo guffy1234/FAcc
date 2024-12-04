@@ -1,0 +1,164 @@
+﻿@page "/replication"
+@using FuelAcc.Client.Services.Crud
+@using System.Net.Mime
+
+@inject IAlertService AlertService
+@inject NavigationManager navManager
+@inject FuelAcc.Client.Shared.PageHistoryState PageHistoryState
+@inject ISettingsService SettingsService
+@inject IDictionaryService<BranchDto> BranchesService
+@inject IReplicationApiClient ApiClient
+@inject IFileSaveService FileSaveService
+
+<h1>Export replication packet</h1>
+
+<EditForm Model="@Record" OnValidSubmit="@ExportPkt">
+    <div class="form-group ">
+        <div>
+            <label>Branch :</label>
+            <div>
+                <InputSelect @bind-Value="@ExportBranchId" class="form-control col-sm-3">
+                    <option value="@(Guid.Empty)">--Select--</option>
+
+                    @if (Branches != null)
+                        foreach (var item in Branches)
+                        {
+                            <option value="@item.Key">@item.Value</option>
+                        }
+                </InputSelect>
+            </div>
+        </div>
+    </div>
+
+    <hr />
+
+    <div class="form-group">
+        <button class="btn btn-primary">
+            Export
+        </button>
+        @if (PageHistoryState.CanGoBack())
+        {
+            <NavLink href="@PageHistoryState.GetGoBackPage()" class="btn btn-link">Cancel</NavLink>
+        }
+        else
+        {
+            <NavLink href="/dictionary/storage/1" class="btn btn-link">Back</NavLink>
+        }
+    </div>
+
+</EditForm>
+
+<br/>
+
+<h1>Import replication packet</h1>
+
+<EditForm Model="@Record" OnValidSubmit="@ImportPkt">
+    <div class="form-group ">
+        <div>
+            <label>File:</label>
+            <div>
+                <InputFile accept=".zip" class="form-control-file" type="file" OnChange="HandleSelection" />                
+            </div>
+        </div>
+    </div>
+
+    <hr />
+
+    <div class="form-group">
+        <button class="btn btn-primary">
+            Import
+        </button>
+        @if (PageHistoryState.CanGoBack())
+        {
+            <NavLink href="@PageHistoryState.GetGoBackPage()" class="btn btn-link">Cancel</NavLink>
+        }
+        else
+        {
+            <NavLink href="/dictionary/storage/1" class="btn btn-link">Back</NavLink>
+        }
+    </div>
+
+</EditForm>
+
+@code{
+    private class Dummy
+    {
+
+    };
+
+    private Dummy Record = new Dummy();
+
+    private Guid ExportBranchId;
+    private Guid CurrentBranchId;
+    private IReadOnlyCollection<KeyValuePair<Guid, string>> Branches;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await base.OnParametersSetAsync();
+        CurrentBranchId = await SettingsService.GetCurrentBranchId();
+        var b = await BranchesService.LookupItems();
+        // you can't export to self
+        Branches = b.Where(x => x.Key != CurrentBranchId).ToArray();
+    }
+
+
+    protected override void OnInitialized()
+    {
+        PageHistoryState.AddPageToHistory(navManager.Uri);
+        base.OnInitialized();
+    }
+
+    protected async Task ExportPkt()
+    {
+        try
+        {
+            var pkt = await ApiClient.ZipGetAsync(ExportBranchId);
+
+            var dispositionStr = pkt.Headers.FirstOrDefault(x => x.Key == "Content-Disposition").Value?.First();
+
+            var contentDisposition = new ContentDisposition(dispositionStr);
+            var filename = contentDisposition.FileName;
+
+            await FileSaveService.SaveToFile(filename, pkt.Stream);
+
+            AlertService.Success("Replication packet exported", keepAfterRouteChange: true);
+        }
+        catch (Exception ex)
+        {
+            AlertService.Error(ex.Message);
+            StateHasChanged();
+        }
+    }
+
+    private IBrowserFile SelectedFile;
+
+    async Task HandleSelection(InputFileChangeEventArgs e)
+    {
+        SelectedFile = e.File;
+    }
+
+    protected async Task ImportPkt()
+    {
+        try
+        {
+            if (SelectedFile != null)
+            {
+                // max 5 MB
+                var stm = SelectedFile.OpenReadStream(5 * 1024 * 1024);
+
+                var fp = new FileParameter(stm, SelectedFile.Name, SelectedFile.ContentType);
+                await ApiClient.ZipPostAsync(fp);
+
+                AlertService.Success("Replication packet imported", keepAfterRouteChange: true);
+            } else {
+                AlertService.Error("Select ZIP file!");
+            }
+
+        }
+        catch (Exception ex)
+        {
+            AlertService.Error(ex.Message);
+            StateHasChanged();
+        }
+    }
+}

@@ -9,6 +9,8 @@
 <Form ButtonText="Update" record="@Record" loading="@Loading" OnValidSubmit="@UpdateRecord" />
 
 @code {
+    private Guid CurrentBranchId;
+
     protected override void OnInitialized()
     {
         NavigationPrefix = "/dictionary/branch";

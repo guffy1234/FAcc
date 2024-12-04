@@ -6,7 +6,7 @@
 
 <h1>Create Branch</h1>
 <br/>
-<Form ButtonText="Create" record="@Record" loading="@Loading" OnValidSubmit="@CreateRecord" />
+<Form ButtonText="Create" record="@Record" loading="@Loading" IsCreate="true" OnValidSubmit="@CreateRecord" />
 
 @code {
     protected override void OnInitialized()

@@ -2,6 +2,7 @@
 
 @attribute [Authorize]
 @inherits ListDictionary<BranchDto>
+@inject ISettingsService SettingsService
 
 @using FuelAcc.ApiClient
 @using FuelAcc.Client.Shared.Pages
@@ -49,10 +50,12 @@ else
                     <td style="white-space: nowrap">
                         <NavLink href="@($"{NavigationPrefix}/view/{record.Id}")" class="oi oi-eye text-primary mr-3 nounderline"></NavLink>
                         <NavLink href="@($"{NavigationPrefix}/update/{record.Id}")" class="oi oi-pencil text-warning mr-2 nounderline"></NavLink>
-
-                        <button @onclick="@(() => DeleteRecord(record.Id))" class=" btn btn-link oi oi-trash text-danger mr-1 nounderline">
-                            <span></span>
-                        </button>
+                        @if (CurrentBranchId != record.Id)
+                        {
+                            <button @onclick="@(() => DeleteRecord(record.Id))" class=" btn btn-link oi oi-trash text-danger mr-1 nounderline">
+                                <span></span>
+                            </button>
+                        }
                     </td>
                 </tr> 
             }
@@ -62,9 +65,17 @@ else
 }
 
 @code {
+    private Guid CurrentBranchId;
+
     protected override void OnInitialized()
     {
         NavigationPrefix = "/dictionary/branch";
         base.OnInitialized();
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await base.OnParametersSetAsync();
+        CurrentBranchId = await SettingsService.GetCurrentBranchId();
     }
 }

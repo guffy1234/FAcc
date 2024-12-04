@@ -1,14 +1,21 @@
 @page "/reports/transactions"
 
 
+@using CsvHelper
 @using FuelAcc.Application.DtoCommon
 @using FuelAcc.Application.DtoCommon.Paging
 @using FuelAcc.Client.Services.Reports
 @using FuelAcc.ApiClient
+@using System.Globalization
+@using iText.Kernel.Pdf
+@using iText.Layout;
+@using iText.Layout.Element;
+@using iText.Layout.Properties;
 
 @inject IReportsService RepService
 @inject Microsoft.AspNetCore.Components.NavigationManager UriHelper
 @inject FuelAcc.Client.Shared.PageHistoryState PageHistoryState
+@inject IFileSaveService FileSaveService
 
 <h1>Transactions report</h1>
 <br />
@@ -19,6 +26,8 @@
 }
 else
 {
+    <button name="ExportCsv" class="btn btn-primary" @onclick="OnExportCsv">Export to CSV</button>
+    <button name="ExportPdf" class="btn btn-primary" @onclick="OnExportPdf">Export to PDF</button>
     <table class="table table-striped">
         <thead>
             <tr>
@@ -54,5 +63,67 @@ else
         Records = await RepService.GetTransactions(new ReportTransactionsDto(){
         });
         PageHistoryState.AddPageToHistory(UriHelper.Uri);
+    }
+
+    protected async Task OnExportCsv()
+    {
+        using var ms = new MemoryStream();
+        {
+            using var writer = new StreamWriter(ms);
+            using var csv = new CsvWriter(writer, CultureInfo.InvariantCulture);
+            var filtered = Records.Select(r => new
+            {
+                r.Date, 
+                r.OrderNumber, 
+                r.SrcStorageName, 
+                r.DstStorageName,
+                r.ProductName,
+                r.Quantity
+            });
+            csv.WriteRecords(filtered);
+        }
+        var filename = $"FuelAccTrans_{DateTime.Now.ToString("yyyyMMdd_HHmmss")}.csv";
+
+        await FileSaveService.SaveToFile(filename, ms);
+    }
+
+    protected async Task OnExportPdf()
+    {
+        using var ms = new MemoryStream();
+        {
+            using var writer = new PdfWriter(ms);
+            using var pdfDoc = new PdfDocument(writer);
+
+            using var document = new Document(pdfDoc);
+
+            var title = $"Transactions report {DateTime.Now}";
+            document.Add(new Paragraph(title));
+
+            Table table = new Table(UnitValue.CreatePercentArray(6)).UseAllAvailableWidth();
+
+            table.AddHeaderCell("Date");
+            table.AddHeaderCell("Document");
+            table.AddHeaderCell("Source");
+            table.AddHeaderCell("Destination");
+            table.AddHeaderCell("Product");
+            table.AddHeaderCell("Quantity");
+
+
+            foreach (var r in Records)
+            {
+                table.AddCell(r.Date.ToLocalTime().ToShortDateString());
+                table.AddCell(r.OrderNumber);
+                table.AddCell(r.SrcStorageName ?? string.Empty);
+                table.AddCell(r.DstStorageName ?? string.Empty);
+                table.AddCell(r.ProductName);
+                table.AddCell(r.Quantity.ToString());
+            }
+
+            document.Add(table);
+        }
+
+        var filename = $"FuelAccTrans_{DateTime.Now.ToString("yyyyMMdd_HHmmss")}.pdf";
+
+        await FileSaveService.SaveToFile(filename, ms);
     }
 }
