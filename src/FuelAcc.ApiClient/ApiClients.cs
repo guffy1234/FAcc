@@ -4855,6 +4855,11 @@ namespace FuelAcc.ApiClient
         /// <exception cref="ApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task ZipPostAsync(FileParameter file = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <returns>OK</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<ReplictionPacketViewDtoPagedResult> QueryAsync(ReplicationQueryDto body = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
@@ -5253,6 +5258,93 @@ namespace FuelAcc.ApiClient
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             throw new ApiException<ProblemDetails>("Bad Request", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        if (status_ == 401)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new ApiException("Unauthorized", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 403)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new ApiException("Forbidden", status_, responseText_, headers_, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <returns>OK</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public virtual async System.Threading.Tasks.Task<ReplictionPacketViewDtoPagedResult> QueryAsync(ReplicationQueryDto body = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        {
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var json_ = System.Text.Json.JsonSerializer.SerializeToUtf8Bytes(body, JsonSerializerSettings);
+                    var content_ = new System.Net.Http.ByteArrayContent(json_);
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+
+                    var urlBuilder_ = new System.Text.StringBuilder();
+                
+                    // Operation Path: "api/v1/Replication/query"
+                    urlBuilder_.Append("api/v1/Replication/query");
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.IEnumerable<string>>();
+                        foreach (var item_ in response_.Headers)
+                            headers_[item_.Key] = item_.Value;
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 200)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ReplictionPacketViewDtoPagedResult>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
                         }
                         else
                         if (status_ == 401)
@@ -7399,6 +7491,18 @@ namespace FuelAcc.ApiClient
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class ReplicationQueryDto
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("page")]
+        public int? Page { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("pageSize")]
+        public int? PageSize { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class ReplictionPacketDto
     {
 
@@ -7425,6 +7529,66 @@ namespace FuelAcc.ApiClient
 
         [System.Text.Json.Serialization.JsonPropertyName("events")]
         public System.Collections.Generic.ICollection<EventDto> Events { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("outbound")]
+        public bool Outbound { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class ReplictionPacketViewDto
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("id")]
+        public System.Guid Id { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("date")]
+        public System.DateTime Date { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("previousId")]
+        public System.Guid? PreviousId { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("branchId")]
+        public System.Guid BranchId { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("branchName")]
+        public string BranchName { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("fromDate")]
+        public System.DateTime FromDate { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("toDate")]
+        public System.DateTime ToDate { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("outbound")]
+        public bool Outbound { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class ReplictionPacketViewDtoPagedResult
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("currentPage")]
+        public int CurrentPage { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("pageCount")]
+        public int PageCount { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("pageSize")]
+        public int PageSize { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("rowCount")]
+        public int RowCount { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("firstRowOnPage")]
+        public int FirstRowOnPage { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("lastRowOnPage")]
+        public int LastRowOnPage { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("results")]
+        public System.Collections.Generic.ICollection<ReplictionPacketViewDto> Results { get; set; }
 
     }
 

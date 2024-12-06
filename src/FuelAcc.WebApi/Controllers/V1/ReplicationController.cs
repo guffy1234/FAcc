@@ -1,8 +1,12 @@
-﻿using FuelAcc.Application.Dto.Replication;
+﻿using FuelAcc.Application.Dto.Querying;
+using FuelAcc.Application.Dto.Replication;
+using FuelAcc.Application.DtoCommon.Paging;
 using FuelAcc.Application.Interface.Replication;
+using FuelAcc.Application.UseCases.Commons.Queries;
 using FuelAcc.WebApi.Api;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace FuelAcc.WebApi.Controllers.V1
 {
@@ -81,6 +85,16 @@ namespace FuelAcc.WebApi.Controllers.V1
                 await _replicationService.ApplyInboundZipAsync(data, cancellationToken);
             }
             return NoContent();
+        }
+
+        [HttpPost("query")]
+        [ProducesResponseType(typeof(PagedResult<ReplictionPacketViewDto>), StatusCodes.Status200OK)]
+        [ProducesErrorResponseType(typeof(ProblemDetails))]
+        [Authorize]
+        public async Task<PagedResult<ReplictionPacketViewDto>> InternalGetPagedAsync([FromBody] ReplicationQueryDto dto, CancellationToken cancellationToken)
+        {
+            var response = await _replicationService.GetPagedHistoryAsync(dto, cancellationToken);
+            return response;
         }
     }
 }

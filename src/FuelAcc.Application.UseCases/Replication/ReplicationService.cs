@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using FuelAcc.Application.Dto.Querying;
 using FuelAcc.Application.Dto.Replication;
+using FuelAcc.Application.DtoCommon.Paging;
 using FuelAcc.Application.Interface;
 using FuelAcc.Application.Interface.Events;
 using FuelAcc.Application.Interface.Exceptions;
@@ -27,9 +29,9 @@ namespace FuelAcc.Application.UseCases.Replication
             IEventStoreRepository eventStoreRepository,
             IEventConverter eventConverter,
             IExecutionContext executionContext,
-            IMediator mediator, 
+            IMediator mediator,
             IReplicationHelper replicationHelper,
-            IUnitOfWork unitOfWork, 
+            IUnitOfWork unitOfWork,
             IMapper mapper)
         {
             _replicationRepository = replicationRepository;
@@ -82,7 +84,7 @@ namespace FuelAcc.Application.UseCases.Replication
 
             var currentBranchId = await _replicationRepository.GetCurretBranchAsync(cancellationToken);
 
-            if(packetDto.SourceBranchId == currentBranchId)
+            if (packetDto.SourceBranchId == currentBranchId)
             {
                 throw new DomainException($"Can't apply own replication packet to self");
             }
@@ -90,7 +92,6 @@ namespace FuelAcc.Application.UseCases.Replication
             {
                 throw new DomainException($"Can't apply replication packet for other branch to self");
             }
-
 
             var pkt = _mapper.Map<ReplictionPacket>(packetDto);
             pkt.Outbound = false;
@@ -103,7 +104,7 @@ namespace FuelAcc.Application.UseCases.Replication
 
                 var e = _eventConverter.ToMediatorEvent(pe);
 
-                if(e == null)
+                if (e == null)
                 {
                     throw new DomainException($"Can't create mediator event for {ev}");
                 }
@@ -118,7 +119,7 @@ namespace FuelAcc.Application.UseCases.Replication
         {
             var pkt = await BuildOutboudPacketAsync(targetBranchId, cancellationToken);
 
-            if(pkt is null)
+            if (pkt is null)
             {
                 return null;
             }
@@ -150,11 +151,11 @@ namespace FuelAcc.Application.UseCases.Replication
 
             await foreach (var e in events)
             {
-                var eDto = _mapper.Map<EventDto>(e);    
+                var eDto = _mapper.Map<EventDto>(e);
                 eventsDtos.Add(eDto);
             }
 
-            if(!eventsDtos.Any())
+            if (!eventsDtos.Any())
             {
                 return null;
             }
@@ -178,6 +179,26 @@ namespace FuelAcc.Application.UseCases.Replication
             await _unitOfWork.SaveAsync(cancellationToken);
 
             return pktDto;
+        }
+
+        public async Task<PagedResult<ReplictionPacketViewDto>> GetPagedHistoryAsync(ReplicationQueryDto querydto, CancellationToken cancellationToken)
+        {
+            var result = new PagedResult<ReplictionPacketViewDto>();
+            result.CurrentPage = querydto.Page ?? 1;
+            result.PageSize = querydto.PageSize ?? 0;
+
+            var fetched = await _replicationRepository.GetExtendedAsync(null, result.CurrentPage, result.PageSize, cancellationToken);
+
+            result.RowCount = fetched.Total;
+
+            var pageCount = (double)result.RowCount / result.PageSize;
+            result.PageCount = (int)Math.Ceiling(pageCount);
+
+            result.Results = fetched.Items
+                .Select(e => _mapper.Map<ReplictionPacketViewDto>(e))
+                .ToList();
+
+            return result;
         }
     }
 }

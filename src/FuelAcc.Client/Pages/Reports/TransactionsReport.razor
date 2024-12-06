@@ -57,7 +57,7 @@ else
 
 @code {
     protected ICollection<ReportTransactionView> Records;
-    
+
     protected override async Task OnParametersSetAsync()
     {
         Records = await RepService.GetTransactions(new ReportTransactionsDto(){
@@ -69,7 +69,7 @@ else
     {
         using var ms = new MemoryStream();
         {
-            using var writer = new StreamWriter(ms);
+            using var writer = new StreamWriter(ms, leaveOpen: true);
             using var csv = new CsvWriter(writer, CultureInfo.InvariantCulture);
             var filtered = Records.Select(r => new
             {
@@ -84,6 +84,7 @@ else
         }
         var filename = $"FuelAccTrans_{DateTime.Now.ToString("yyyyMMdd_HHmmss")}.csv";
 
+        ms.Position = 0;
         await FileSaveService.SaveToFile(filename, ms);
     }
 
@@ -124,6 +125,7 @@ else
 
         var filename = $"FuelAccTrans_{DateTime.Now.ToString("yyyyMMdd_HHmmss")}.pdf";
 
-        await FileSaveService.SaveToFile(filename, ms);
+        // todo: ToArray is workaround because PdfWriter closes ms
+        await FileSaveService.SaveToFile(filename, ms.ToArray());
     }
 }

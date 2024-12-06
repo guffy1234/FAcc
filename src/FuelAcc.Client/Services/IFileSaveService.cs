@@ -4,9 +4,9 @@ namespace FuelAcc.Client.Services
 {
     public interface IFileSaveService
     {
-        Task SaveToFile(string filename, byte[] data);
-        Task SaveToFile(string filename, MemoryStream ms);
-        Task SaveToFile(string filename, Stream stm);
-        Task SaveToFile(string filename, string text, Encoding encoding = null);
+        Task SaveToFile(string fileName, byte[] data);
+        Task SaveToFile(string fileName, Stream stm);
+        Task SaveToFile(string fileName, string text, Encoding encoding = null);
+        Task SaveToFile(string fileName, Uri uri);
     }
 }

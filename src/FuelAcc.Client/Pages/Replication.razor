@@ -1,4 +1,5 @@
-﻿@page "/replication"
+﻿@page "/replication/{Page:int}"
+@using FuelAcc.Application.DtoCommon.Paging
 @using FuelAcc.Client.Services.Crud
 @using System.Net.Mime
 
@@ -10,7 +11,43 @@
 @inject IReplicationApiClient ApiClient
 @inject IFileSaveService FileSaveService
 
-<h1>Export replication packet</h1>
+<h1>Replication</h1>
+
+@if (Records == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th style="width:20%">Date</th>
+                <th style="width:20%">Direction</th>
+                <th style="width:20%">Branch</th>
+                <th style="width:20%">From</th>
+                <th style="width:20%">To</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var record in Records.Results)
+            {
+                <tr>
+                    <td>@record.Date.ToLocalTime()</td>
+                    <td>@(record.Outbound ? "Export" : "Import")</td>
+                    <td>@record.BranchName</td>
+                    <td>@(record.FromDate == DateTime.MinValue ? "<Begin>" : record.FromDate.ToLocalTime().ToString())</td>
+                    <td>@record.ToDate.ToLocalTime()</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <Pager Result=@Records PageChanged=PagerPageChanged />
+}
+
+
+<br />
+<h3>Export replication packet</h3>
 
 <EditForm Model="@Record" OnValidSubmit="@ExportPkt">
     <div class="form-group ">
@@ -42,7 +79,7 @@
         }
         else
         {
-            <NavLink href="/dictionary/storage/1" class="btn btn-link">Back</NavLink>
+            <NavLink href="/replication/1" class="btn btn-link">Back</NavLink>
         }
     </div>
 
@@ -50,7 +87,7 @@
 
 <br/>
 
-<h1>Import replication packet</h1>
+<h3>Import replication packet</h3>
 
 <EditForm Model="@Record" OnValidSubmit="@ImportPkt">
     <div class="form-group ">
@@ -74,13 +111,21 @@
         }
         else
         {
-            <NavLink href="/dictionary/storage/1" class="btn btn-link">Back</NavLink>
+            <NavLink href="/replication/1" class="btn btn-link">Back</NavLink>
         }
     </div>
 
 </EditForm>
 
 @code{
+    [Parameter]
+    public int Page { get; set; } = 1;
+    [Parameter]
+    public string SearchTerm { get; set; } = string.Empty;
+
+    protected string NavigationPrefix;
+    protected PagedResult<ReplictionPacketViewDto> Records;
+
     private class Dummy
     {
 
@@ -99,14 +144,44 @@
         var b = await BranchesService.LookupItems();
         // you can't export to self
         Branches = b.Where(x => x.Key != CurrentBranchId).ToArray();
+
+        await ReloadRecords();
     }
 
+    private async Task ReloadRecords()
+    {
+        var queryDto = new ReplicationQueryDto()
+            {
+                Page = this.Page,
+                PageSize = 5
+            };
+
+        var res = await ApiClient.QueryAsync(queryDto);
+
+        Records = new PagedResult<ReplictionPacketViewDto>()
+            {
+                CurrentPage = res.CurrentPage,
+                PageSize = res.PageSize,
+                PageCount = res.PageCount,
+                RowCount = res.RowCount,
+                Results = res.Results
+            };
+
+    }
 
     protected override void OnInitialized()
     {
+        NavigationPrefix = "/replication";
         PageHistoryState.AddPageToHistory(navManager.Uri);
         base.OnInitialized();
     }
+
+    protected void PagerPageChanged(int page)
+    {
+        navManager.NavigateTo($"{NavigationPrefix}/{page}");
+        PageHistoryState.AddPageToHistory(navManager.Uri);
+    }
+
 
     protected async Task ExportPkt()
     {
@@ -122,12 +197,13 @@
             await FileSaveService.SaveToFile(filename, pkt.Stream);
 
             AlertService.Success("Replication packet exported", keepAfterRouteChange: true);
+            await ReloadRecords();
         }
         catch (Exception ex)
         {
             AlertService.Error(ex.Message);
-            StateHasChanged();
         }
+        StateHasChanged();
     }
 
     private IBrowserFile SelectedFile;
@@ -143,22 +219,25 @@
         {
             if (SelectedFile != null)
             {
-                // max 5 MB
-                var stm = SelectedFile.OpenReadStream(5 * 1024 * 1024);
+                // max 50 MB
+                var stm = SelectedFile.OpenReadStream(50 * 1024 * 1024);
 
                 var fp = new FileParameter(stm, SelectedFile.Name, SelectedFile.ContentType);
                 await ApiClient.ZipPostAsync(fp);
 
                 AlertService.Success("Replication packet imported", keepAfterRouteChange: true);
-            } else {
+
+                await ReloadRecords();
+            }
+            else
+            {
                 AlertService.Error("Select ZIP file!");
             }
-
         }
         catch (Exception ex)
         {
             AlertService.Error(ex.Message);
-            StateHasChanged();
         }
+        StateHasChanged();
     }
 }

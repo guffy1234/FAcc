@@ -1,4 +1,6 @@
-﻿using Microsoft.JSInterop;
+﻿using iText.Commons.Utils;
+using Microsoft.JSInterop;
+using System.IO;
 using System.Text;
 
 namespace FuelAcc.Client.Services
@@ -12,31 +14,30 @@ namespace FuelAcc.Client.Services
             _jSRuntime = jSRuntime;
         }
 
-        public async Task SaveToFile(string filename, byte[] data)
+        public async Task SaveToFile(string fileName, byte[] data)
         {
-            var body64 = Convert.ToBase64String(data);
-            await _jSRuntime.InvokeAsync<object>("saveAsFile", filename, body64);
+            using var memstm = new MemoryStream(data);
+            await SaveToFile(fileName, memstm);
         }
 
-        public async Task SaveToFile(string filename, MemoryStream ms)
+        public async Task SaveToFile(string fileName, Stream stm)
         {
-            var data = ms.ToArray();
-            await SaveToFile(filename, data);
+            using var streamRef = new DotNetStreamReference(stm);
+
+            await _jSRuntime.InvokeVoidAsync("downloadFileFromStream", fileName, streamRef);
         }
 
-        public async Task SaveToFile(string filename, Stream stm)
-        {
-            using var ms = new MemoryStream();
-            stm.CopyTo(ms);
-            await SaveToFile(filename, ms);
-        }
-
-        public async Task SaveToFile(string filename, string text, Encoding encoding = default)
+        public async Task SaveToFile(string fileName, string text, Encoding encoding = default)
         {
             encoding = encoding ?? Encoding.UTF8;
             var bytes = encoding.GetBytes(text);
 
-            await SaveToFile(filename, bytes);
+            await SaveToFile(fileName, bytes);
+        }
+
+        public async Task SaveToFile(string fileName, Uri uri)
+        {
+            await _jSRuntime.InvokeVoidAsync("triggerFileDownload", fileName, uri.ToString());
         }
     }
 }

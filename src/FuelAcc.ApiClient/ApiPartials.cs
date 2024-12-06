@@ -147,4 +147,9 @@ namespace FuelAcc.ApiClient
     {
 
     }
+
+    public partial class ReplictionPacketViewDtoPagedResult : IPagedResult<ReplictionPacketViewDto>
+    {
+
+    }
 }
