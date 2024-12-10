@@ -39,7 +39,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="db\" />
+	  <None Update="db\.placeholder">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	</ItemGroup>
 
 </Project>
