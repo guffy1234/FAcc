@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using Asp.Versioning;
+using AutoMapper;
 using FuelAcc.Application.Dto.Other;
 using FuelAcc.Application.Dto.Replication;
 using FuelAcc.Application.Interface.Persistence;
