@@ -8670,19 +8670,22 @@ namespace FuelAcc.ApiClient
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("id")]
-        public System.Guid? Id { get; set; } = default!;
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public System.Guid Id { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("storageId")]
-        public System.Guid? StorageId { get; set; } = default!;
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public System.Guid StorageId { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("productId")]
-        public System.Guid? ProductId { get; set; } = default!;
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public System.Guid ProductId { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("quantity")]
-        public decimal? Quantity { get; set; } = default!;
+        public decimal Quantity { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("price")]
-        public decimal? Price { get; set; } = default!;
+        public decimal Price { get; set; } = default!;
 
     }
 
@@ -8691,10 +8694,12 @@ namespace FuelAcc.ApiClient
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("storageId")]
-        public System.Guid? StorageId { get; set; } = default!;
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public System.Guid StorageId { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("productId")]
-        public System.Guid? ProductId { get; set; } = default!;
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public System.Guid ProductId { get; set; } = default!;
 
     }
 

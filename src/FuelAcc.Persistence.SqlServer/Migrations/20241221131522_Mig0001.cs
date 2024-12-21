@@ -451,24 +451,24 @@ namespace FuelAcc.Persistence.SqlServer.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "FileBlobOrderBase",
+                name: "OrderBaseFileBlob",
                 columns: table => new
                 {
-                    BlobsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    OrdersId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    OrderBaseId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    FileBlobId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_FileBlobOrderBase", x => new { x.BlobsId, x.OrdersId });
+                    table.PrimaryKey("PK_OrderBaseFileBlob", x => new { x.OrderBaseId, x.FileBlobId });
                     table.ForeignKey(
-                        name: "FK_FileBlobOrderBase_FileBlobs_BlobsId",
-                        column: x => x.BlobsId,
+                        name: "FK_OrderBaseFileBlob_FileBlobs_FileBlobId",
+                        column: x => x.FileBlobId,
                         principalTable: "FileBlobs",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_FileBlobOrderBase_Orders_OrdersId",
-                        column: x => x.OrdersId,
+                        name: "FK_OrderBaseFileBlob_Orders_OrderBaseId",
+                        column: x => x.OrderBaseId,
                         principalTable: "Orders",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -537,30 +537,6 @@ namespace FuelAcc.Persistence.SqlServer.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "FileBlobProduct",
-                columns: table => new
-                {
-                    BlobsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ProductsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_FileBlobProduct", x => new { x.BlobsId, x.ProductsId });
-                    table.ForeignKey(
-                        name: "FK_FileBlobProduct_FileBlobs_BlobsId",
-                        column: x => x.BlobsId,
-                        principalTable: "FileBlobs",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_FileBlobProduct_Products_ProductsId",
-                        column: x => x.ProductsId,
-                        principalTable: "Products",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "OrderLines",
                 columns: table => new
                 {
@@ -586,6 +562,30 @@ namespace FuelAcc.Persistence.SqlServer.Migrations
                         principalTable: "Products",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ProductFileBlob",
+                columns: table => new
+                {
+                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    FileBlobId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductFileBlob", x => new { x.ProductId, x.FileBlobId });
+                    table.ForeignKey(
+                        name: "FK_ProductFileBlob_FileBlobs_FileBlobId",
+                        column: x => x.FileBlobId,
+                        principalTable: "FileBlobs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ProductFileBlob_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -702,19 +702,14 @@ namespace FuelAcc.Persistence.SqlServer.Migrations
                 column: "BranchId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_FileBlobOrderBase_OrdersId",
-                table: "FileBlobOrderBase",
-                column: "OrdersId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_FileBlobProduct_ProductsId",
-                table: "FileBlobProduct",
-                column: "ProductsId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_FileBlobs_FolderId",
                 table: "FileBlobs",
                 column: "FolderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderBaseFileBlob_FileBlobId",
+                table: "OrderBaseFileBlob",
+                column: "FileBlobId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OrderLines_OrderBaseId",
@@ -765,6 +760,11 @@ namespace FuelAcc.Persistence.SqlServer.Migrations
                 name: "IX_Partners_FolderId",
                 table: "Partners",
                 column: "FolderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductFileBlob_FileBlobId",
+                table: "ProductFileBlob",
+                column: "FileBlobId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Products_FolderId",
@@ -839,10 +839,7 @@ namespace FuelAcc.Persistence.SqlServer.Migrations
                 name: "Events");
 
             migrationBuilder.DropTable(
-                name: "FileBlobOrderBase");
-
-            migrationBuilder.DropTable(
-                name: "FileBlobProduct");
+                name: "OrderBaseFileBlob");
 
             migrationBuilder.DropTable(
                 name: "OrderLines");
@@ -858,6 +855,9 @@ namespace FuelAcc.Persistence.SqlServer.Migrations
 
             migrationBuilder.DropTable(
                 name: "OrdersOut");
+
+            migrationBuilder.DropTable(
+                name: "ProductFileBlob");
 
             migrationBuilder.DropTable(
                 name: "PropertyDefaults");
@@ -878,10 +878,10 @@ namespace FuelAcc.Persistence.SqlServer.Migrations
                 name: "AppUsers");
 
             migrationBuilder.DropTable(
-                name: "FileBlobs");
+                name: "Partners");
 
             migrationBuilder.DropTable(
-                name: "Partners");
+                name: "FileBlobs");
 
             migrationBuilder.DropTable(
                 name: "Orders");

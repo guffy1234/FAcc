@@ -63,9 +63,6 @@ public class AppDbContext : AppIdentityDbContext
                 .HasForeignKey(e => e.ProductId)
                 .HasPrincipalKey(e => e.Id)
                 .OnDelete(DeleteBehavior.Restrict);
-
-            e.HasMany(e => e.Blobs)
-                .WithMany(b => b.Products);
         });
 
         modelBuilder.Entity<Partner>(e =>
@@ -122,6 +119,20 @@ public class AppDbContext : AppIdentityDbContext
                .HasMaxLength(256);
             e.Property(p => p.SHA256)
                .HasMaxLength(64);
+
+            e.HasMany(e => e.Products)
+                .WithMany(b => b.Blobs)
+                .UsingEntity("ProductFileBlob",
+                    l => l.HasOne(typeof(Product)).WithMany().HasForeignKey("ProductId").HasPrincipalKey(nameof(Product.Id)),
+                    r => r.HasOne(typeof(FileBlob)).WithMany().HasForeignKey("FileBlobId").HasPrincipalKey(nameof(FileBlob.Id)),
+                    j => j.HasKey("ProductId", "FileBlobId")); 
+
+            e.HasMany(e => e.Orders)
+                .WithMany(b => b.Blobs)
+                .UsingEntity("OrderBaseFileBlob",
+                    l => l.HasOne(typeof(OrderBase)).WithMany().HasForeignKey("OrderBaseId").HasPrincipalKey(nameof(OrderBase.Id)),
+                    r => r.HasOne(typeof(FileBlob)).WithMany().HasForeignKey("FileBlobId").HasPrincipalKey(nameof(FileBlob.Id)),
+                    j => j.HasKey("OrderBaseId", "FileBlobId")); ;
         });
 
         modelBuilder.Entity<OrderBase>(e =>
@@ -134,9 +145,6 @@ public class AppDbContext : AppIdentityDbContext
                .HasMaxLength(2048);
             e.Property(p => p.Total)
                 .HasPrecision(14, 2);
-
-            e.HasMany(e => e.Blobs)
-                .WithMany(b => b.Orders);
         });
 
         modelBuilder.Entity<OrderIn>(e =>
