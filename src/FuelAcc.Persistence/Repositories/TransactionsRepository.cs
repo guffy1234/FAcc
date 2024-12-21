@@ -23,10 +23,18 @@ namespace FuelAcc.Persistence.Repositories
             return items;
         }
 
-        public async Task<Rest> GetRestAsync(Guid storageId, Guid productId, CancellationToken cancellationToken)
+        public async Task<IEnumerable<Rest>> GetNonEmptyRestsAsync(Guid storageId, Guid productId, CancellationToken cancellationToken)
+        {
+            var rests = await _dbContext.Rests
+                .Where(e => e.StorageId == storageId && e.ProductId == productId && e.Quantity > 0)
+                .ToListAsync(cancellationToken);
+            return rests;
+        }
+
+        public async Task<Rest> GetRestAsync(Guid storageId, Guid productId, decimal price, CancellationToken cancellationToken)
         {
             var rest = await _dbContext.Rests
-                .FirstOrDefaultAsync(e => e.StorageId == storageId && e.ProductId == productId, cancellationToken);
+                .FirstOrDefaultAsync(e => e.StorageId == storageId && e.ProductId == productId && e.Price == price, cancellationToken);
             return rest;
         }
 

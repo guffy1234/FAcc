@@ -2,6 +2,6 @@
 {
     public interface IPagedResult<T> : IPagedResultBase
     {
-        ICollection<T> Results { get; set; }
+        ICollection<T>? Results { get; set; }
     }
 }

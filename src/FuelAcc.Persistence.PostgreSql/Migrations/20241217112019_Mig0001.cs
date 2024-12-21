@@ -69,6 +69,24 @@ namespace FuelAcc.Persistence.PostgreSql.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Folders",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    ParentId = table.Column<Guid>(type: "uuid", nullable: true),
+                    CreatorUserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    ModifierUserId = table.Column<Guid>(type: "uuid", nullable: true),
+                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Modified = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
+                    Name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Folders", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Orders",
                 columns: table => new
                 {
@@ -89,46 +107,17 @@ namespace FuelAcc.Persistence.PostgreSql.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Partners",
+                name: "PropertyDefaults",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    ContactName = table.Column<string>(type: "text", nullable: true),
-                    ContactTitle = table.Column<string>(type: "text", nullable: true),
-                    Address = table.Column<string>(type: "text", nullable: true),
-                    City = table.Column<string>(type: "text", nullable: true),
-                    Region = table.Column<string>(type: "text", nullable: true),
-                    PostalCode = table.Column<string>(type: "text", nullable: true),
-                    Country = table.Column<string>(type: "text", nullable: true),
-                    Phone = table.Column<string>(type: "text", nullable: true),
-                    Fax = table.Column<string>(type: "text", nullable: true),
-                    CreatorUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    ModifierUserId = table.Column<Guid>(type: "uuid", nullable: true),
-                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    Modified = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    Name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false)
+                    Area = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
+                    Name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
+                    Value = table.Column<string>(type: "character varying(4096)", maxLength: 4096, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Partners", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Products",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatorUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    ModifierUserId = table.Column<Guid>(type: "uuid", nullable: true),
-                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    Modified = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    Name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Products", x => x.Id);
+                    table.PrimaryKey("PK_PropertyDefaults", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -329,30 +318,161 @@ namespace FuelAcc.Persistence.PostgreSql.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "OrderLines",
+                name: "FileBlobs",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    ProductId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Quantity = table.Column<decimal>(type: "numeric(14,3)", precision: 14, scale: 3, nullable: false),
-                    Price = table.Column<decimal>(type: "numeric(14,2)", precision: 14, scale: 2, nullable: true),
-                    Sum = table.Column<decimal>(type: "numeric(14,2)", precision: 14, scale: 2, nullable: true),
-                    OrderBaseId = table.Column<Guid>(type: "uuid", nullable: true)
+                    FileName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
+                    MimeType = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
+                    Size = table.Column<long>(type: "bigint", nullable: false),
+                    SHA256 = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
+                    Body = table.Column<byte[]>(type: "bytea", nullable: false),
+                    FolderId = table.Column<Guid>(type: "uuid", nullable: true),
+                    CreatorUserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    ModifierUserId = table.Column<Guid>(type: "uuid", nullable: true),
+                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Modified = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
+                    Name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OrderLines", x => x.Id);
+                    table.PrimaryKey("PK_FileBlobs", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_OrderLines_Orders_OrderBaseId",
+                        name: "FK_FileBlobs_Folders_FolderId",
+                        column: x => x.FolderId,
+                        principalTable: "Folders",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Partners",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    ContactName = table.Column<string>(type: "text", nullable: true),
+                    ContactTitle = table.Column<string>(type: "text", nullable: true),
+                    Address = table.Column<string>(type: "text", nullable: true),
+                    City = table.Column<string>(type: "text", nullable: true),
+                    Region = table.Column<string>(type: "text", nullable: true),
+                    PostalCode = table.Column<string>(type: "text", nullable: true),
+                    Country = table.Column<string>(type: "text", nullable: true),
+                    Phone = table.Column<string>(type: "text", nullable: true),
+                    Fax = table.Column<string>(type: "text", nullable: true),
+                    FolderId = table.Column<Guid>(type: "uuid", nullable: true),
+                    CreatorUserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    ModifierUserId = table.Column<Guid>(type: "uuid", nullable: true),
+                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Modified = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
+                    Name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Partners", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Partners_Folders_FolderId",
+                        column: x => x.FolderId,
+                        principalTable: "Folders",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Products",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Category = table.Column<int>(type: "integer", nullable: false),
+                    Units = table.Column<int>(type: "integer", nullable: false),
+                    FolderId = table.Column<Guid>(type: "uuid", nullable: true),
+                    CreatorUserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    ModifierUserId = table.Column<Guid>(type: "uuid", nullable: true),
+                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Modified = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
+                    Name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Products", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Products_Folders_FolderId",
+                        column: x => x.FolderId,
+                        principalTable: "Folders",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "OrderProperties",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    OrderBaseId = table.Column<Guid>(type: "uuid", nullable: true),
+                    Name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
+                    Value = table.Column<string>(type: "character varying(4096)", maxLength: 4096, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OrderProperties", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_OrderProperties_Orders_OrderBaseId",
                         column: x => x.OrderBaseId,
                         principalTable: "Orders",
                         principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "OrdersMove",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    FromStorageId = table.Column<Guid>(type: "uuid", nullable: true),
+                    ToStorageId = table.Column<Guid>(type: "uuid", nullable: true),
+                    MoveType = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OrdersMove", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_OrderLines_Products_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "Products",
+                        name: "FK_OrdersMove_Orders_Id",
+                        column: x => x.Id,
+                        principalTable: "Orders",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_OrdersMove_Storages_FromStorageId",
+                        column: x => x.FromStorageId,
+                        principalTable: "Storages",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_OrdersMove_Storages_ToStorageId",
+                        column: x => x.ToStorageId,
+                        principalTable: "Storages",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "FileBlobOrderBase",
+                columns: table => new
+                {
+                    BlobsId = table.Column<Guid>(type: "uuid", nullable: false),
+                    OrdersId = table.Column<Guid>(type: "uuid", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FileBlobOrderBase", x => new { x.BlobsId, x.OrdersId });
+                    table.ForeignKey(
+                        name: "FK_FileBlobOrderBase_FileBlobs_BlobsId",
+                        column: x => x.BlobsId,
+                        principalTable: "FileBlobs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_FileBlobOrderBase_Orders_OrdersId",
+                        column: x => x.OrdersId,
+                        principalTable: "Orders",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -387,36 +507,6 @@ namespace FuelAcc.Persistence.PostgreSql.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "OrdersMove",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    FromStorageId = table.Column<Guid>(type: "uuid", nullable: true),
-                    ToStorageId = table.Column<Guid>(type: "uuid", nullable: true),
-                    MoveType = table.Column<int>(type: "integer", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_OrdersMove", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_OrdersMove_Orders_Id",
-                        column: x => x.Id,
-                        principalTable: "Orders",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_OrdersMove_Storages_FromStorageId",
-                        column: x => x.FromStorageId,
-                        principalTable: "Storages",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_OrdersMove_Storages_ToStorageId",
-                        column: x => x.ToStorageId,
-                        principalTable: "Storages",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "OrdersOut",
                 columns: table => new
                 {
@@ -448,13 +538,66 @@ namespace FuelAcc.Persistence.PostgreSql.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "FileBlobProduct",
+                columns: table => new
+                {
+                    BlobsId = table.Column<Guid>(type: "uuid", nullable: false),
+                    ProductsId = table.Column<Guid>(type: "uuid", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FileBlobProduct", x => new { x.BlobsId, x.ProductsId });
+                    table.ForeignKey(
+                        name: "FK_FileBlobProduct_FileBlobs_BlobsId",
+                        column: x => x.BlobsId,
+                        principalTable: "FileBlobs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_FileBlobProduct_Products_ProductsId",
+                        column: x => x.ProductsId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "OrderLines",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    ProductId = table.Column<Guid>(type: "uuid", nullable: false),
+                    PlannedQuantity = table.Column<decimal>(type: "numeric(14,3)", precision: 14, scale: 3, nullable: false),
+                    Quantity = table.Column<decimal>(type: "numeric(14,3)", precision: 14, scale: 3, nullable: false),
+                    Price = table.Column<decimal>(type: "numeric(14,5)", precision: 14, scale: 5, nullable: false),
+                    Sum = table.Column<decimal>(type: "numeric(14,5)", precision: 14, scale: 5, nullable: false),
+                    OrderBaseId = table.Column<Guid>(type: "uuid", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OrderLines", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_OrderLines_Orders_OrderBaseId",
+                        column: x => x.OrderBaseId,
+                        principalTable: "Orders",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_OrderLines_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Rests",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     StorageId = table.Column<Guid>(type: "uuid", nullable: false),
                     ProductId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Quantity = table.Column<decimal>(type: "numeric(14,3)", precision: 14, scale: 3, nullable: false)
+                    Quantity = table.Column<decimal>(type: "numeric(14,3)", precision: 14, scale: 3, nullable: false),
+                    Price = table.Column<decimal>(type: "numeric(14,5)", precision: 14, scale: 5, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -483,7 +626,8 @@ namespace FuelAcc.Persistence.PostgreSql.Migrations
                     SourceId = table.Column<Guid>(type: "uuid", nullable: true),
                     DestinationId = table.Column<Guid>(type: "uuid", nullable: true),
                     ProductId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Quantity = table.Column<decimal>(type: "numeric(14,3)", precision: 14, scale: 3, nullable: false)
+                    Quantity = table.Column<decimal>(type: "numeric(14,3)", precision: 14, scale: 3, nullable: false),
+                    Price = table.Column<decimal>(type: "numeric(14,5)", precision: 14, scale: 5, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -557,6 +701,21 @@ namespace FuelAcc.Persistence.PostgreSql.Migrations
                 column: "BranchId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_FileBlobOrderBase_OrdersId",
+                table: "FileBlobOrderBase",
+                column: "OrdersId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FileBlobProduct_ProductsId",
+                table: "FileBlobProduct",
+                column: "ProductsId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FileBlobs_FolderId",
+                table: "FileBlobs",
+                column: "FolderId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_OrderLines_OrderBaseId",
                 table: "OrderLines",
                 column: "OrderBaseId");
@@ -565,6 +724,11 @@ namespace FuelAcc.Persistence.PostgreSql.Migrations
                 name: "IX_OrderLines_ProductId",
                 table: "OrderLines",
                 column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderProperties_OrderBaseId",
+                table: "OrderProperties",
+                column: "OrderBaseId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OrdersIn_PartnerId",
@@ -595,6 +759,16 @@ namespace FuelAcc.Persistence.PostgreSql.Migrations
                 name: "IX_OrdersOut_PartnerId",
                 table: "OrdersOut",
                 column: "PartnerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Partners_FolderId",
+                table: "Partners",
+                column: "FolderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Products_FolderId",
+                table: "Products",
+                column: "FolderId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ReplictionPackets_BranchId",
@@ -664,7 +838,16 @@ namespace FuelAcc.Persistence.PostgreSql.Migrations
                 name: "Events");
 
             migrationBuilder.DropTable(
+                name: "FileBlobOrderBase");
+
+            migrationBuilder.DropTable(
+                name: "FileBlobProduct");
+
+            migrationBuilder.DropTable(
                 name: "OrderLines");
+
+            migrationBuilder.DropTable(
+                name: "OrderProperties");
 
             migrationBuilder.DropTable(
                 name: "OrdersIn");
@@ -674,6 +857,9 @@ namespace FuelAcc.Persistence.PostgreSql.Migrations
 
             migrationBuilder.DropTable(
                 name: "OrdersOut");
+
+            migrationBuilder.DropTable(
+                name: "PropertyDefaults");
 
             migrationBuilder.DropTable(
                 name: "ReplictionPackets");
@@ -691,6 +877,9 @@ namespace FuelAcc.Persistence.PostgreSql.Migrations
                 name: "AppUsers");
 
             migrationBuilder.DropTable(
+                name: "FileBlobs");
+
+            migrationBuilder.DropTable(
                 name: "Partners");
 
             migrationBuilder.DropTable(
@@ -704,6 +893,9 @@ namespace FuelAcc.Persistence.PostgreSql.Migrations
 
             migrationBuilder.DropTable(
                 name: "Storages");
+
+            migrationBuilder.DropTable(
+                name: "Folders");
 
             migrationBuilder.DropTable(
                 name: "Branches");

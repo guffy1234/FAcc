@@ -5,6 +5,6 @@ using FuelAcc.Application.UseCases.Commons.Filtering;
 
 namespace FuelAcc.Application.UseCases.Commons.Queries
 {
-    public sealed record GetByQueryDto<DTO, QUERY_DTO>(QUERY_DTO dto) : Query<PagedResult<DTO>>
+    public sealed record GetPagedByQueryDto<DTO, QUERY_DTO>(QUERY_DTO dto) : Query<PagedResult<DTO>>
         where QUERY_DTO: PagedQueryDto ;
 }

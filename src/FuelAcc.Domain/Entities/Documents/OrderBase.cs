@@ -1,4 +1,6 @@
 ﻿using FuelAcc.Domain.Commons;
+using FuelAcc.Domain.Entities.Dictionaries;
+using System.Text.Json.Serialization;
 
 namespace FuelAcc.Domain.Entities.Documents
 {
@@ -9,6 +11,11 @@ namespace FuelAcc.Domain.Entities.Documents
         public string Number { get; set; }
         public string Description { get; set; }
         public decimal Total { get; set; }
-        public List<OrderLine> Lines { get; set; }
+
+        public ICollection<OrderLine> Lines { get; set; }
+        public ICollection<OrderPropertyLine> Properties { get; set; }
+
+        [JsonIgnore]
+        public ICollection<FileBlob>? Blobs { get; set; }
     }
 }

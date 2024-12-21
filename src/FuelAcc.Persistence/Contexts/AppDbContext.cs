@@ -19,9 +19,12 @@ public class AppDbContext : AppIdentityDbContext
     public DbSet<Product> Products { get; set; }
     public DbSet<Branch> Branches { get; set; }
     public DbSet<Storage> Storages { get; set; }
+    public DbSet<FileBlob> FileBlobs { get; set; }
+    public DbSet<Folder> Folders { get; set; }
 
     public DbSet<OrderBase> Orders { get; set; }
     public DbSet<OrderLine> OrderLines { get; set; }
+    public DbSet<OrderPropertyLine> OrderProperties { get; set; }
 
     public DbSet<Transaction> Transactions { get; set; }
 
@@ -32,6 +35,8 @@ public class AppDbContext : AppIdentityDbContext
     public DbSet<ReplictionPacket> ReplictionPackets { get; set; }
 
     public DbSet<Settings> Settings { get; set; }
+
+    public DbSet<PropertyLineDefault> PropertyDefaults { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -58,6 +63,9 @@ public class AppDbContext : AppIdentityDbContext
                 .HasForeignKey(e => e.ProductId)
                 .HasPrincipalKey(e => e.Id)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            e.HasMany(e => e.Blobs)
+                .WithMany(b => b.Products);
         });
 
         modelBuilder.Entity<Partner>(e =>
@@ -94,6 +102,28 @@ public class AppDbContext : AppIdentityDbContext
                 .OnDelete(DeleteBehavior.Restrict);
         });
 
+        modelBuilder.Entity<Folder>(e =>
+        {
+            e.Property(p => p.Id)
+                .HasValueGenerator<SequentialGuidValueGenerator>();
+            e.Property(p => p.Name)
+                .HasMaxLength(256);
+        });
+
+        modelBuilder.Entity<FileBlob>(e =>
+        {
+            e.Property(p => p.Id)
+                .HasValueGenerator<SequentialGuidValueGenerator>();
+            e.Property(p => p.Name)
+                .HasMaxLength(256);
+            e.Property(p => p.FileName)
+               .HasMaxLength(256);
+            e.Property(p => p.MimeType)
+               .HasMaxLength(256);
+            e.Property(p => p.SHA256)
+               .HasMaxLength(64);
+        });
+
         modelBuilder.Entity<OrderBase>(e =>
         {
             e.Property(p => p.Id)
@@ -104,6 +134,9 @@ public class AppDbContext : AppIdentityDbContext
                .HasMaxLength(2048);
             e.Property(p => p.Total)
                 .HasPrecision(14, 2);
+
+            e.HasMany(e => e.Blobs)
+                .WithMany(b => b.Orders);
         });
 
         modelBuilder.Entity<OrderIn>(e =>
@@ -123,12 +156,36 @@ public class AppDbContext : AppIdentityDbContext
         {
             e.Property(p => p.Id)
                 .HasValueGenerator<SequentialGuidValueGenerator>();
+            e.Property(p => p.PlannedQuantity)
+                .HasPrecision(14, 3);
             e.Property(p => p.Quantity)
                 .HasPrecision(14, 3);
             e.Property(p => p.Price)
-                .HasPrecision(14, 2);
+                .HasPrecision(14, 5);
             e.Property(p => p.Sum)
-                .HasPrecision(14, 2);
+                .HasPrecision(14, 5);
+        });
+
+        modelBuilder.Entity<OrderPropertyLine>(e =>
+        {
+            e.Property(p => p.Id)
+                .HasValueGenerator<SequentialGuidValueGenerator>();
+            e.Property(p => p.Name)
+                .HasMaxLength(256);
+            e.Property(p => p.Value)
+                .HasMaxLength(4096);
+        });
+
+        modelBuilder.Entity<PropertyLineDefault>(e =>
+        {
+            e.Property(p => p.Id)
+                .HasValueGenerator<SequentialGuidValueGenerator>();
+            e.Property(p => p.Name)
+                .HasMaxLength(256);
+            e.Property(p => p.Area)
+                .HasMaxLength(256);
+            e.Property(p => p.Value)
+                .HasMaxLength(4096);
         });
 
         modelBuilder.Entity<Transaction>(e =>
@@ -137,6 +194,8 @@ public class AppDbContext : AppIdentityDbContext
                 .HasValueGenerator<SequentialGuidValueGenerator>();
             e.Property(p => p.Quantity)
                 .HasPrecision(14, 3);
+            e.Property(p => p.Price)
+                .HasPrecision(14, 5);
         });
 
         modelBuilder.Entity<Rest>(e =>
@@ -144,7 +203,9 @@ public class AppDbContext : AppIdentityDbContext
             e.Property(p => p.Id)
                 .HasValueGenerator<SequentialGuidValueGenerator>();
             e.Property(p => p.Quantity)
-               .HasPrecision(14, 3);
+                .HasPrecision(14, 3);
+            e.Property(p => p.Price)
+                .HasPrecision(14, 5);
             e.HasMany(e => e.InTransactions)
                 .WithOne(e => e.Source)
                 .HasForeignKey(e => e.SourceId)

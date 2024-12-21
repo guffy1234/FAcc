@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using FuelAcc.Application.Dto;
+using FuelAcc.Application.Dto.Accounting;
 using FuelAcc.Application.Dto.Dictionaries;
 using FuelAcc.Application.Dto.Documents;
 using FuelAcc.Application.Dto.Querying;
@@ -9,6 +10,7 @@ using FuelAcc.Application.Interface.Accounting;
 using FuelAcc.Application.Interface.Events;
 using FuelAcc.Application.Interface.Replication;
 using FuelAcc.Application.UseCases.Accounting;
+using FuelAcc.Application.UseCases.Accounting.Handlers;
 using FuelAcc.Application.UseCases.Authorization;
 using FuelAcc.Application.UseCases.Commons.Behaviours;
 using FuelAcc.Application.UseCases.Commons.Commands;
@@ -54,6 +56,9 @@ namespace FuelAcc.Application.UseCases
             services.AddDictionary<Partner, PartnerDto, PartnerQueryDto>();
             services.AddDictionary<Storage, StorageDto, StorageQueryDto>();
             services.AddDictionary<Product, ProductDto, ProductQueryDto>();
+            services.AddDictionary<Folder, FolderDto, FolderQueryDto>();
+            services.AddDictionary<FileBlob, FileBlobDto, FileBlobQueryDto>();
+
 
             // documents
             services.AddDocument<OrderIn, OrderInDto, OrderInQueryDto>();
@@ -64,6 +69,9 @@ namespace FuelAcc.Application.UseCases
                typeof(ReportTransactionsHandler));
             services.AddTransient(typeof(IRequestHandler<ReportRestsQuery, IAsyncEnumerable<ReportRestView>>),
               typeof(ReportRestsHandler));
+            //accounting
+            services.AddTransient(typeof(IRequestHandler<GetAvailableRestsQuery, IEnumerable<AvailableRestView>>),
+              typeof(GetAvailableRestsHandler));
 
             // services
             services.AddScoped<ITransactionsService, TransactionsService>();
@@ -91,7 +99,7 @@ namespace FuelAcc.Application.UseCases
             services.AddTransient(typeof(IRequestHandler<GetByIdQuery<DTO>, DTO>), 
                 typeof(GetByIdHandler<ENTITY, DTO, DictionaryAuthorizationPoint<ENTITY>>));
 
-            services.AddTransient(typeof(IRequestHandler<GetByQueryDto<DTO, QUERY_DTO>, PagedResult<DTO>>),
+            services.AddTransient(typeof(IRequestHandler<GetPagedByQueryDto<DTO, QUERY_DTO>, PagedResult<DTO>>),
                 typeof(GetByQueryDtoHandler<ENTITY, DTO, QUERY_DTO, DictionaryAuthorizationPoint<ENTITY>>));
             // Filter
             services.AddTransient(typeof(IRequestHandler<QueryBuilderCommand<QUERY_DTO>, IEntityQueryBuilderBase>),
@@ -121,7 +129,7 @@ namespace FuelAcc.Application.UseCases
             services.AddTransient(typeof(IRequestHandler<GetByIdQuery<DTO>, DTO>), 
                 typeof(GetByIdHandler<ENTITY, DTO, DocumentAuthorizationPoint<ENTITY>>));
 
-            services.AddTransient(typeof(IRequestHandler<GetByQueryDto<DTO, QUERY_DTO>, PagedResult<DTO>>),
+            services.AddTransient(typeof(IRequestHandler<GetPagedByQueryDto<DTO, QUERY_DTO>, PagedResult<DTO>>),
                 typeof(GetByQueryDtoHandler<ENTITY, DTO, QUERY_DTO, DocumentAuthorizationPoint<ENTITY>>));
             // Filter
             services.AddTransient(typeof(IRequestHandler<QueryBuilderCommand<QUERY_DTO>, IEntityQueryBuilderBase>),

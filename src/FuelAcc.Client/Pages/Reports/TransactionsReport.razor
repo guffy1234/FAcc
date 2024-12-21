@@ -37,6 +37,8 @@ else
                 <th style="width:10%">From Storage</th>
                 <th style="width:10%">To Storage</th>
                 <th style="width:10%">Quantity</th>
+                <th style="width:10%">Price</th>
+                <th style="width:10%">Sum</th>
             </tr>
         </thead>
         <tbody>
@@ -49,6 +51,8 @@ else
                     <td>@(record.SrcStorageName)</td>
                     <td>@(record.DstStorageName)</td>
                     <td>@(record.Quantity)</td>
+                    <td>@(record.Price)</td>
+                    <td>@(record.Price * record.Quantity)</td>
                 </tr>
             }
         </tbody>
@@ -78,7 +82,9 @@ else
                 r.SrcStorageName, 
                 r.DstStorageName,
                 r.ProductName,
-                r.Quantity
+                r.Quantity,
+                r.Price,
+                Sum = (r.Price * r.Quantity)
             });
             csv.WriteRecords(filtered);
         }
@@ -100,7 +106,7 @@ else
             var title = $"Transactions report {DateTime.Now}";
             document.Add(new Paragraph(title));
 
-            Table table = new Table(UnitValue.CreatePercentArray(6)).UseAllAvailableWidth();
+            Table table = new Table(UnitValue.CreatePercentArray(8)).UseAllAvailableWidth();
 
             table.AddHeaderCell("Date");
             table.AddHeaderCell("Document");
@@ -108,6 +114,8 @@ else
             table.AddHeaderCell("Destination");
             table.AddHeaderCell("Product");
             table.AddHeaderCell("Quantity");
+            table.AddHeaderCell("Price");
+            table.AddHeaderCell("Sum");
 
 
             foreach (var r in Records)
@@ -118,6 +126,8 @@ else
                 table.AddCell(r.DstStorageName ?? string.Empty);
                 table.AddCell(r.ProductName);
                 table.AddCell(r.Quantity.ToString());
+                table.AddCell(r.Price.ToString());
+                table.AddCell((r.Price * r.Quantity).ToString());
             }
 
             document.Add(table);

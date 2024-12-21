@@ -161,13 +161,14 @@ namespace FuelAcc.Application.UseCases.Accounting
                     OrderId = documentId,
                     Quantity = line.Quantity,
                     ProductId = line.ProductId,
+                    Price = line.Price,
                 };
-                t.Source = await GetOrCreateRestAsync(src, line.ProductId, cancellationToken);
+                t.Source = await GetOrCreateRestAsync(src, line.ProductId, line.Price, cancellationToken);
                 if (t.Source != null)
                 {
                     t.SourceId = t.Source.Id;
                 }
-                t.Destination = await GetOrCreateRestAsync(dst, line.ProductId, cancellationToken);
+                t.Destination = await GetOrCreateRestAsync(dst, line.ProductId, line.Price, cancellationToken);
                 if (t.Destination != null)
                 {
                     t.DestinationId = t.Destination.Id;
@@ -194,24 +195,34 @@ namespace FuelAcc.Application.UseCases.Accounting
             return null;
         }
 
-        private async Task<Rest?> GetOrCreateRestAsync(Guid? src, Guid productId, CancellationToken cancellationToken)
+        public async Task<IEnumerable<Rest>> GetAvailableRestsAsync(Guid storageId, Guid productId, CancellationToken cancellationToken)
+        {
+
+            var rests = await _repository.GetNonEmptyRestsAsync(storageId, productId, cancellationToken);
+            return rests;
+        }
+
+        private async Task<Rest?> GetOrCreateRestAsync(Guid? src, Guid productId, decimal price, CancellationToken cancellationToken)
         {
             if (src.HasValue && src.Value != Guid.Empty)
             {
-                var srcRest = _cache.Values.Where(e => e.StorageId == src.Value && e.ProductId == productId).FirstOrDefault();
+                var srcRest = _cache.Values
+                    .Where(e => e.StorageId == src.Value && e.ProductId == productId && e.Price == price)
+                    .FirstOrDefault();
 
                 if (srcRest != null)
                 {
                     return srcRest;
                 }
 
-                srcRest = await _repository.GetRestAsync(src.Value, productId, cancellationToken);
+                srcRest = await _repository.GetRestAsync(src.Value, productId, price, cancellationToken);
                 if (srcRest is null)
                 {
                     srcRest = new Rest
                     {
                         StorageId = src.Value,
                         ProductId = productId,
+                        Price = price,
                     };
                     await _repository.InsertRestAsync(srcRest, cancellationToken);
                 }

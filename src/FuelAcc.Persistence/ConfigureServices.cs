@@ -21,6 +21,8 @@ namespace FuelAcc.Persistence
             services.RegisterEntityRepositories<Product>();
             services.RegisterEntityRepositories<Branch>();
             services.RegisterEntityRepositories<Storage>();
+            services.RegisterEntityRepositories<Folder>();
+            services.RegisterEntityRepositories<FileBlob>();
             services.RegisterEntityRepositories<OrderIn>();
             services.RegisterEntityRepositories<OrderMove>();
             services.RegisterEntityRepositories<OrderOut>();

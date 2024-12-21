@@ -12,8 +12,9 @@ namespace FuelAcc.Domain.Entities.Documents
         [JsonIgnore]
         public Product Product { get; set; }
 
+        public decimal PlannedQuantity { get; set; }
         public decimal Quantity { get; set; }
-        public decimal? Price { get; set; }
-        public decimal? Sum { get; set; }
+        public decimal Price { get; set; }
+        public decimal Sum { get; set; }
     }
 }

@@ -29,7 +29,7 @@ namespace FuelAcc.WebApi.Controllers
 
         protected async Task<PagedResult<DTO>> InternalGetPagedAsync([FromBody] QUERY_DTO dto, CancellationToken cancellationToken)
         {
-            var response = await _mediator.Send(new GetByQueryDto<DTO, QUERY_DTO>(dto), cancellationToken);
+            var response = await _mediator.Send(new GetPagedByQueryDto<DTO, QUERY_DTO>(dto), cancellationToken);
             return response;
         }
 

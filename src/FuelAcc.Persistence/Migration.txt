@@ -1,3 +1,4 @@
 Add-Migration Mig0001 -Project FuelAcc.Persistence.SqlServer -Context AppDbContextSqlServer
 Add-Migration Mig0001 -Project FuelAcc.Persistence.Sqlite -Context AppDbContextSqlite
 Add-Migration Mig0001 -Project FuelAcc.Persistence.PostgreSql -Context AppDbContextPostgreSql
+

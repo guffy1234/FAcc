@@ -1,6 +1,9 @@
-﻿namespace FuelAcc.Domain.Entities.Dictionaries
+﻿using FuelAcc.Domain.Commons;
+using System.Text.Json.Serialization;
+
+namespace FuelAcc.Domain.Entities.Dictionaries
 {
-    public class Partner : DictionaryBase
+    public class Partner : DictionaryBase, IDictionaryWithFolderEntity
     {
         public string? ContactName { get; set; }
         public string? ContactTitle { get; set; }
@@ -11,5 +14,10 @@
         public string? Country { get; set; }
         public string? Phone { get; set; }
         public string? Fax { get; set; }
+
+        public Guid? FolderId { get; set; }
+
+        [JsonIgnore]
+        public Folder? Folder { get; set; }
     }
 }

@@ -51,6 +51,7 @@ namespace FuelAcc.Persistence.Repositories
                             DstStorageId = dstorage_left.Id,
                             DstStorageName = dstorage_left.Name,
                             Quantity = trans.Quantity,
+                            Price = trans.Price,
                         };
 
             if (from.HasValue)
@@ -120,6 +121,7 @@ namespace FuelAcc.Persistence.Repositories
                             BranchId = branch.Id,
                             BranchName = branch.Name,
                             Quantity = rest.Quantity,
+                            Price = rest.Price,
                         };
 
             if (nonEmptyOnly)

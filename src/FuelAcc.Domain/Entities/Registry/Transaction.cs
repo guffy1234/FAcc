@@ -22,5 +22,6 @@ namespace FuelAcc.Domain.Entities.Registry
         public Product Product { get; set; }
 
         public decimal Quantity { get; set; }
+        public decimal Price { get; set; }
     }
 }

@@ -9,6 +9,7 @@ namespace FuelAcc.Application.UseCases.Replication
         public ReplicationMapper()
         {
             CreateMap<OrderLine, OrderLineDto>().ReverseMap();
+            CreateMap<OrderPropertyLine, OrderPropertyDto>().ReverseMap();
         }
     }
 }

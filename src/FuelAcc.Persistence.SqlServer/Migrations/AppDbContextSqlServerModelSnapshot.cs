@@ -22,6 +22,36 @@ namespace FuelAcc.Persistence.SqlServer.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("FileBlobOrderBase", b =>
+                {
+                    b.Property<Guid>("BlobsId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("OrdersId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("BlobsId", "OrdersId");
+
+                    b.HasIndex("OrdersId");
+
+                    b.ToTable("FileBlobOrderBase");
+                });
+
+            modelBuilder.Entity("FileBlobProduct", b =>
+                {
+                    b.Property<Guid>("BlobsId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ProductsId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("BlobsId", "ProductsId");
+
+                    b.HasIndex("ProductsId");
+
+                    b.ToTable("FileBlobProduct");
+                });
+
             modelBuilder.Entity("FuelAcc.Domain.Entities.Dictionaries.Branch", b =>
                 {
                     b.Property<Guid>("Id")
@@ -51,6 +81,98 @@ namespace FuelAcc.Persistence.SqlServer.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Branches");
+                });
+
+            modelBuilder.Entity("FuelAcc.Domain.Entities.Dictionaries.FileBlob", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<byte[]>("Body")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("CreatorUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<Guid?>("FolderId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("MimeType")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<DateTime?>("Modified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("ModifierUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("SHA256")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<long>("Size")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FolderId");
+
+                    b.ToTable("FileBlobs");
+                });
+
+            modelBuilder.Entity("FuelAcc.Domain.Entities.Dictionaries.Folder", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("CreatorUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("Modified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("ModifierUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<Guid?>("ParentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Folders");
                 });
 
             modelBuilder.Entity("FuelAcc.Domain.Entities.Dictionaries.Partner", b =>
@@ -83,6 +205,9 @@ namespace FuelAcc.Persistence.SqlServer.Migrations
                     b.Property<string>("Fax")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid?>("FolderId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -108,6 +233,8 @@ namespace FuelAcc.Persistence.SqlServer.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("FolderId");
+
                     b.ToTable("Partners");
                 });
 
@@ -117,10 +244,16 @@ namespace FuelAcc.Persistence.SqlServer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int>("Category")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid>("CreatorUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("FolderId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("IsDeleted")
@@ -137,7 +270,12 @@ namespace FuelAcc.Persistence.SqlServer.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
+                    b.Property<int>("Units")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("FolderId");
 
                     b.ToTable("Products");
                 });
@@ -232,9 +370,13 @@ namespace FuelAcc.Persistence.SqlServer.Migrations
                     b.Property<Guid?>("OrderBaseId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<decimal?>("Price")
-                        .HasPrecision(14, 2)
-                        .HasColumnType("decimal(14,2)");
+                    b.Property<decimal>("PlannedQuantity")
+                        .HasPrecision(14, 3)
+                        .HasColumnType("decimal(14,3)");
+
+                    b.Property<decimal>("Price")
+                        .HasPrecision(14, 5)
+                        .HasColumnType("decimal(14,5)");
 
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uniqueidentifier");
@@ -243,9 +385,9 @@ namespace FuelAcc.Persistence.SqlServer.Migrations
                         .HasPrecision(14, 3)
                         .HasColumnType("decimal(14,3)");
 
-                    b.Property<decimal?>("Sum")
-                        .HasPrecision(14, 2)
-                        .HasColumnType("decimal(14,2)");
+                    b.Property<decimal>("Sum")
+                        .HasPrecision(14, 5)
+                        .HasColumnType("decimal(14,5)");
 
                     b.HasKey("Id");
 
@@ -254,6 +396,58 @@ namespace FuelAcc.Persistence.SqlServer.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("OrderLines");
+                });
+
+            modelBuilder.Entity("FuelAcc.Domain.Entities.Documents.OrderPropertyLine", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<Guid?>("OrderBaseId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasMaxLength(4096)
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderBaseId");
+
+                    b.ToTable("OrderProperties");
+                });
+
+            modelBuilder.Entity("FuelAcc.Domain.Entities.Documents.PropertyLineDefault", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Area")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasMaxLength(4096)
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PropertyDefaults");
                 });
 
             modelBuilder.Entity("FuelAcc.Domain.Entities.Other.PersistEvent", b =>
@@ -354,6 +548,10 @@ namespace FuelAcc.Persistence.SqlServer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<decimal>("Price")
+                        .HasPrecision(14, 5)
+                        .HasColumnType("decimal(14,5)");
+
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uniqueidentifier");
 
@@ -387,6 +585,10 @@ namespace FuelAcc.Persistence.SqlServer.Migrations
 
                     b.Property<Guid>("OrderId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("Price")
+                        .HasPrecision(14, 5)
+                        .HasColumnType("decimal(14,5)");
 
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uniqueidentifier");
@@ -662,6 +864,63 @@ namespace FuelAcc.Persistence.SqlServer.Migrations
                     b.ToTable("OrdersOut", (string)null);
                 });
 
+            modelBuilder.Entity("FileBlobOrderBase", b =>
+                {
+                    b.HasOne("FuelAcc.Domain.Entities.Dictionaries.FileBlob", null)
+                        .WithMany()
+                        .HasForeignKey("BlobsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("FuelAcc.Domain.Entities.Documents.OrderBase", null)
+                        .WithMany()
+                        .HasForeignKey("OrdersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("FileBlobProduct", b =>
+                {
+                    b.HasOne("FuelAcc.Domain.Entities.Dictionaries.FileBlob", null)
+                        .WithMany()
+                        .HasForeignKey("BlobsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("FuelAcc.Domain.Entities.Dictionaries.Product", null)
+                        .WithMany()
+                        .HasForeignKey("ProductsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("FuelAcc.Domain.Entities.Dictionaries.FileBlob", b =>
+                {
+                    b.HasOne("FuelAcc.Domain.Entities.Dictionaries.Folder", "Folder")
+                        .WithMany("FileBlobs")
+                        .HasForeignKey("FolderId");
+
+                    b.Navigation("Folder");
+                });
+
+            modelBuilder.Entity("FuelAcc.Domain.Entities.Dictionaries.Partner", b =>
+                {
+                    b.HasOne("FuelAcc.Domain.Entities.Dictionaries.Folder", "Folder")
+                        .WithMany("Partners")
+                        .HasForeignKey("FolderId");
+
+                    b.Navigation("Folder");
+                });
+
+            modelBuilder.Entity("FuelAcc.Domain.Entities.Dictionaries.Product", b =>
+                {
+                    b.HasOne("FuelAcc.Domain.Entities.Dictionaries.Folder", "Folder")
+                        .WithMany("Products")
+                        .HasForeignKey("FolderId");
+
+                    b.Navigation("Folder");
+                });
+
             modelBuilder.Entity("FuelAcc.Domain.Entities.Dictionaries.Storage", b =>
                 {
                     b.HasOne("FuelAcc.Domain.Entities.Dictionaries.Branch", "Branch")
@@ -686,6 +945,13 @@ namespace FuelAcc.Persistence.SqlServer.Migrations
                         .IsRequired();
 
                     b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("FuelAcc.Domain.Entities.Documents.OrderPropertyLine", b =>
+                {
+                    b.HasOne("FuelAcc.Domain.Entities.Documents.OrderBase", null)
+                        .WithMany("Properties")
+                        .HasForeignKey("OrderBaseId");
                 });
 
             modelBuilder.Entity("FuelAcc.Domain.Entities.Other.PersistEvent", b =>
@@ -912,6 +1178,15 @@ namespace FuelAcc.Persistence.SqlServer.Migrations
                     b.Navigation("Storages");
                 });
 
+            modelBuilder.Entity("FuelAcc.Domain.Entities.Dictionaries.Folder", b =>
+                {
+                    b.Navigation("FileBlobs");
+
+                    b.Navigation("Partners");
+
+                    b.Navigation("Products");
+                });
+
             modelBuilder.Entity("FuelAcc.Domain.Entities.Dictionaries.Product", b =>
                 {
                     b.Navigation("OrderLines");
@@ -929,6 +1204,8 @@ namespace FuelAcc.Persistence.SqlServer.Migrations
             modelBuilder.Entity("FuelAcc.Domain.Entities.Documents.OrderBase", b =>
                 {
                     b.Navigation("Lines");
+
+                    b.Navigation("Properties");
                 });
 
             modelBuilder.Entity("FuelAcc.Domain.Entities.Registry.Rest", b =>

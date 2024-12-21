@@ -12,7 +12,7 @@ using MediatR;
 
 namespace FuelAcc.Application.UseCases.Commons.Queries.Handlers
 {
-    public class GetByQueryDtoHandler<ENTITY, DTO, QUERY_DTO, APOINT> : IRequestHandler<GetByQueryDto<DTO, QUERY_DTO>, PagedResult<DTO>>
+    public class GetByQueryDtoHandler<ENTITY, DTO, QUERY_DTO, APOINT> : IRequestHandler<GetPagedByQueryDto<DTO, QUERY_DTO>, PagedResult<DTO>>
         where DTO : class
         where QUERY_DTO : PagedQueryDto
         where ENTITY : class, IRootEntity
@@ -31,7 +31,7 @@ namespace FuelAcc.Application.UseCases.Commons.Queries.Handlers
             _authorizationChecker = authorizationChecker ?? throw new ArgumentNullException(nameof(authorizationChecker));
         }
 
-        public async Task<PagedResult<DTO>> Handle(GetByQueryDto<DTO, QUERY_DTO> request, CancellationToken cancellationToken)
+        public async Task<PagedResult<DTO>> Handle(GetPagedByQueryDto<DTO, QUERY_DTO> request, CancellationToken cancellationToken)
         {
             var apoint = new APOINT()
             {

@@ -25,6 +25,7 @@
 	<ItemGroup>
 		<ProjectReference Include="..\FuelAcc.ApiClient\FuelAcc.ApiClient.csproj" />
 		<ProjectReference Include="..\FuelAcc.Application.Paging\FuelAcc.Application.DtoCommon.csproj" />
+		<ProjectReference Include="..\FuelAcc.Constants\FuelAcc.Constants.csproj" />
 		<ProjectReference Include="..\FuelAcc.Localization\FuelAcc.Localization.csproj" />
 	</ItemGroup>
 	<ItemGroup>

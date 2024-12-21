@@ -31,10 +31,12 @@ else
     <table class="table table-striped">
         <thead>
             <tr>
-                <th style="width:25%">Branch</th>
-                <th style="width:25%">Storage</th>
-                <th style="width:25%">Product</th>
-                <th style="width:25%">Quantity</th>
+                <th style="width:20%">Branch</th>
+                <th style="width:20%">Storage</th>
+                <th style="width:20%">Product</th>
+                <th style="width:20%">Quantity</th>
+                <th style="width:20%">Price</th>
+                <th style="width:20%">Sum</th>
             </tr>
         </thead>
         <tbody>
@@ -45,6 +47,8 @@ else
                     <td>@(record.StorageName)</td>
                     <td>@(record.ProductName)</td>
                     <td>@(record.Quantity)</td>
+                    <td>@(record.Price)</td>
+                    <td>@(record.Price * record.Quantity)</td>
                 </tr>
             }
         </tbody>
@@ -72,7 +76,10 @@ else
                 r.BranchName, 
                 r.StorageName, 
                 r.ProductName, 
-                r.Quantity });
+                r.Quantity,
+                r.Price,
+                Sum = (r.Price * r.Quantity)
+            });
             csv.WriteRecords(filtered);
         }
         var filename = $"FuelAccRests_{DateTime.Now.ToString("yyyyMMdd_HHmmss")}.csv";
@@ -93,12 +100,15 @@ else
             var title = $"Rests report {DateTime.Now}";
             document.Add(new Paragraph(title));
 
-            Table table = new Table(UnitValue.CreatePercentArray(4)).UseAllAvailableWidth();
+            Table table = new Table(UnitValue.CreatePercentArray(6)).UseAllAvailableWidth();
 
             table.AddHeaderCell("Branch");
             table.AddHeaderCell("Storage");
             table.AddHeaderCell("Product");
             table.AddHeaderCell("Quantity");
+            table.AddHeaderCell("Price");
+            table.AddHeaderCell("Sum");
+
 
             foreach (var r in Records)
             {
@@ -106,6 +116,8 @@ else
                 table.AddCell(r.StorageName);
                 table.AddCell(r.ProductName);
                 table.AddCell(r.Quantity.ToString());
+                table.AddCell(r.Price.ToString());
+                table.AddCell((r.Price * r.Quantity).ToString());
             }
 
             document.Add(table);
