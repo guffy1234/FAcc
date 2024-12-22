@@ -71,6 +71,38 @@ namespace FuelAcc.ApiClient
     {
     }
 
+    public partial interface IFoldersApiClient : IDtoApiClient<FolderDto, FolderDtoPagedResult, FolderQueryDto>
+    {
+    }
+
+    public partial class FolderDto : IDictionaryDto
+    {
+    }
+
+    public partial class FolderQueryDto : IDictionaryQueryDto
+    {
+    }
+
+    public partial class FolderDtoPagedResult : IPagedResult<FolderDto>
+    {
+    }
+
+    public partial interface IFileBlobsApiClient : IDtoApiClient<FileBlobDto, FileBlobDtoPagedResult, FileBlobQueryDto>
+    {
+    }
+
+    public partial class FileBlobDto : IDictionaryDto
+    {
+    }
+
+    public partial class FileBlobQueryDto : IDictionaryQueryDto
+    {
+    }
+
+    public partial class FileBlobDtoPagedResult : IPagedResult<FileBlobDto>
+    {
+    }
+
     public partial interface IOrdersInApiClient : IDtoApiClient<OrderInDto, OrderInDtoPagedResult, OrderInQueryDto>
     {
     }

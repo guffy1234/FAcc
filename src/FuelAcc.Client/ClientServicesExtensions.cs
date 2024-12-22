@@ -23,6 +23,8 @@ namespace FuelAcc.Client
             services.AddProtectedApiClient<IBranchesApiClient, BranchesApiClient>(baseAddress);
             services.AddProtectedApiClient<IStoragesApiClient, StoragesApiClient>(baseAddress);
             services.AddProtectedApiClient<IPartnersApiClient, PartnersApiClient>(baseAddress);
+            services.AddProtectedApiClient<IFoldersApiClient, FoldersApiClient>(baseAddress);
+            services.AddProtectedApiClient<IFileBlobsApiClient, FileBlobsApiClient>(baseAddress);
 
             services.AddProtectedApiClient<IOrdersInApiClient, OrdersInApiClient>(baseAddress);
             services.AddProtectedApiClient<IOrdersOutApiClient, OrdersOutApiClient>(baseAddress);
@@ -30,6 +32,7 @@ namespace FuelAcc.Client
 
             services.AddProtectedApiClient<IReportsApiClient, ReportsApiClient>(baseAddress);
             services.AddProtectedApiClient<IReplicationApiClient, ReplicationApiClient>(baseAddress);
+            services.AddProtectedApiClient<IAccountingApiClient, AccountingApiClient>(baseAddress);
             services.AddProtectedApiClient<ISettingsApiClient, SettingsApiClient>(baseAddress);
 
             // Register a preconfigure SignalR hub connection.
@@ -86,6 +89,11 @@ namespace FuelAcc.Client
                 p.GetRequiredService<IBranchesApiClient>());
             services.AddScoped<IDtoApiClient<StorageDto, StorageDtoPagedResult, StorageQueryDto>>(p =>
                 p.GetRequiredService<IStoragesApiClient>());
+            services.AddScoped<IDtoApiClient<FolderDto, FolderDtoPagedResult, FolderQueryDto>>(p =>
+                p.GetRequiredService<IFoldersApiClient>());
+            services.AddScoped<IDtoApiClient<FileBlobDto, FileBlobDtoPagedResult, FileBlobQueryDto>>(p =>
+                p.GetRequiredService<IFileBlobsApiClient>());
+
             services.AddScoped<IDtoApiClient<OrderInDto, OrderInDtoPagedResult, OrderInQueryDto>>(p =>
                 p.GetRequiredService<IOrdersInApiClient>());
             services.AddScoped<IDtoApiClient<OrderOutDto, OrderOutDtoPagedResult, OrderOutQueryDto>>(p =>
@@ -97,6 +105,8 @@ namespace FuelAcc.Client
             services.AddScoped<IDictionaryService<PartnerDto>, DictionaryService<PartnerDto, PartnerDtoPagedResult, PartnerQueryDto>>();
             services.AddScoped<IDictionaryService<BranchDto>, DictionaryService<BranchDto, BranchDtoPagedResult, BranchQueryDto>>();
             services.AddScoped<IDictionaryService<StorageDto>, DictionaryService<StorageDto, StorageDtoPagedResult, StorageQueryDto>>();
+            services.AddScoped<IDictionaryService<FolderDto>, DictionaryService<FolderDto, FolderDtoPagedResult, FolderQueryDto>>();
+            services.AddScoped<IDictionaryService<FileBlobDto>, DictionaryService<FileBlobDto, FileBlobDtoPagedResult, FileBlobQueryDto>>();
 
             services.AddScoped<IDocumentService<OrderInDto>, DocumentService<OrderInDto, OrderInDtoPagedResult, OrderInQueryDto>>();
             services.AddScoped<IDocumentService<OrderOutDto>, DocumentService<OrderOutDto, OrderOutDtoPagedResult, OrderOutQueryDto>>();
