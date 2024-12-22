@@ -26,8 +26,8 @@ public class AppDbContextSqlite : AppDbContext
 
         modelBuilder.Entity<OrderLine>(e =>
         {
-            e.Property(p => p.Id)
-                .HasValueGenerator<SequentialGuidValueGenerator>();
+            e.Property(p => p.PlannedQuantity)
+               .HasConversion<double>();
             e.Property(p => p.Quantity)
                 .HasConversion<double>();
             e.Property(p => p.Price)
@@ -40,12 +40,16 @@ public class AppDbContextSqlite : AppDbContext
         {
             e.Property(p => p.Quantity)
                 .HasConversion<double>();
+            e.Property(p => p.Price)
+                .HasConversion<double>();
         });
 
         modelBuilder.Entity<Rest>(e =>
         {
             e.Property(p => p.Quantity)
                .HasConversion<double>();
+            e.Property(p => p.Price)
+                .HasConversion<double>();
         });
     }
 }

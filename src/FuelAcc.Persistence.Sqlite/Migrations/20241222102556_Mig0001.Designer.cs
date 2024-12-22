@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FuelAcc.Persistence.Sqlite.Migrations
 {
     [DbContext(typeof(AppDbContextSqlite))]
-    [Migration("20241221131527_Mig0001")]
+    [Migration("20241222102556_Mig0001")]
     partial class Mig0001
     {
         /// <inheritdoc />
@@ -338,9 +338,9 @@ namespace FuelAcc.Persistence.Sqlite.Migrations
                     b.Property<Guid?>("OrderBaseId")
                         .HasColumnType("TEXT");
 
-                    b.Property<decimal>("PlannedQuantity")
+                    b.Property<double>("PlannedQuantity")
                         .HasPrecision(14, 3)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("REAL");
 
                     b.Property<double>("Price")
                         .HasPrecision(14, 5)
@@ -514,9 +514,9 @@ namespace FuelAcc.Persistence.Sqlite.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
-                    b.Property<decimal>("Price")
+                    b.Property<double>("Price")
                         .HasPrecision(14, 5)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("REAL");
 
                     b.Property<Guid>("ProductId")
                         .HasColumnType("TEXT");
@@ -552,9 +552,9 @@ namespace FuelAcc.Persistence.Sqlite.Migrations
                     b.Property<Guid>("OrderId")
                         .HasColumnType("TEXT");
 
-                    b.Property<decimal>("Price")
+                    b.Property<double>("Price")
                         .HasPrecision(14, 5)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("REAL");
 
                     b.Property<Guid>("ProductId")
                         .HasColumnType("TEXT");

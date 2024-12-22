@@ -69,10 +69,13 @@
         <div class="form-group col-md-3">
             <label>Product</label>
         </div>
-        <div class="form-group col-md-3">
+        <div class="form-group col-md-2">
+            <label>Planned</label>
+        </div>
+        <div class="form-group col-md-2">
             <label>Quantity</label>
         </div>
-        <div class="form-group col-md-3">
+        <div class="form-group col-md-2">
             <label>Price</label>
         </div>
         <div class="form-group col-md-2">
@@ -95,11 +98,15 @@
                     </InputSelect>
                     <ValidationMessage For="@(() => line.ProductId)" />
                 </div>
-                <div class="form-group col-md-3">
+                <div class="form-group col-md-2">
+                    <InputNumber id="Planned" class="form-control" placeholder="Planned" @bind-Value="line.PlannedQuantity" />
+                    <ValidationMessage For="@(() => line.PlannedQuantity)" />
+                </div>
+                <div class="form-group col-md-2">
                     <InputNumber id="Quantity" class="form-control" placeholder="Quantity" @bind-Value="line.Quantity" />
                     <ValidationMessage For="@(() => line.Quantity)" />
                 </div>
-                <div class="form-group col-md-3">
+                <div class="form-group col-md-2">
                     <InputNumber id="Price" class="form-control" placeholder="Price" @bind-Value="line.Price" />
                     <ValidationMessage For="@(() => line.Price)" />
                 </div>

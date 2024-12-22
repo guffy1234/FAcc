@@ -542,7 +542,7 @@ namespace FuelAcc.Persistence.Sqlite.Migrations
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     ProductId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    PlannedQuantity = table.Column<decimal>(type: "TEXT", precision: 14, scale: 3, nullable: false),
+                    PlannedQuantity = table.Column<double>(type: "REAL", precision: 14, scale: 3, nullable: false),
                     Quantity = table.Column<double>(type: "REAL", precision: 14, scale: 3, nullable: false),
                     Price = table.Column<double>(type: "REAL", precision: 14, scale: 5, nullable: false),
                     Sum = table.Column<double>(type: "REAL", precision: 14, scale: 5, nullable: false),
@@ -596,7 +596,7 @@ namespace FuelAcc.Persistence.Sqlite.Migrations
                     StorageId = table.Column<Guid>(type: "TEXT", nullable: false),
                     ProductId = table.Column<Guid>(type: "TEXT", nullable: false),
                     Quantity = table.Column<double>(type: "REAL", precision: 14, scale: 3, nullable: false),
-                    Price = table.Column<decimal>(type: "TEXT", precision: 14, scale: 5, nullable: false)
+                    Price = table.Column<double>(type: "REAL", precision: 14, scale: 5, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -626,7 +626,7 @@ namespace FuelAcc.Persistence.Sqlite.Migrations
                     DestinationId = table.Column<Guid>(type: "TEXT", nullable: true),
                     ProductId = table.Column<Guid>(type: "TEXT", nullable: false),
                     Quantity = table.Column<double>(type: "REAL", precision: 14, scale: 3, nullable: false),
-                    Price = table.Column<decimal>(type: "TEXT", precision: 14, scale: 5, nullable: false)
+                    Price = table.Column<double>(type: "REAL", precision: 14, scale: 5, nullable: false)
                 },
                 constraints: table =>
                 {
