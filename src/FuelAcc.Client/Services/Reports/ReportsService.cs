@@ -1,7 +1,4 @@
-﻿using FuelAcc.Application.DtoCommon.Dictionaries;
-using FuelAcc.Application.DtoCommon.Paging;
-using FuelAcc.ApiClient;
-using Microsoft.JSInterop;
+﻿using FuelAcc.ApiClient;
 
 namespace FuelAcc.Client.Services.Reports
 {

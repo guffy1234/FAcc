@@ -1,8 +1,7 @@
-﻿using FuelAcc.Application.DtoCommon.Dictionaries;
+﻿using FuelAcc.ApiClient;
+using FuelAcc.Application.DtoCommon.Dictionaries;
 using FuelAcc.Application.DtoCommon.Paging;
-using FuelAcc.ApiClient;
 using Microsoft.Extensions.Caching.Memory;
-using Microsoft.JSInterop;
 
 namespace FuelAcc.Client.Services.Crud
 {

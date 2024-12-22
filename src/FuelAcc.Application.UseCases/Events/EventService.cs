@@ -14,8 +14,8 @@ namespace FuelAcc.Application.UseCases.Events
         {
             _eventStore = eventStore ?? throw new ArgumentNullException(nameof(eventStore));
             _eventConverter = eventConverter ?? throw new ArgumentNullException(nameof(eventConverter));
-
         }
+
         async Task IEventService.PublishEventAsync<ENTITY>(DomainEvent<ENTITY> domainEvent, CancellationToken cancellationToken)
         {
             var persist = _eventConverter.ToPersistEvent(domainEvent);

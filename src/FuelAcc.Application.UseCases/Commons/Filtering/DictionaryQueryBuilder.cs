@@ -1,7 +1,6 @@
 ﻿using FuelAcc.Application.Dto.Querying;
 using FuelAcc.Application.DtoCommon.Dictionaries;
 using FuelAcc.Domain.Commons;
-using System.Linq;
 
 namespace FuelAcc.Application.UseCases.Commons.Filtering
 {
@@ -31,16 +30,17 @@ namespace FuelAcc.Application.UseCases.Commons.Filtering
             {
                 query = query.Where(d => d.Name.Contains(Dto.Name));
             }
-            if(typeof(ENTITY).IsAssignableTo(typeof(IDictionaryWithFolderEntity)) &&  
-                Dto is IDictionaryWithFoldersQueryDto folders && 
+            if (typeof(ENTITY).IsAssignableTo(typeof(IDictionaryWithFolderEntity)) &&
+                Dto is IDictionaryWithFoldersQueryDto folders &&
                 folders.FolderId?.Any() == true)
             {
-                if(folders.FolderId.Count() > 1)
+                if (folders.FolderId.Count() > 1)
                 {
                     query = query.Where(d => folders.FolderId.Contains((d as IDictionaryWithFolderEntity).FolderId.Value));
-                } else
+                }
+                else
                 {
-                    query = query.Where(d => folders.FolderId.First() == (d as IDictionaryWithFolderEntity).FolderId.Value );
+                    query = query.Where(d => folders.FolderId.First() == (d as IDictionaryWithFolderEntity).FolderId.Value);
                 }
             }
             return query;

@@ -9,7 +9,6 @@ using FuelAcc.Application.Interface.Persistence;
 using FuelAcc.Application.Interface.Replication;
 using FuelAcc.Domain.Entities.Other;
 using MediatR;
-using System.Threading;
 
 namespace FuelAcc.Application.UseCases.Replication
 {

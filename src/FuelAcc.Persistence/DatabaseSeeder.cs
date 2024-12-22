@@ -77,7 +77,6 @@ namespace FuelAcc.Persistence.Repositories
             }
         }
 
-
         private async Task SeedBranchAndSettingsAsync()
         {
             var admin = await _context.Users.FirstOrDefaultAsync(u => u.UserName == Constants.Constants.AdminUserName);

@@ -10,7 +10,9 @@ namespace FuelAcc.Client.Services
         bool IsInited { get; }
 
         Task EnsureInited();
+
         Task Reset();
+
         Task Set(string token);
     }
 }

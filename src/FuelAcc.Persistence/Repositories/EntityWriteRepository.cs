@@ -45,10 +45,10 @@ namespace FuelAcc.Persistence.Repositories
                 throw new NotFoundException();
             }
             // workarond for remove disappeared order lines
-            if(entity is OrderBase eob && fetched is OrderBase fob)
+            if (entity is OrderBase eob && fetched is OrderBase fob)
             {
-                var new_ids = eob.Lines.Select(x => x.Id).ToList(); 
-                var removed = fob.Lines.Where(f =>  !new_ids.Contains(f.Id)).ToList();
+                var new_ids = eob.Lines.Select(x => x.Id).ToList();
+                var removed = fob.Lines.Where(f => !new_ids.Contains(f.Id)).ToList();
                 _dbContext.OrderLines.RemoveRange(removed);
             }
             _dbContext.Set<T>().Update(entity);

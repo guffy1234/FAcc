@@ -125,7 +125,7 @@ public class AppDbContext : AppIdentityDbContext
                 .UsingEntity("ProductFileBlob",
                     l => l.HasOne(typeof(Product)).WithMany().HasForeignKey("ProductId").HasPrincipalKey(nameof(Product.Id)),
                     r => r.HasOne(typeof(FileBlob)).WithMany().HasForeignKey("FileBlobId").HasPrincipalKey(nameof(FileBlob.Id)),
-                    j => j.HasKey("ProductId", "FileBlobId")); 
+                    j => j.HasKey("ProductId", "FileBlobId"));
 
             e.HasMany(e => e.Orders)
                 .WithMany(b => b.Blobs)

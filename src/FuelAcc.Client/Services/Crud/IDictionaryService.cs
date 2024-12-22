@@ -13,8 +13,11 @@ namespace FuelAcc.Client.Services.Crud
         Task Add(DTO dto);
 
         Task Update(DTO dto);
+
         Task<string> LookupName(Guid id);
+
         void ResetLookup();
+
         Task<IReadOnlyCollection<KeyValuePair<Guid, string>>> LookupItems();
     }
 }

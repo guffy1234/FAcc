@@ -1,11 +1,8 @@
 ﻿using Asp.Versioning;
 using FuelAcc.Application.Dto.Login;
 using FuelAcc.Application.Interface.Login;
-using FuelAcc.Application.UseCases.Dictionaries.Branches;
 using FuelAcc.WebApi.Api;
-using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FuelAcc.WebApi.Controllers.V1.Login

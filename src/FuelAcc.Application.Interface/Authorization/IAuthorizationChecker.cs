@@ -1,9 +1,9 @@
-﻿
-namespace FuelAcc.Application.Interface
+﻿namespace FuelAcc.Application.Interface
 {
     public interface IAuthorizationChecker
     {
         public void Authorize(IAuthorizationPoint point);
+
         Guid UserId();
     }
 }

@@ -6,7 +6,7 @@ namespace FuelAcc.Client.Shared
 {
     public class FluentValidator<TValidator> : ComponentBase where TValidator : IValidator, new()
     {
-        private readonly static char[] separators = new[] { '.', '[' };
+        private static readonly char[] separators = new[] { '.', '[' };
         private TValidator validator;
 
         [CascadingParameter] private EditContext EditContext { get; set; }

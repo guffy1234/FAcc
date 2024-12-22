@@ -1,22 +1,21 @@
+using FuelAcc.Application.Interface;
+using FuelAcc.Application.Interface.Login;
 using FuelAcc.Application.UseCases;
 using FuelAcc.Domain.Identity;
 using FuelAcc.Persistence;
-using FuelAcc.Persistence.DbSelector;
 using FuelAcc.Persistence.Contexts;
-using Microsoft.EntityFrameworkCore;
-using FuelAcc.WebApi;
-using Microsoft.OpenApi.Models;
-using System.Reflection;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
+using FuelAcc.Persistence.DbSelector;
 using FuelAcc.Persistence.Repositories;
+using FuelAcc.WebApi;
 using FuelAcc.WebApi.Api;
 using FuelAcc.WebApi.Filters;
-using FuelAcc.Application.Interface;
 using FuelAcc.WebApi.Services;
-using FuelAcc.Application.Interface.Login;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -161,7 +160,6 @@ var app = builder.Build();
     var dbContext = serviceScope.ServiceProvider.GetRequiredService<AppDbContext>();
     await dbContext.Database.MigrateAsync();
 
-
     var seeded = serviceScope.ServiceProvider.GetRequiredService<IDatabaseSeeder>();
     await seeded.SeedAsync();
 }
@@ -181,7 +179,8 @@ app.UseSwaggerUI(c =>
 if (app.Environment.IsDevelopment())
 {
     app.UseWebAssemblyDebugging();
-} else
+}
+else
 {
     app.UseExceptionHandler();
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.

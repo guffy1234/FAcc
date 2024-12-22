@@ -20,8 +20,6 @@ namespace FuelAcc.Client.Services
         public AuthenticationContext(ILocalStorageService localStorageService)
         {
             _localStorageService = localStorageService;
-
-
         }
 
         public async Task EnsureInited()
@@ -29,13 +27,12 @@ namespace FuelAcc.Client.Services
             if (IsInited)
                 return;
 
-            var token  = await _localStorageService.GetItem<string>(_userKey);
+            var token = await _localStorageService.GetItem<string>(_userKey);
             if (!string.IsNullOrEmpty(token))
                 Set(token);
 
             IsInited = true;
         }
-
 
         public async Task Set(string token)
         {

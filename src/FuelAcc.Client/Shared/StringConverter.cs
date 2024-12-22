@@ -16,10 +16,10 @@ namespace FuelAcc.Client.Shared
             {
                 return reader.GetString();
             }
- 
+
             throw new System.Text.Json.JsonException();
         }
- 
+
         public override void Write(Utf8JsonWriter writer, string value, JsonSerializerOptions options)
         {
             writer.WriteStringValue(value);

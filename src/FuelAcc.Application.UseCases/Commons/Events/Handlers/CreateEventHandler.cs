@@ -2,11 +2,8 @@
 using FuelAcc.Application.Interface;
 using FuelAcc.Application.Interface.Events;
 using FuelAcc.Application.Interface.Persistence;
-using FuelAcc.Application.Interface.Replication;
 using FuelAcc.Domain.Commons;
 using FuelAcc.Domain.Entities;
-using FuelAcc.Domain.Entities.Dictionaries;
-using System.Threading;
 
 namespace FuelAcc.Application.UseCases.Commons.Events.Handlers
 {
@@ -20,7 +17,7 @@ namespace FuelAcc.Application.UseCases.Commons.Events.Handlers
         public CreateEventHandler(IUnitOfWork unitOfWork,
             IEventService eventService,
             IExecutionContext executionContext,
-            IEntityWriteRepository<ENTITY> repository, 
+            IEntityWriteRepository<ENTITY> repository,
             IMapper mapper) :
             base(unitOfWork, eventService)
         {

@@ -6,6 +6,7 @@ namespace FuelAcc.Application.Dto.Login
     {
         [Required]
         public string access_token { get; set; }
+
         [Required]
         public string token_type { get; set; } = "bearer";
     }

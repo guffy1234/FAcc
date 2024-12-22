@@ -7,16 +7,22 @@ namespace FuelAcc.Application.Dto.Dictionaries
     {
         [Required]
         public Guid Id { get; set; }
+
         [Required]
         public string Name { get; set; }
+
         [Required]
         public string FileName { get; set; }
+
         [Required]
         public string MimeType { get; set; }
+
         [Required]
         public long Size { get; set; }
+
         [Required]
         public string SHA256 { get; set; }
+
         public byte[] Body { get; set; }
     }
 }

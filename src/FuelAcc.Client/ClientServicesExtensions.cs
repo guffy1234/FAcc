@@ -3,15 +3,12 @@ using FuelAcc.Client.Services;
 using FuelAcc.Client.Services.Crud;
 using FuelAcc.Client.Services.Reports;
 using FuelAcc.Client.Shared;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
-using System.ComponentModel.Design;
-using System.Net.Http.Headers;
+
 //using Microsoft.AspNetCore.SignalR.Client;
 
 namespace FuelAcc.Client
 {
-
     public static class ClientServicesExtensions
     {
         public static IServiceCollection ConfigureClientServices(this IServiceCollection services, Uri baseAddress)
@@ -75,7 +72,6 @@ namespace FuelAcc.Client
             services.AddScoped<IdentityAuthenticationStateProvider>();
             services.AddScoped<AuthenticationStateProvider>(s => s.GetRequiredService<IdentityAuthenticationStateProvider>());
 
-
             services.AddScoped<IAlertService, AlertService>();
             services.AddScoped<IAuthorizeApi, AuthorizeApi>();
             services.AddSingleton<IAuthenticationContext, AuthenticationContext>();
@@ -122,17 +118,19 @@ namespace FuelAcc.Client
 
         private static void AddApiClient<TClient, TImplementation>(this IServiceCollection services, Uri baseAddress) where TClient : class where TImplementation : class, TClient
         {
-            services.AddHttpClient<TClient, TImplementation>((serviceProvider, client) => { 
-                client.BaseAddress = baseAddress; 
+            services.AddHttpClient<TClient, TImplementation>((serviceProvider, client) =>
+            {
+                client.BaseAddress = baseAddress;
             });
         }
+
         private static void AddProtectedApiClient<TClient, TImplementation>(this IServiceCollection services, Uri baseAddress) where TClient : class where TImplementation : class, TClient
         {
-            services.AddHttpClient<TClient, TImplementation>(client => {
+            services.AddHttpClient<TClient, TImplementation>(client =>
+            {
                 client.BaseAddress = baseAddress;
             }).AddHttpMessageHandler<BearerTokenHandler>();
         }
-
 
         // public static async Task<bool> ConnectWithRetryAsync(HubConnection connection, CancellationToken token)
         // {

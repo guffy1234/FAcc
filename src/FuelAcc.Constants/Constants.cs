@@ -11,8 +11,6 @@
 
         public const string BranchName = "Main";
 
-
-
         public static readonly Guid PartnersRootFolderId = new Guid();
         public const string PartnersRootFolderName = "Partners root";
 
@@ -22,8 +20,7 @@
         public static readonly Guid FileBlobsRootFolderId = new Guid();
         public const string FileBlobsRootFolderName = "FileBlobs root";
 
-
-        public static readonly KeyValuePair<Guid, string>[] Roots = new[] { 
+        public static readonly KeyValuePair<Guid, string>[] Roots = new[] {
             new KeyValuePair<Guid, string>(PartnersRootFolderId, PartnersRootFolderName),
             new KeyValuePair<Guid, string>(ProductsRootFolderId, ProductsRootFolderName),
             new KeyValuePair<Guid, string>(FileBlobsRootFolderId, FileBlobsRootFolderName),

@@ -2,7 +2,6 @@
 using FuelAcc.Application.Interface.Login;
 using FuelAcc.Domain.Identity;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -15,7 +14,7 @@ namespace FuelAcc.WebApi.Services
         private readonly RoleManager<ApplicationRole> _roleManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
 
-        public LoginService(UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager, 
+        public LoginService(UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager,
             SignInManager<ApplicationUser> signInManager)
         {
             _userManager = userManager;
@@ -89,6 +88,5 @@ namespace FuelAcc.WebApi.Services
 
             return token;
         }
-
     }
 }

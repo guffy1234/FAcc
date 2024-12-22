@@ -10,5 +10,4 @@
         public IReadOnlyCollection<Guid>? DestinationId { get; set; }
         public IReadOnlyCollection<Guid>? ProductId { get; set; }
     }
-
 }

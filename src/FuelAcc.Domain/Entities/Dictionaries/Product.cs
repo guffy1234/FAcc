@@ -12,6 +12,7 @@ namespace FuelAcc.Domain.Entities.Dictionaries
         public ProductUnitsType Units { get; set; }
 
         public Guid? FolderId { get; set; }
+
         [JsonIgnore]
         public Folder? Folder { get; set; }
 
@@ -22,7 +23,7 @@ namespace FuelAcc.Domain.Entities.Dictionaries
         public ICollection<Transaction>? Transactions { get; set; }
 
         [JsonIgnore]
-        public ICollection<OrderLine>? OrderLines{ get; set; }
+        public ICollection<OrderLine>? OrderLines { get; set; }
 
         [JsonIgnore]
         public ICollection<FileBlob>? Blobs { get; set; }

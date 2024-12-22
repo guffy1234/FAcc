@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using System.Globalization;
 using Microsoft.JSInterop;
+using System.Globalization;
 
 namespace FuelAcc.Client
 {

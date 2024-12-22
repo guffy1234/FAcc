@@ -3,7 +3,6 @@ using MediatR;
 
 namespace FuelAcc.Application.UseCases.Commons.Filtering.Handlers
 {
-
     public abstract class QueryBuilderHandler<QUERY_DTO> : IRequestHandler<QueryBuilderCommand<QUERY_DTO>, IEntityQueryBuilderBase>
         where QUERY_DTO : PagedQueryDto
     {

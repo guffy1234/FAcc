@@ -1,9 +1,6 @@
 ﻿using Asp.Versioning;
 using FuelAcc.Application.Dto.Accounting;
 using FuelAcc.Application.UseCases.Accounting;
-using FuelAcc.Application.UseCases.Reports;
-using FuelAcc.Application.UseCases.Reports.Rests;
-using FuelAcc.Application.UseCases.Reports.Transactions;
 using FuelAcc.WebApi.Api;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;

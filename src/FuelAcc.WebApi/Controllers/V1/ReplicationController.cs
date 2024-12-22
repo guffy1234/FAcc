@@ -3,11 +3,9 @@ using FuelAcc.Application.Dto.Querying;
 using FuelAcc.Application.Dto.Replication;
 using FuelAcc.Application.DtoCommon.Paging;
 using FuelAcc.Application.Interface.Replication;
-using FuelAcc.Application.UseCases.Commons.Queries;
 using FuelAcc.WebApi.Api;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace FuelAcc.WebApi.Controllers.V1
 {

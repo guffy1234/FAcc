@@ -6,10 +6,13 @@ namespace FuelAcc.Application.DtoCommon.Paging
     {
         [Required]
         public int CurrentPage { get; set; }
+
         [Required]
         public int PageCount { get; set; }
+
         [Required]
         public int PageSize { get; set; }
+
         [Required]
         public int RowCount { get; set; }
 

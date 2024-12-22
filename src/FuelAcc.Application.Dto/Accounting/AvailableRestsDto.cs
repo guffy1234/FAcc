@@ -6,8 +6,8 @@ namespace FuelAcc.Application.Dto.Accounting
     {
         [Required]
         public Guid StorageId { get; set; }
+
         [Required]
         public Guid ProductId { get; set; }
     }
-
 }

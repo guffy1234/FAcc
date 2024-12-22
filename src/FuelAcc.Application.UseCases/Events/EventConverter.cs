@@ -1,8 +1,6 @@
 ﻿using FuelAcc.Application.Interface.Events;
 using FuelAcc.Application.UseCases.Commons.Events;
-using FuelAcc.Domain.Entities.Dictionaries;
 using FuelAcc.Domain.Entities.Other;
-using System.Reflection.Metadata.Ecma335;
 using System.Text.Json;
 
 namespace FuelAcc.Application.UseCases.Events
@@ -21,7 +19,7 @@ namespace FuelAcc.Application.UseCases.Events
             var createdDomainEvent = Activator.CreateInstance(constructedDomainEvent!);
 
             var domainEvent = createdDomainEvent as DomainEventBase;
-            
+
             domainEvent.Id = persistEvent.Id;
             domainEvent.UserId = persistEvent.UserId;
             domainEvent.BranchId = persistEvent.BranchId;
@@ -42,10 +40,9 @@ namespace FuelAcc.Application.UseCases.Events
             var created = Activator.CreateInstance(constructedEventType, new object[] { domainEvent });
 
             return created;
-
         }
 
-        PersistEvent  IEventConverter.ToPersistEvent<ENTITY>(DomainEvent<ENTITY> domainEvent)
+        PersistEvent IEventConverter.ToPersistEvent<ENTITY>(DomainEvent<ENTITY> domainEvent)
         {
             var etype = typeof(ENTITY);
             var className = etype.AssemblyQualifiedName;

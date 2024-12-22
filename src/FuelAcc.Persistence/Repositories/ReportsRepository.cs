@@ -1,5 +1,4 @@
 ﻿using FuelAcc.Application.Interface.Persistence;
-using FuelAcc.Domain.Entities.Registry;
 using FuelAcc.Domain.Entities.ReportingModels;
 using FuelAcc.Persistence.Contexts;
 using Microsoft.EntityFrameworkCore;
@@ -24,14 +23,14 @@ namespace FuelAcc.Persistence.Repositories
                         on trans.ProductId equals product.Id
                         join order in _dbContext.Orders
                         on trans.OrderId equals order.Id
-                        join srest in _dbContext.Rests 
+                        join srest in _dbContext.Rests
                         on trans.SourceId equals srest.Id into srest_trans
                         from srest_left in srest_trans.DefaultIfEmpty()
                         join sstorage in _dbContext.Storages
                         on srest_left.StorageId equals sstorage.Id into srest_storage
                         from sstorage_left in srest_storage.DefaultIfEmpty()
                         join drest in _dbContext.Rests
-                        on trans.DestinationId equals drest.Id into drest_trans 
+                        on trans.DestinationId equals drest.Id into drest_trans
                         from drest_left in drest_trans.DefaultIfEmpty()
                         join dstorage in _dbContext.Storages
                         on drest_left.StorageId equals dstorage.Id into drest_storage
@@ -106,11 +105,11 @@ namespace FuelAcc.Persistence.Repositories
             //var queue = _dbContext.Set<Rest>().AsQueryable();
             var queue = from rest in _dbContext.Rests
                         join storage in _dbContext.Storages
-                        on rest.StorageId equals storage.Id 
+                        on rest.StorageId equals storage.Id
                         join product in _dbContext.Products
-                        on rest.ProductId equals product.Id 
+                        on rest.ProductId equals product.Id
                         join branch in _dbContext.Branches
-                        on storage.BranchId equals branch.Id 
+                        on storage.BranchId equals branch.Id
                         select new RestReport()
                         {
                             Id = rest.Id,

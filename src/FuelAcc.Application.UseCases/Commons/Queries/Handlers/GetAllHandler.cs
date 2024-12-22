@@ -46,5 +46,4 @@ namespace FuelAcc.Application.UseCases.Commons.Queries.Handlers
             return ai;
         }
     }
-
 }

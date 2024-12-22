@@ -4,7 +4,6 @@ using FuelAcc.Domain.Commons;
 using FuelAcc.Domain.Entities;
 using FuelAcc.Domain.Entities.Documents;
 using FuelAcc.Persistence.Contexts;
-using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace FuelAcc.Persistence.Repositories
@@ -25,7 +24,7 @@ namespace FuelAcc.Persistence.Repositories
             {
                 query = query.AsNoTracking();
             }
-            if(filter != null)
+            if (filter != null)
             {
                 query = filter(query);
             }
@@ -40,14 +39,13 @@ namespace FuelAcc.Persistence.Repositories
                 var items = await query.ToListAsync(cancellationToken);
 
                 return (count, items);
-            } else
+            }
+            else
             {
                 var items = await query.ToListAsync(cancellationToken);
 
                 return (items.Count(), items);
             }
-
-
         }
 
         public IAsyncEnumerable<T> GetAllAsync(bool asNoTracked = true)

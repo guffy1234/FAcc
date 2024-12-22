@@ -38,6 +38,7 @@ namespace FuelAcc.Application.Interface
             yield return MakeClaim(typeof(ENTITY), ApplicationAction.Delete);
             yield return MakeClaim(typeof(ENTITY), ApplicationAction.View);
         }
+
         public static IEnumerable<Claim> MakeAreaClaims(ApplicationArea appArea)
         {
             yield return MakeClaim(appArea, ApplicationAction.Insert);
@@ -60,7 +61,5 @@ namespace FuelAcc.Application.Interface
             claims.AddRange(MakeAreaClaims(ApplicationArea.Document));
             return claims;
         }
-
-
     }
 }

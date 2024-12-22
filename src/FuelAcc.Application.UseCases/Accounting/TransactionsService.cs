@@ -197,7 +197,6 @@ namespace FuelAcc.Application.UseCases.Accounting
 
         public async Task<IEnumerable<Rest>> GetAvailableRestsAsync(Guid storageId, Guid productId, CancellationToken cancellationToken)
         {
-
             var rests = await _repository.GetNonEmptyRestsAsync(storageId, productId, cancellationToken);
             return rests;
         }

@@ -7,8 +7,10 @@ namespace FuelAcc.Application.Dto.Dictionaries
     {
         [Required]
         public Guid Id { get; set; }
+
         [Required]
         public string Name { get; set; }
+
         [Required]
         public Guid BranchId { get; set; }
     }

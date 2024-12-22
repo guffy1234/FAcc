@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using FuelAcc.Application.Dto;
 using FuelAcc.Application.Dto.Querying;
 using FuelAcc.Application.DtoCommon.Paging;
 using FuelAcc.Application.Interface;
@@ -7,7 +6,6 @@ using FuelAcc.Application.Interface.Persistence;
 using FuelAcc.Application.UseCases.Commons.Filtering;
 using FuelAcc.Application.UseCases.Commons.Filtering.Handlers;
 using FuelAcc.Domain.Commons;
-using FuelAcc.Domain.Entities.Other;
 using MediatR;
 
 namespace FuelAcc.Application.UseCases.Commons.Queries.Handlers
@@ -46,8 +44,9 @@ namespace FuelAcc.Application.UseCases.Commons.Queries.Handlers
             var pageIdx = filter?.Page ?? 1;
             var pageSize = filter?.PageSize ?? 0;
 
-            var fetched = await _repository.GetExtendedAsync(query => { 
-                if(filter != null)
+            var fetched = await _repository.GetExtendedAsync(query =>
+            {
+                if (filter != null)
                 {
                     query = filter.Filter(query);
                     query = filter.Sort(query);

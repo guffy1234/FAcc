@@ -1,6 +1,4 @@
-﻿using iText.Commons.Utils;
-using Microsoft.JSInterop;
-using System.IO;
+﻿using Microsoft.JSInterop;
 using System.Text;
 
 namespace FuelAcc.Client.Services

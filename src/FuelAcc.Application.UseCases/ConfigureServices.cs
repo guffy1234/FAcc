@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using FuelAcc.Application.Dto;
 using FuelAcc.Application.Dto.Accounting;
 using FuelAcc.Application.Dto.Dictionaries;
 using FuelAcc.Application.Dto.Documents;
@@ -59,7 +58,6 @@ namespace FuelAcc.Application.UseCases
             services.AddDictionary<Folder, FolderDto, FolderQueryDto>();
             services.AddDictionary<FileBlob, FileBlobDto, FileBlobQueryDto>();
 
-
             // documents
             services.AddDocument<OrderIn, OrderInDto, OrderInQueryDto>();
             services.AddDocument<OrderOut, OrderOutDto, OrderOutQueryDto>();
@@ -85,7 +83,6 @@ namespace FuelAcc.Application.UseCases
             services.AddTransient<IDocumentTransactionsProcessor<OrderMove>, OrderMoveTransactionsProcessor>();
             services.AddTransient<IDocumentTransactionsProcessor<OrderIn>, OrderInTransactionsProcessor>();
             services.AddTransient<IDocumentTransactionsProcessor<OrderOut>, OrderOutTransactionsProcessor>();
-
         }
 
         public static void AddDictionary<ENTITY, DTO, QUERY_DTO>(this IServiceCollection services)
@@ -94,9 +91,9 @@ namespace FuelAcc.Application.UseCases
             where ENTITY : class, IDictionaryEntity, new()
         {
             // Queries
-            services.AddTransient(typeof(IRequestHandler<GetAllQuery<DTO>, IAsyncEnumerable<DTO>>), 
+            services.AddTransient(typeof(IRequestHandler<GetAllQuery<DTO>, IAsyncEnumerable<DTO>>),
                 typeof(GetAllHandler<ENTITY, DTO, DictionaryAuthorizationPoint<ENTITY>>));
-            services.AddTransient(typeof(IRequestHandler<GetByIdQuery<DTO>, DTO>), 
+            services.AddTransient(typeof(IRequestHandler<GetByIdQuery<DTO>, DTO>),
                 typeof(GetByIdHandler<ENTITY, DTO, DictionaryAuthorizationPoint<ENTITY>>));
 
             services.AddTransient(typeof(IRequestHandler<GetPagedByQueryDto<DTO, QUERY_DTO>, PagedResult<DTO>>),
@@ -106,11 +103,11 @@ namespace FuelAcc.Application.UseCases
                 typeof(DictionaryQueryHandler<ENTITY, QUERY_DTO>));
 
             // Commands
-            services.AddTransient(typeof(IRequestHandler<CreateCommand<DTO>, Unit>), 
+            services.AddTransient(typeof(IRequestHandler<CreateCommand<DTO>, Unit>),
                 typeof(CreateCommandHandler<ENTITY, DTO, DictionaryAuthorizationPoint<ENTITY>>));
-            services.AddTransient(typeof(IRequestHandler<DeleteCommand<DTO>, Unit>), 
+            services.AddTransient(typeof(IRequestHandler<DeleteCommand<DTO>, Unit>),
                 typeof(DeleteCommandHandler<ENTITY, DTO, DictionaryAuthorizationPoint<ENTITY>>));
-            services.AddTransient(typeof(IRequestHandler<UpdateCommand<DTO>, Unit>), 
+            services.AddTransient(typeof(IRequestHandler<UpdateCommand<DTO>, Unit>),
                 typeof(UpdateCommandHandler<ENTITY, DTO, DictionaryAuthorizationPoint<ENTITY>>));
             // Events
             services.AddTransient(typeof(IRequestHandler<CreateEvent<ENTITY>, Unit>), typeof(CreateEventHandler<ENTITY>));
@@ -124,9 +121,9 @@ namespace FuelAcc.Application.UseCases
             where ENTITY : class, IDocumentEntity, new()
         {
             // Queries
-            services.AddTransient(typeof(IRequestHandler<GetAllQuery<DTO>, IAsyncEnumerable<DTO>>), 
+            services.AddTransient(typeof(IRequestHandler<GetAllQuery<DTO>, IAsyncEnumerable<DTO>>),
                 typeof(GetAllHandler<ENTITY, DTO, DocumentAuthorizationPoint<ENTITY>>));
-            services.AddTransient(typeof(IRequestHandler<GetByIdQuery<DTO>, DTO>), 
+            services.AddTransient(typeof(IRequestHandler<GetByIdQuery<DTO>, DTO>),
                 typeof(GetByIdHandler<ENTITY, DTO, DocumentAuthorizationPoint<ENTITY>>));
 
             services.AddTransient(typeof(IRequestHandler<GetPagedByQueryDto<DTO, QUERY_DTO>, PagedResult<DTO>>),
@@ -135,13 +132,12 @@ namespace FuelAcc.Application.UseCases
             services.AddTransient(typeof(IRequestHandler<QueryBuilderCommand<QUERY_DTO>, IEntityQueryBuilderBase>),
                 typeof(DocumentQueryHandler<ENTITY, QUERY_DTO>));
 
-
             // Commands
-            services.AddTransient(typeof(IRequestHandler<CreateCommand<DTO>, Unit>), 
+            services.AddTransient(typeof(IRequestHandler<CreateCommand<DTO>, Unit>),
                 typeof(CreateCommandHandler<ENTITY, DTO, DocumentAuthorizationPoint<ENTITY>>));
-            services.AddTransient(typeof(IRequestHandler<DeleteCommand<DTO>, Unit>), 
+            services.AddTransient(typeof(IRequestHandler<DeleteCommand<DTO>, Unit>),
                 typeof(DeleteCommandHandler<ENTITY, DTO, DocumentAuthorizationPoint<ENTITY>>));
-            services.AddTransient(typeof(IRequestHandler<UpdateCommand<DTO>, Unit>), 
+            services.AddTransient(typeof(IRequestHandler<UpdateCommand<DTO>, Unit>),
                 typeof(UpdateCommandHandler<ENTITY, DTO, DocumentAuthorizationPoint<ENTITY>>));
             // Events
             services.AddTransient(typeof(IRequestHandler<CreateEvent<ENTITY>, Unit>), typeof(CreateDocumentEventHandler<ENTITY>));

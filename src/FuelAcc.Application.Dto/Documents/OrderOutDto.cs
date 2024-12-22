@@ -6,6 +6,7 @@ namespace FuelAcc.Application.Dto.Documents
     {
         [Required]
         public Guid PartnerId { get; set; }
+
         [Required]
         public Guid FromStorageId { get; set; }
     }

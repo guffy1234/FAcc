@@ -1,5 +1,4 @@
 ﻿using FuelAcc.ApiClient;
-using FuelAcc.Client.Services.Reports;
 using Microsoft.Extensions.Caching.Memory;
 
 namespace FuelAcc.Client.Services

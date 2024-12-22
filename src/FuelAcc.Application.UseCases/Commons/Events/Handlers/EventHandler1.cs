@@ -1,6 +1,5 @@
 ﻿using FuelAcc.Application.Interface.Events;
 using FuelAcc.Application.Interface.Persistence;
-using FuelAcc.Application.Interface.Replication;
 using MediatR;
 
 namespace FuelAcc.Application.UseCases.Commons.Events.Handlers

@@ -24,7 +24,8 @@ namespace FuelAcc.Application.UseCases.Commons.Commands.Handlers
 
         protected override async Task HandleAsync(CreateCommand<DTO> command, CancellationToken cancellationToken)
         {
-            var apoint = new APOINT() { 
+            var apoint = new APOINT()
+            {
                 Action = ApplicationAction.Insert,
             };
             _authorizationChecker.Authorize(apoint);

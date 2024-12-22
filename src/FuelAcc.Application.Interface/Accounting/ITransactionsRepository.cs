@@ -15,7 +15,9 @@ namespace FuelAcc.Application.Interface.Accounting
         Task DeleteAsync(IEnumerable<Transaction> transactions, CancellationToken cancellationToken);
 
         Task UpdateAsync(IEnumerable<Transaction> transactions, CancellationToken cancellationToken);
+
         Task<Rest> GetRestAsync(Guid storageId, Guid productId, decimal price, CancellationToken cancellationToken);
+
         Task<IEnumerable<Rest>> GetNonEmptyRestsAsync(Guid storageId, Guid productId, CancellationToken cancellationToken);
     }
 }

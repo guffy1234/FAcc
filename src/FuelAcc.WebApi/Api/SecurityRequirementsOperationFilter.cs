@@ -22,10 +22,9 @@ namespace FuelAcc.WebApi.Api
             bool hasAuthorizeAttribute = HasAttribute(context.MethodInfo, typeof(AuthorizeAttribute), true);
             bool hasAnonymousAttribute = HasAttribute(context.MethodInfo, typeof(AllowAnonymousAttribute), true);
 
-            // so far as I understood the action/operation is public/unprotected 
+            // so far as I understood the action/operation is public/unprotected
             // if there is no authorize or an allow anonymous (allow anonymous overrides all authorize)
             bool isAuthorized = hasAuthorizeAttribute && !hasAnonymousAttribute;
-
 
             if (isAuthorized)
             {

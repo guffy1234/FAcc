@@ -1,10 +1,7 @@
 ﻿using FuelAcc.Application.UseCases.Commons.Exceptions;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.WebUtilities;
-using System;
-using System.Net;
 
 namespace FuelAcc.WebApi.Filters
 {

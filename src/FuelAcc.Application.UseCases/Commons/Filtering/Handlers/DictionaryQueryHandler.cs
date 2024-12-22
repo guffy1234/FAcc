@@ -1,6 +1,5 @@
 ﻿using FuelAcc.Application.Dto.Querying;
 using FuelAcc.Domain.Commons;
-using FuelAcc.Domain.Entities.Dictionaries;
 
 namespace FuelAcc.Application.UseCases.Commons.Filtering.Handlers
 {

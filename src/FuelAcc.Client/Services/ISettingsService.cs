@@ -1,5 +1,4 @@
-﻿
-namespace FuelAcc.Client.Services
+﻿namespace FuelAcc.Client.Services
 {
     public interface ISettingsService
     {

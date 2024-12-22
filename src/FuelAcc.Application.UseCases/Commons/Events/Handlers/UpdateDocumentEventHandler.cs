@@ -3,7 +3,6 @@ using FuelAcc.Application.Interface;
 using FuelAcc.Application.Interface.Accounting;
 using FuelAcc.Application.Interface.Events;
 using FuelAcc.Application.Interface.Persistence;
-using FuelAcc.Application.Interface.Replication;
 using FuelAcc.Domain.Commons;
 
 namespace FuelAcc.Application.UseCases.Commons.Events.Handlers

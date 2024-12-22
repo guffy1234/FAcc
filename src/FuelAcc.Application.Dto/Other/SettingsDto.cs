@@ -6,6 +6,7 @@ namespace FuelAcc.Application.Dto.Other
     {
         [Required]
         public int Id { get; private set; }
+
         [Required]
         public Guid BranchId { get; set; }
     }

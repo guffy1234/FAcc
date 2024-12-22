@@ -1,5 +1,4 @@
-﻿using FuelAcc.Domain;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace FuelAcc.Application.UseCases.Reports
 {
@@ -7,8 +6,8 @@ namespace FuelAcc.Application.UseCases.Reports
     {
         [Required]
         public bool NonEmptyOnly { get; set; }
+
         public IReadOnlyCollection<Guid>? StorageId { get; set; }
         public IReadOnlyCollection<Guid>? ProductId { get; set; }
     }
-
 }

@@ -2,8 +2,8 @@
 {
     public enum ApplicationAction
     {
-        Insert, 
-        Update, 
+        Insert,
+        Update,
         Delete,
         View
     }

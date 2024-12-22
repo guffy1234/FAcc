@@ -1,9 +1,7 @@
 ﻿using Asp.Versioning;
 using AutoMapper;
 using FuelAcc.Application.Dto.Other;
-using FuelAcc.Application.Dto.Replication;
 using FuelAcc.Application.Interface.Persistence;
-using FuelAcc.Application.Interface.Replication;
 using FuelAcc.Domain.Entities.Other;
 using FuelAcc.WebApi.Api;
 using Microsoft.AspNetCore.Authorization;
@@ -41,7 +39,6 @@ namespace FuelAcc.WebApi.Controllers.V1
             var dto = _mapper.Map<SettingsDto>(settings);
             return Ok(dto);
         }
-
 
         [HttpPost()]
         [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
